@@ -1,0 +1,62 @@
+<div class="m-4 max-w-6xl mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <div class="mb-5">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Administración de usuarios</h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">Este apartado permite visualizar a todos los usuarios de la plataforma, así como editar algún atributo o eliminar definitivamente a un usuario</p>
+    </div>
+    <div class="flex justify-between mb-4">
+        <div class="flex gap-4">
+            <!-- Integración del componente hijo de filtro de estado -->
+            <app-state-filter (filterChanged)="filterByEstado($event)"></app-state-filter>
+            <!-- Integración del componente hijo de filtro de tipo -->
+            <app-type-filter (filterChanged)="filterByTipo($event)"></app-type-filter>
+            <a href="/register-user"><button type="button" class="px-3 py-2 text-xs font-medium text-green-500 hover:text-white border border-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-center me-2 mb-2 dark:border-green-400 dark:text-green-400 dark:hover:text-white dark:hover:bg-green-700 dark:focus:ring-green-900">
+                <i class="fa-solid fa-plus mr-1"></i>Agregar usuario
+            </button></a>
+            
+        </div>
+        <div class="relative">
+            <input type="text" placeholder="Buscar Usuario" #filter (input)="filterByName(filter.value)" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-2">
+                <i class="fa-solid fa-magnifying-glass ml-1" style="color: #9a9996;"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Nombre de usuario</th>
+                    <th scope="col" class="px-6 py-3">Estado</th>
+                    <th scope="col" class="px-6 py-3">Tipo</th>
+                    <th scope="col" class="px-6 py-3">Acción</th>
+                </tr>
+            </thead>
+            <tbody  *ngIf="filteredUsers && filteredUsers.length > 0">
+                <tr *ngFor="let user of filteredUsers" class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ user.usuarioNombre }}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center">
+                            <div [ngClass]="{'bg-green-500': user.estado === 'Activo', 'bg-red-500': user.estado === 'Inactivo'}" class="h-2.5 w-2.5 rounded-full" style="margin-right: 0.5rem;"></div>
+                            {{ user.estado }}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">{{ user.tipo }}</td>
+                    <td class="flex px-6 py-4">
+                        <button type="button" (click)="deleteButton(user.usuarioId)" class="px-3 py-2 text-xs font-medium text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded-lg text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
+                            <i class="fa-solid fa-trash-can mr-1"></i>Eliminar
+                        </button>
+                        <button type="button" class="px-3 py-2 text-xs font-medium text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 rounded-lg  text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
+                            <i class="fa-solid fa-pencil mr-1"></i>Editar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="!filteredUsers || filteredUsers.length === 0">
+                <tr>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" colspan="4">No se encontraron usuarios</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
