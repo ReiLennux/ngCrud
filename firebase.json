@@ -1,0 +1,18 @@
+{
+  "hosting": {
+    "site": "ng-crud-lenn",
+    "public": "public",
+    "public": "dist/v1.11/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
