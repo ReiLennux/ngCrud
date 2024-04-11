@@ -19,6 +19,7 @@ import { SecondaryProductsComponent } from './components/products/secondary-prod
 import { ActionsComponent } from './components/products/principal-products/actions/actions.component';
 import { CatFilterComponent } from './components/products/principal-products/cat-filter/cat-filter.component';
 import { SubcatFilterComponent } from './components/products/principal-products/subcat-filter/subcat-filter.component';
+import { CloudinaryModule } from '@cloudinary/ng';
 @NgModule({
   declarations: [
     AppComponent,

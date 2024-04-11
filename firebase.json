@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "ng-crud-343",
+    "public": "dist/v1.11/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

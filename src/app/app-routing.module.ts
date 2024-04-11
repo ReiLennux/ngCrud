@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import { PrincipalProductsComponent } from './components/products/principal-products/principal-products.component';
+import { SecondaryProductsComponent } from './components/products/secondary-products/secondary-products.component';
 
 
 const routes: Routes = [
@@ -26,6 +27,11 @@ const routes: Routes = [
   {
     path:"products",
     component: PrincipalProductsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'register-product',
+    component: SecondaryProductsComponent,
     canActivate: [AuthGuard]
   },
   {

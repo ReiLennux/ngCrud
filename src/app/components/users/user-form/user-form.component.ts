@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../../../models/user';
 import { UserService } from '../../../services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-form',
@@ -15,7 +16,7 @@ export class UserFormComponent {
     idUsuCatTipoUsuario: number;
   } = { strName: '', strPassword: '', idUsuCatTipoUsuario: 0 };
 
-  rPassword:String = "";
+  rPassword: string = "";
   comparePassword: boolean = true;
   
   constructor(private userService: UserService) { }
@@ -33,15 +34,29 @@ export class UserFormComponent {
   }
   
   submitForm(form: any) {
-
-    if (this.comparePassword){
+    if (form.valid && this.comparePassword) {
       this.userService.crearUsuario(form.value).subscribe(
-        res => this.user = {strName: '', strPassword: '', idUsuCatTipoUsuario: 0},
-        err => console.error(err)
+        res => {
+          Swal.fire({
+            icon: "success",
+            title: "Usuario Creado",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.user = { strName: '', strPassword: '', idUsuCatTipoUsuario: 0 };
+        },
+        err => {
+          Swal.fire({
+            icon: "error",
+            title: "No se pudo crear el usuario, por favor intente nuevamente en un momento",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.error(err);
+        }
       );
-    }else {
-      console.log('no coincide')
+    } else {
+      console.log('Formulario no válido o las contraseñas no coinciden');
     }
-    
   }
 }

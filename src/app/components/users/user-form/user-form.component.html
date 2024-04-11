@@ -1,4 +1,12 @@
-<div class="m-8 max-w-4xl mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+<div
+    class="m-8 max-w-4xl mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+
+    <a href="/users"
+        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-26 h-8 ms-auto inline-flex justify-center items-center m-2 p-3">
+        <i class="fa-solid fa-arrow-left mr-1"></i>
+        Regresar
+    </a>
+
     <form #userForm="ngForm" (ngSubmit)="submitForm(userForm)">
         <div class="mb-5">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Crea un nuevo usuario</h5>
@@ -6,12 +14,18 @@
         </div>
         <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
-                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de usuario</label>
-                <input type="text" id="last_name" name="strName" [(ngModel)]="user.strName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Eje. Monroy LD" required />
+                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de
+                    usuario</label>
+                <input type="text" id="last_name" name="strName" [(ngModel)]="user.strName" required pattern="^(?!\s*$).+"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Eje. Monroy LD" required />
             </div>
             <div>
-                <label for="idUsuCatTipoUsuario" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de Usuario</label>
-                <select id="idUsuCatTipoUsuario" name="idUsuCatTipoUsuario" [(ngModel)]="user.idUsuCatTipoUsuario" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                <label for="idUsuCatTipoUsuario"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de Usuario</label>
+                <select id="idUsuCatTipoUsuario" name="idUsuCatTipoUsuario" [(ngModel)]="user.idUsuCatTipoUsuario" required
+                    class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required>
                     <option value="" disabled selected>Seleccione el tipo de usuario</option>
                     <option *ngFor="let tipo of tipos" [value]="tipo.id">{{ tipo.strName }}</option>
                 </select>
@@ -19,25 +33,35 @@
         </div>
 
         <div class="mb-6">
-            <label for="strPassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
-            <input type="password" id="strPassword" name="strPassword" [(ngModel)]="user.strPassword" (keyup)="checkPasswordMatch()"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+            <label for="strPassword"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
+            <input type="password" id="strPassword" name="strPassword" [(ngModel)]="user.strPassword"
+                (keyup)="checkPasswordMatch()" required
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="•••••••••" required />
         </div>
         <div class="mb-6">
-            <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirmar contraseña</label>
-            <input type="password" id="confirm_password" name="confirm_password" [(ngModel)]="rPassword" (keyup)="checkPasswordMatch()"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+            <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirmar
+                contraseña</label>
+            <input type="password" id="confirm_password" name="confirm_password" [(ngModel)]="rPassword"
+                (keyup)="checkPasswordMatch()"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="•••••••••" required />
         </div>
         <div class="m-3">
             <app-alert *ngIf="user.idUsuCatTipoUsuario == 2"></app-alert>
-            
+
         </div>
         <div class="m-3">
             <app-alert2 *ngIf="!comparePassword"></app-alert2>
         </div>
 
-        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none flex w-full justify-center leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
-            Crear Nuevo Usuario
-        </button>
+<button type="submit"
+        [disabled]="!userForm.valid || !comparePassword"
+        [ngClass]="{'bg-blue-700': userForm.valid && comparePassword, 'bg-blue-400': !userForm.valid || !comparePassword}"
+        class="text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none flex w-full justify-center leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+    {{!userForm.valid || !comparePassword ? "Faltan algunos campos" :  "Crear Nuevo Usuario"}}
+</button>
+
     </form>
 </div>

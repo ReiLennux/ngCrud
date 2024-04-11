@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -24,16 +25,21 @@ export class LoginComponent {
 
     this.auth.login(this.userData).subscribe(
       res => {
-        // Reinicia los datos del formulario después de un inicio de sesión exitoso
         this.userData = {strName: '', strPassword: ''};
-        // Oculta el indicador de carga después de completar el inicio de sesión
         this.loading = false;
-        // Aquí puedes redirigir a la página de inicio después del inicio de sesión exitoso
         this.router.navigate(['/home']);
       },
       err => {
-        // Manejo de errores, si es necesario
-        console.log(err);
+        Swal.fire({
+          title: "You shall not pass!",
+          html: `
+          <img src="https://cdn.vox-cdn.com/thumbor/lyJqnnNCu3Mkbsov-Lup5_jdiVg=/0x0:3831x1587/2070x1164/filters:focal(1835x397:2447x1009):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/70123899/4k_fellowship_movie_screencaps.com_23524.0.jpg">`,
+          text: "- Gandalf",
+          icon: "error",
+          background: "#111827",
+          color:"#fff",
+          showConfirmButton: false
+        })
         // Oculta el indicador de carga en caso de error
         this.loading = false;
       }

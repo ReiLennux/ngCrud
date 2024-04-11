@@ -9,5 +9,5 @@ export interface product {
     decStock: number;
     decCost: number;
     decPrice: number;
-    strImage: string
+    strImage: string | File
 }

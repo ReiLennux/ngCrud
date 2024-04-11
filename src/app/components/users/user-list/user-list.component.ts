@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-list',
@@ -67,11 +68,38 @@ export class UserListComponent implements OnInit {
   }
 
   deleteButton(id: Number) {
+    Swal.fire({
+      title: "¿Está seguro?",
+      text: "Se eliminará este producto y su información.",
+      icon: "warning",
+      background: "#111827",
+      color:"#fff",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#374151",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Continuar"
+    }).then((result: { isConfirmed: any; }) => {
+    if (result.isConfirmed) {
     this.userService.eliminarUsuario(id).subscribe(
-      res => console.log(res),
-      err => console.error(err)
+      res => {
+        Swal.fire({
+          title: "Eliminado",
+          text: "El usuario ha sido eliminado",
+          icon: "success"
+        });
+        this.ngOnInit()
+      },
+      err => {
+        Swal.fire({
+        title: "Error",
+        text: "El usuario no ha sido eliminado debido a un error en el sistema, por favor intente nuevamente en otro momento",
+        icon: "info"
+      });}
     );
     this.ngOnInit()
+    }
+  })
   }
 
   cambiarPagina(pagina: number) {
