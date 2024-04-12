@@ -1,44 +1,66 @@
-<div class="m-8 max-w-4xl mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-    <form  (ngSubmit)="submitForm()">
+<div
+    class="m-8 max-w-4xl mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <form (ngSubmit)="submitForm()">
+        <a href="/products"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-26 h-8 ms-auto inline-flex justify-center items-center mb-4 p-3">
+            <i class="fa-solid fa-arrow-left mr-1"></i>
+            Regresar
+        </a>
         <div class="mb-1">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Crea un nuevo producto</h5>
             <p class="font-normal text-gray-700 dark:text-gray-400">Guarda un producto en el sistema.</p>
         </div>
         <div class="p-1 md:p-5 space-y-4">
             <div>
-                <label for="productName"
-                    class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre
+                <label for="productName" class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre
                     del Producto</label>
-                <input type="text" id="productName" [(ngModel)]="newProducto.strName" placeholder="Ej. "
+                <input type="text" id="productName" [(ngModel)]="newProducto.strName" placeholder="" name="strName"
                     class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow-sm sm:text-sm ">
             </div>
             <div>
                 <label for="productDescription"
                     class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción del
                     Producto</label>
-                <textarea id="productDescription" [(ngModel)]="newProducto.strDescription"
+                <textarea id="productDescription" [(ngModel)]="newProducto.strDescription" name="productDescription"
                     class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500dark:text-white mt-1  shadow-sm sm:text-sm "></textarea>
             </div>
-            <div class="grid grid-cols-3 gap-4">
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="productIdCatCategoria"
+                        class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Categoria</label>
+                    <app-cat-filter (categoriaSeleccionada)="onCategoriaSeleccionada($event)"></app-cat-filter>
+                </div>
+                <div>
+                    <label for="productIdCatCategoria"
+                        class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Subcategoria</label>
+                    <app-subcat-filter (subcategoriaSeleccionada)="onsubcategoriaSeleccionada($event)"
+                        [categoriaSeleccionadaId]="categoriaSeleccionadoId"></app-subcat-filter>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-1">
                 <div>
                     <label for="productMin"
                         class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Stock
                         Mínimo</label>
-                    <input type="number" id="productMin" [(ngModel)]="newProducto.decMinimum"
+                    <input type="number" id="productMin" [(ngModel)]="newProducto.decMinimum" name="productMin"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                 </div>
                 <div>
                     <label for="productMax"
                         class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Stock
                         Máximo</label>
-                    <input type="number" id="productMax" [(ngModel)]="newProducto.decMaximum"
+                    <input type="number" id="productMax" [(ngModel)]="newProducto.decMaximum" name="productMax"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                 </div>
                 <div>
                     <label for="productStock"
                         class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Cantidad en
                         Stock</label>
-                    <input type="number" id="productStock" [(ngModel)]="newProducto.decStock"
+                    <input type="number" id="productStock" [(ngModel)]="newProducto.decStock" name="productStock"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                 </div>
             </div>
@@ -46,31 +68,49 @@
                 <div>
                     <label for="productCost"
                         class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Costo</label>
-                    <input type="number" id="productCost" [(ngModel)]="newProducto.decCost"
+                    <input type="number" id="productCost" [(ngModel)]="newProducto.decCost" name="costo"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                 </div>
                 <div>
                     <label for="productPrice"
                         class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Precio</label>
-                    <input type="number" id="productPrice" [(ngModel)]="newProducto.decPrice"
+                    <input type="number" id="productPrice" [(ngModel)]="newProducto.decPrice" name="productPrice"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                 </div>
             </div>
         </div>
-            <!--Image Input-->
-            <div class="flex items-center justify-center w-full mb-5">
-                <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                        </svg>
-                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Da click aquí para subir una imagen</span> o suelta la imagen aquí</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG, JPEG, solo formato de imagen</p>
+        <!--Image Input-->
+        <div class="flex items-center justify-center w-full mb-5">
+            <label for="dropzone-file"
+                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <ng-container *ngIf="!selectedFile; else elseTemplate">
+                    <div ngif>
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Da
+                                    click aquí para subir una imagen</span> o suelta la imagen aquí</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG, JPEG, solo formato de
+                                imagen</p>
+                        </div>
+                        <input id="dropzone-file" type="file" class="hidden" (change)="onFileSelected($event)"
+                            accept="image/*" />
                     </div>
-                    <input id="dropzone-file" type="file" class="hidden" />
-                </label>
-            </div> 
-        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none flex w-full justify-center leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+                </ng-container>
+                <ng-template #elseTemplate>
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6 text-gray-500">
+                        <i class="fa-regular fa-circle-check fa-2x "></i>
+
+                        <p class="mt-2">{{ selectedFile ? selectedFile.name : 'Archivo no seleccionado' }}</p>
+                    </div>
+                </ng-template>
+            </label>
+        </div>
+        <button type="submit"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none flex w-full justify-center leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
             Crear Nuevo Producto
         </button>
-

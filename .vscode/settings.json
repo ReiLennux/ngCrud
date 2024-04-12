@@ -5,6 +5,8 @@
         "Categoria",
         "categorias",
         "cloudinary",
+        "onsubcategoria",
+        "subcategoria",
         "Subcategoria",
         "Swal",
         "sweetalert"

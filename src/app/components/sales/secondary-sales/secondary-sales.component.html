@@ -1,0 +1,102 @@
+<div
+    class="m-4 max-w-7xl mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <div class="mb-5">
+        <a href="/sales"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-26 h-8 ms-auto inline-flex justify-center items-center mb-4 p-3">
+            <i class="fa-solid fa-arrow-left mr-1"></i>
+            Regresar
+        </a>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Gestor de ventas Realizadas
+        </h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">Este apartado permite visualizar a todos los productos
+            de la plataforma, así como editar algún atributo o eliminar definitivamente un producto.
+    </div>
+
+    <div class="flex justify-evenly items-center py-3 px-2">
+        <div>
+            <form class="max-w-sm mx-auto">
+                <select
+                    class="block w-full p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option selected value="0">Todas los cajeros</option>
+                    <option>un cajero</option>
+                </select>
+            </form>
+        </div>
+        <div class="relative max-w-sm">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                </svg>
+            </div>
+            <input datepicker type="text"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="seleccione una fecha">
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <label for="table-search" class="sr-only font-thin">Buscar</label>
+        <div class="relative mt-1">
+            <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+            </div>
+            <input type="text" id="table-search"
+                class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Buscar algún Folio">
+        </div>
+    </div>
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-16 py-3">
+                        folio
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Responsable de venta
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        fecha
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Estado
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Acciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+
+                    <td class="px-6 py-4">
+                        Folio-20240412-0000
+                    </td>
+                    <td class="px-6 py-4">
+                        usuario.name
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500 ">
+                            <i class="fa-solid fa-calendar-day mr-1"></i>
+                            venta.fecha
+                            </span>
+                    </td>
+                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                        venta.estado
+                    </td>
+                    <td class="px-6 py-4 font-semibold">
+                        <app-actions-sales></app-actions-sales>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <tfoot>
+            <tr>
+            </tr>
+        </tfoot>
+    </div>
+
+</div>

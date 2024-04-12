@@ -11,16 +11,17 @@
         <!-- Filtros -->
         <div class="flex">
             <app-cat-filter (categoriaSeleccionada)="onCategoriaSeleccionada($event)" class="mr-3"></app-cat-filter>
-            <app-subcat-filter  (subcategoriaSeleccionada)="onsubcategoriaSeleccionada($event)" [categoriaSeleccionadaId]="categoriaSeleccionadoId"></app-subcat-filter>
+            <app-subcat-filter (subcategoriaSeleccionada)="onsubcategoriaSeleccionada($event)"
+                [categoriaSeleccionadaId]="categoriaSeleccionadoId"></app-subcat-filter>
         </div>
         <!-- Botón para agregar usuario -->
-        <a href="/register-product" >
+        <a href="/register-product">
             <button type="button"
                 class=" px-3 py-2 text-sm font-medium text-green-500 hover:text-white border border-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-center dark:border-green-400 dark:text-green-400 dark:hover:text-white dark:hover:bg-green-700 dark:focus:ring-green-900">
                 <i class="fa-solid fa-plus mr-1"></i>Agregar Producto
             </button>
         </a>
-    
+
         <!-- Barra de búsqueda -->
         <label for="table-search" class="sr-only font-thin">Buscar</label>
         <div class="relative mt-1">
@@ -32,7 +33,7 @@
                 placeholder="Buscar algún producto">
         </div>
     </div>
-    
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -105,11 +106,20 @@
                         $ {{product.decPrice}}
                     </td>
                     <td class="px-6 py-4 font-semibold">
-                        <app-actions [producto]="product" (productoActualizado)="actualizarProductos()"></app-actions>
+                        <app-actions [producto]="product" (productoActualizado)="actualizarProductos() "></app-actions>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <div class="flex align-center justify-center items-center m-2">
+                        <app-paginator [totalItems]="filtrarProductos().length" [itemsPerPage]="5" (pageChanged)="onPageChange($event)"></app-paginator>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
     </div>
 
 </div>

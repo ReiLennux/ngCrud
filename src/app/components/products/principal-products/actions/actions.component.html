@@ -37,39 +37,53 @@
                     <label for="productName"
                         class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre
                         del Producto</label>
-                    <input type="text" id="productName" [(ngModel)]="producto.strName"
+                    <input type="text" id="productName" [(ngModel)]="putProducto.strName"
                         class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow-sm sm:text-sm ">
                 </div>
                 <div>
                     <label for="productDescription"
                         class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción del
                         Producto</label>
-                    <textarea id="productDescription" [(ngModel)]="producto.strDescription"
+                    <textarea id="productDescription" [(ngModel)]="putProducto.strDescription"
                         class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500dark:text-white mt-1  shadow-sm sm:text-sm "></textarea>
                 </div>
-                <div class="grid grid-cols-2 gap-1">
-                    filtros
+
+                <!--FILTROS-->
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="productIdCatCategoria"
+                            class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Categoria</label>
+                        <app-cat-filter (categoriaSeleccionada)="onCategoriaSeleccionada($event)"></app-cat-filter>
+                    </div>
+                    <div>
+                        <label for="productIdCatCategoria"
+                            class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Subcategoria</label>
+                        <app-subcat-filter (subcategoriaSeleccionada)="onsubcategoriaSeleccionada($event)" [categoriaSeleccionadaId]="categoriaSeleccionadoId"></app-subcat-filter>
+                    </div>
                 </div>
                 <div class="grid grid-cols-3 gap-4">
                     <div>
                         <label for="productMin"
                             class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Stock
                             Mínimo</label>
-                        <input type="number" id="productMin" [(ngModel)]="producto.decMinimum"
+                        <input type="number" id="productMin" [(ngModel)]="putProducto.decMinimum"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                     </div>
                     <div>
                         <label for="productMax"
                             class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Stock
                             Máximo</label>
-                        <input type="number" id="productMax" [(ngModel)]="producto.decMaximum"
+                        <input type="number" id="productMax" [(ngModel)]="putProducto.decMaximum"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                     </div>
                     <div>
                         <label for="productStock"
                             class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Cantidad en
                             Stock</label>
-                        <input type="number" id="productStock" [(ngModel)]="producto.decStock"
+                        <input type="number" id="productStock" [(ngModel)]="putProducto.decStock"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                     </div>
                 </div>
@@ -77,32 +91,35 @@
                     <div>
                         <label for="productCost"
                             class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Costo</label>
-                        <input type="number" id="productCost" [(ngModel)]="producto.decCost"
+                        <input type="number" id="productCost" [(ngModel)]="putProducto.decCost"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                     </div>
                     <div>
                         <label for="productPrice"
                             class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Precio</label>
-                        <input type="number" id="productPrice" [(ngModel)]="producto.decPrice"
+                        <input type="number" id="productPrice" [(ngModel)]="putProducto.decPrice"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
                     </div>
-                    <div>
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            for="file_input">Nueva imagen</label>
-                        <input
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            type="file" (change)="onFileSelected($event)" accept="image/*">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                for="file_input">Nueva imagen</label>
+                            <input
+                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                type="file" (change)="onFileSelected($event)" accept="image/*">
+                        </div>
                         <!-- Muestra la imagen actual -->
-                        <img *ngIf="producto.strImage" [src]="producto.strImage" alt="{{producto.strName}}">
+                        <img *ngIf="putProducto.strImage" [src]="putProducto.strImage" alt="{{putProducto.strName}}">
                         <!-- Input para seleccionar una nueva imagen -->
 
                     </div>
-                    <!-- Botones de acción -->
-                    <div class="p-4 flex justify-end bg-gray-100 dark:bg-gray-800 rounded-b">
-                        <button type="button" (click)="update()"
-                            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-white bg-gray-200 dark:bg-yellow-400 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 rounded-md">Guardar
-                            Cambios</button>
-                    </div>
+
+                </div>
+                <!-- Botones de acción -->
+                <div class="p-4 flex justify-end bg-gray-100 dark:bg-gray-800 rounded-b">
+                    <button type="button" (click)="update()"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-white bg-gray-200 dark:bg-yellow-400 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 rounded-md">Guardar
+                        Cambios</button>
                 </div>
             </div>
 

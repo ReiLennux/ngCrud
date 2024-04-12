@@ -31,7 +31,7 @@ export class LoginComponent {
       },
       err => {
         Swal.fire({
-          title: "You shall not pass!",
+          title: '"You shall not pass!"',
           html: `
           <img src="https://cdn.vox-cdn.com/thumbor/lyJqnnNCu3Mkbsov-Lup5_jdiVg=/0x0:3831x1587/2070x1164/filters:focal(1835x397:2447x1009):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/70123899/4k_fellowship_movie_screencaps.com_23524.0.jpg">`,
           text: "- Gandalf",

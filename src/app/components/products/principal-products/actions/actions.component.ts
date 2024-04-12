@@ -12,11 +12,12 @@ import { of } from 'rxjs';
 })
 export class ActionsComponent {
   @Input() producto!: product;
-  @Output() eliminarProducto = new EventEmitter<string>();
-  @Output() editarProducto = new EventEmitter<string>();
   @Output() productoActualizado = new EventEmitter<void>();
   showModal: boolean = false;
   selectedFile: File | undefined;
+  categoriaSeleccionadoId: number = 0;
+  subcategoriaSeleccionadoId: number = 0;
+  putProducto: product = { ...this.producto }; // Copia independiente del producto
 
   constructor(
     private productsServices: ProductsService, 
@@ -55,17 +56,28 @@ export class ActionsComponent {
 
   toggleModal() {
     this.showModal = !this.showModal;
+    this.putProducto = { ...this.producto }; // Actualiza la copia independiente del producto
   }
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
 
+  onCategoriaSeleccionada(categoria: any) {
+    this.categoriaSeleccionadoId = categoria !== null ? categoria : 0;
+    this.putProducto.idCatCategoria = this.categoriaSeleccionadoId;
+  }
+  
+  onsubcategoriaSeleccionada(subcategoria: any) {
+    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria : 0;
+    this.putProducto.idCatSubcategoria = this.subcategoriaSeleccionadoId;
+  }
+
   update(){
     if (!this.selectedFile) {
-      this.productsServices.editarProducto(this.producto)
-      this.toggleModal()
-            console.log('Producto actualizado con éxito.');
+      this.productsServices.editarProducto(this.putProducto); // Utiliza la copia independiente del producto
+      this.toggleModal();
+      console.log('Producto actualizado con éxito.');
       return;
     }
 
@@ -75,9 +87,9 @@ export class ActionsComponent {
     
     this.http.post<any>('https://api.cloudinary.com/v1_1/dnx8n0vfe/image/upload', formData).subscribe(
       (res) => {
-        this.producto.strImage = res.url;
+        this.putProducto.strImage = res.url;
 
-        of(this.productsServices.editarProducto(this.producto)).subscribe(
+        of(this.productsServices.editarProducto(this.putProducto)).subscribe(
           () => {
             console.log('Producto actualizado con éxito.');
             this.productoActualizado.emit();

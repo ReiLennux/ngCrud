@@ -15,7 +15,6 @@ export class PaginatorComponent {
   
   // Calcula el número total de páginas
   totalPages(): number {
-    console.log(Math.ceil(this.totalItems / this.itemsPerPage))
     return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
