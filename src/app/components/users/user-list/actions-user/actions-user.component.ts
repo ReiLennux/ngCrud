@@ -29,7 +29,6 @@ export class ActionsUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFilters()
-    console.log(this.user)
   }
   toggleModal() {
     this.showModal = !this.showModal;
