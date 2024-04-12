@@ -6,9 +6,9 @@
     <div class="flex justify-between mb-4 ">
         <div class="flex gap-4">
             <app-state-filter (filterChanged)="filterByEstado($event)"></app-state-filter>
-            
             <app-type-filter (filterChanged)="filterByTipo($event)"></app-type-filter>
         </div>
+        
         <a href="/register-user"><button type="button" class="px-3 py-2 text-xs font-medium text-green-500 hover:text-white border border-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-center me-2 mb-2 dark:border-green-400 dark:text-green-400 dark:hover:text-white dark:hover:bg-green-700 dark:focus:ring-green-900">
             <i class="fa-solid fa-plus mr-1"></i>Agregar usuario
         </button></a>
@@ -32,16 +32,20 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of filteredUsers" class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ user.usuarioNombre }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ user.strName }}
+                    </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center">
-                            <div [ngClass]="{'bg-green-500': user.estado === 'Activo', 'bg-red-500': user.estado === 'Inactivo'}" class="h-2.5 w-2.5 rounded-full" style="margin-right: 0.5rem;"></div>
-                            {{ user.estado }}
+                            <div [ngClass]="{'bg-green-500': user.idUsuCatEstadoFK == 1, 'bg-red-500': user.idUsuCatEstadoFK == 2}" class="h-2.5 w-2.5 rounded-full" style="margin-right: 0.5rem;"></div>
+                            {{obtenerEstado(user.idUsuCatEstadoFK)}}
                         </div>
                     </td>
-                    <td class="px-6 py-2">{{ user.tipo }}</td>
+                    <td class="px-6 py-2">
+                        {{obtenerTipo(user.idUsuCatTipoUsuario)}}
+                    </td>
                     <td class="flex px-6 py-4">
-                        <app-actions-user [user]="user"></app-actions-user>
+                        <app-actions-user [user]="user" (usuarioCambio)="loadData()"></app-actions-user>
                     </td>
                 </tr>
             </tbody>

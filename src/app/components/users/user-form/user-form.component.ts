@@ -10,11 +10,11 @@ import Swal from 'sweetalert2';
 })
 export class UserFormComponent {
   tipos: { id: Number, strName: string }[] = [];
-  user: {
-    strName: string;
-    strPassword: string;
-    idUsuCatTipoUsuario: number;
-  } = { strName: '', strPassword: '', idUsuCatTipoUsuario: 0 };
+  user: User = {
+    strName: '', strPassword: '', idUsuCatTipoUsuario: 0,
+    id: 0,
+    idUsuCatEstadoFK: 0
+  };
 
   rPassword: string = "";
   comparePassword: boolean = true;
@@ -43,7 +43,7 @@ export class UserFormComponent {
             showConfirmButton: false,
             timer: 1500
           });
-          this.user = { strName: '', strPassword: '', idUsuCatTipoUsuario: 0 };
+          this.user = {strName: '', strPassword: '', idUsuCatTipoUsuario: 0, id: 0, idUsuCatEstadoFK: 0};
         },
         err => {
           Swal.fire({

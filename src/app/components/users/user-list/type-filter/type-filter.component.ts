@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserService } from '../../../../services/user.service';
+import { User } from '../../../../models/user';
 
 @Component({
   selector: 'app-type-filter',
@@ -7,8 +8,9 @@ import { UserService } from '../../../../services/user.service';
   styleUrls: ['./type-filter.component.css']
 })
 export class TypeFilterComponent implements OnInit {
-  tipos: {id: Number, strName: string }[] = []; // Cambiado de Number a number
-  @Output() filterChanged = new EventEmitter<string>(); // Emite el id del tipo seleccionado
+  tipos: {id: number, strName: string }[] = [];
+  @Output() filterChanged = new EventEmitter<number>(); // Cambiado a number para emitir el ID del tipo
+  @Input() user: User | any;
 
   constructor(private userService: UserService) { }
 
@@ -20,7 +22,9 @@ export class TypeFilterComponent implements OnInit {
     );
   }
 
-  onFilterChange(tipo: string) {
-    this.filterChanged.emit(tipo);
+  onFilterChange(event: any) {
+    const selectedTipoId = event.target.value;
+    // Emitir el ID de la subcategoría seleccionada en lugar del ID de la categoría
+    this.filterChanged.emit(selectedTipoId);
   }
 }

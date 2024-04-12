@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserService } from '../../../../services/user.service';
+import { User } from '../../../../models/user';
 
 @Component({
   selector: 'app-state-filter',
@@ -7,10 +8,11 @@ import { UserService } from '../../../../services/user.service';
   styleUrls: ['./state-filter.component.css']
 })
 export class StateFilterComponent implements OnInit {
-  estados: { id: Number, strName: string }[] = [];
-  @Output() filterChanged = new EventEmitter<string>();
+  estados: {id: number, strName: string }[] = [];
+  @Output() filterChanged = new EventEmitter<number>();
+  @Input() user: User | any;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.estados().subscribe(
@@ -20,7 +22,8 @@ export class StateFilterComponent implements OnInit {
     );
   }
 
-  onFilterChange(estado: string) {
-    this.filterChanged.emit(estado);
+  onFilterChange(event: any) {
+    const selectedEstadoId = event.target.value;
+    this.filterChanged.emit(selectedEstadoId);
   }
 }

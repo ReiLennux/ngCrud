@@ -11,30 +11,52 @@ import Swal from 'sweetalert2';
 export class UserListComponent implements OnInit {
   users: User[] = [];
   filteredUsers: User[] = [];
-  estadoFiltrado: string = '';
-  tipoFiltrado: string = '';
+  estadoFiltrado: number = 0;
+  tipoFiltrado: number = 0;
   filtroNombre: string = '';
   usuariosPorPagina: number = 5; // Número de usuarios por página
   paginaActual: number = 1; // Página actual, empieza en 1
+  estados: any;
+  tipos: any;
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
+    this.loadData()
+  }
+
+  loadData(){
+    this.userService.estados().subscribe(
+      (data: any) => {
+        this.estados = data;
+        this.loadUserData(); // Llama a la siguiente función después de obtener los estados
+      }
+    );
+    this.userService.tipos().subscribe(
+      (data: any) => {
+        this.tipos = data;
+      }
+    );
+  }
+  
+  loadUserData() {
     this.userService.obtenerDatosUsuario().subscribe(
       (data: User[]) => {
         this.users = data;
-        this.filterUsers(); // Llamamos a la función para filtrar los usuarios al cargar la lista
+        this.filterUsers(); // Llama a filterUsers después de obtener los datos del usuario
       },
       err => console.error(err)
     );
   }
+  
+  
 
-  filterByEstado(estado: string) {
+  filterByEstado(estado: number) {
     this.estadoFiltrado = estado;
     this.filterUsers();
   }
 
-  filterByTipo(tipo: string) {
+  filterByTipo(tipo: number) {
     this.tipoFiltrado = tipo;
     this.filterUsers();
   }
@@ -45,8 +67,8 @@ export class UserListComponent implements OnInit {
   }
 
   clearFilters() {
-    this.estadoFiltrado = '';
-    this.tipoFiltrado = '';
+    this.estadoFiltrado = 0;
+    this.tipoFiltrado = 0;
     this.filtroNombre = '';
     this.filterUsers();
   }
@@ -54,9 +76,9 @@ export class UserListComponent implements OnInit {
   filterUsers() {
     // Aplicamos los filtros sobre todos los usuarios
     let filteredUsers = this.users.filter(user =>
-      (this.estadoFiltrado === '' || user.estado === this.estadoFiltrado) &&
-      (this.tipoFiltrado === '' || user.tipo === this.tipoFiltrado) &&
-      (this.filtroNombre === '' || user.usuarioNombre.toLowerCase().includes(this.filtroNombre.toLowerCase()))
+      (this.estadoFiltrado == 0 || user.idUsuCatEstadoFK == this.estadoFiltrado) &&
+      (this.tipoFiltrado == 0 || user.idUsuCatTipoUsuario == this.tipoFiltrado) &&
+      (this.filtroNombre == '' || user.strName.toLowerCase().includes(this.filtroNombre.toLowerCase()))
     );
 
     // Calculamos los índices de inicio y fin para la paginación
@@ -74,5 +96,15 @@ export class UserListComponent implements OnInit {
 
   get paginasTotales(): number[] {
     return Array(Math.ceil(this.filteredUsers.length / this.usuariosPorPagina)).fill(0).map((x, i) => i + 1);
+  }
+
+  obtenerEstado(estadoId: number): String {
+    const estado = this.estados.find((estado: { id: number; }) => estado.id === estadoId);
+    return estado ? estado.strName : '';
+  }
+
+  obtenerTipo(tipoId: number): String {
+    const tipo = this.tipos.find((tipo: { id: number; }) => tipo.id === tipoId);
+    return tipo ? tipo.strName : '';
   }
 }

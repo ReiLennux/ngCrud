@@ -32,6 +32,15 @@ export class UserService {
         })
       );
   }
+  public updateUsuario(usuario: User){
+    return this.http.put(`${this.API_URL}/${usuario.id}`, usuario)
+      .pipe(
+        catchError(error => {
+          console.error('Error al actualizar usuario: ', error);
+          return throwError('Error al actualizar usuario');
+        })
+      );
+  }
 
   public tipos(): Observable<any> {
     return this.http.get(`${this.API_URL}/tipos`)

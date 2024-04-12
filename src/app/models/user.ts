@@ -1,6 +1,7 @@
 export interface User {
-  usuarioId: Number;
-  usuarioNombre: String;
-  estado: String;
-  tipo: String;
+  id: Number;
+  strName: String;
+  idUsuCatEstadoFK:  number;
+  idUsuCatTipoUsuario: number;
+  strPassword?: String;
   } 

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import Swal from 'sweetalert2';
 import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/user';
@@ -7,21 +7,30 @@ import { User } from '../../../../models/user';
   templateUrl: './actions-user.component.html',
   styleUrl: './actions-user.component.css'
 })
-export class ActionsUserComponent {
+export class ActionsUserComponent implements OnInit {
   @Input() user!: User;
   @Output() usuarioCambio = new EventEmitter<void>();
   showModal : boolean = false;
   showPassword: boolean = false;
+  estados : {id: Number, strName: string}[] = []
+  tipos: {id: Number, strName: string}[] = []
   putUser: User = {
-    usuarioId: 0,
-    usuarioNombre: "",
-    estado: "",
-    tipo: ""
+    id: 0,
+    strName: "",
+    idUsuCatEstadoFK: 0,
+    idUsuCatTipoUsuario: 0,
+    strPassword: "",
   };
+  rPassword: string =""
 
 
   constructor(private userService: UserService) {}
 
+
+  ngOnInit(): void {
+    this.loadFilters()
+    console.log(this.user)
+  }
   toggleModal() {
     this.showModal = !this.showModal;
     this.putUser = {... this.user}
@@ -48,6 +57,7 @@ export class ActionsUserComponent {
           text: "El usuario ha sido eliminado",
           icon: "success"
         });
+        this.usuarioCambio.emit();
       },
       err => {
         Swal.fire({
@@ -65,6 +75,47 @@ export class ActionsUserComponent {
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
+
+  loadFilters(){
+    this.userService.estados().subscribe(
+      (data: []) => {
+        this.estados = data;
+      }
+    )
+    this.userService.tipos().subscribe(
+      (data: []) => {
+        this.tipos = data;
+      }
+    )
+  }
+
+  update(){
+    this.userService.updateUsuario(this.putUser).subscribe(
+      res => {
+        Swal.fire({
+          title: "Actualizado",
+          text: "El usuario ha sido actualizado",
+          icon: "success"
+        });
+        console.log(res)
+        this.usuarioCambio.emit();
+      },
+      err => {
+        Swal.fire({
+        title: "Error",
+        text: "El usuario no ha sido actualizado debido a un error en el sistema, por favor intente nuevamente en otro momento",
+        icon: "info"
+      });}
+    );
+  }
+
+  setEstado(estado: number) {
+    this.putUser.idUsuCatEstadoFK = estado;
+  }
+  setTipo(tipo: number) {
+    this.putUser.idUsuCatTipoUsuario = tipo;
+  }
+
 
 }
 
