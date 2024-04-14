@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,10 @@ export class AuthService {
     return this.http.post<any>(`${this.API_URI}/login`, user).pipe(
       map(response => {
         const token = response.token;
+        const userId = response.userId
         if (isPlatformBrowser(this.platformId)) {
           localStorage.setItem('token', token);
-          
+          localStorage.setItem('user', userId);
         }
         if (this.isLoggedIn()){
           this.router.navigateByUrl('/home');

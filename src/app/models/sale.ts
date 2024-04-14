@@ -1,8 +1,8 @@
 export interface DateSale {
     id?: Number;
-    idUsuUsuario: Number;
+    idUsuUsuario: Number | null;
     strFolio:  String;
-    dtDate?: Date;
+    dtDate?: String;
     idVenCatState: Number;
 } 
 

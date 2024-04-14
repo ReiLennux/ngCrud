@@ -1,0 +1,31 @@
+import { randomInt } from "crypto";
+import { DateSale } from "../models/sale";
+
+export function createDateSale(): DateSale {
+    const fecha: Date = new Date(); // Supongamos que esta es tu fecha en TypeScript
+    const fechaFormateada: string = fecha.toISOString().split('T')[0]; // Formatea la fecha en 'YYYY-MM-DD'
+    console.log(fechaFormateada);
+    const newDateSale: DateSale = {
+        id: 0, // Asumiendo que 'idds' es un número, generamos un número aleatorio entre 1 y 1000.
+        idUsuUsuario: Number(localStorage.getItem('user')),
+        strFolio: generarCadena(),
+        dtDate: fechaFormateada,
+        idVenCatState: 1
+    };
+
+    return newDateSale;
+}
+
+
+function generarCadena(): string {
+    const caracteresPermitidos = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let cadenaGenerada = '';
+    const longitudMaxima = 10;
+
+    for (let i = 0; i < longitudMaxima; i++) {
+        const indiceAleatorio = Math.floor(Math.random() * caracteresPermitidos.length);
+        cadenaGenerada += caracteresPermitidos.charAt(indiceAleatorio);
+    }
+
+    return cadenaGenerada;
+}

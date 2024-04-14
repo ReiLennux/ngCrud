@@ -64,7 +64,7 @@
         <div class="mb-5 flex justify-between items-center ">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Ventas</h5>
 
-            <h6 class="text-gray-700 dark:text-gray-400 font-semibold">Folio: folio.number</h6>
+            <h6 class="text-gray-700 dark:text-gray-400 font-semibold">Folio de venta: {{newDateSale.strFolio}}</h6>
         </div>
         <div class="flex items-center justify-between mx-3">
             <p class="font-normal text-gray-700 dark:text-gray-400">
@@ -163,7 +163,7 @@
                 <h5 class="text-sm text-gray-600">Total de la venta:</h5>
                 <h1 class="text-l font-bold text-gray-700 dark:text-gray-400">venta.total</h1>
             </div>
-            <button
+            <button (click)="crearDateSale()"
                 class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-xl font-medium rounded-md text-white bg-green-700 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 type="button">
                 <i class="fa-solid fa-cart-shopping mr-2"></i> Cobrar
