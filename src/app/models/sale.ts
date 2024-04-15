@@ -7,9 +7,9 @@ export interface DateSale {
 } 
 
 export interface Sale {
-    id: Number;
+    id?: Number;
     idVenVenta: Number;
     idProProducto: Number;
     decQuantity: Number;
-    decTotal: Number;
+    decSubtotal: Number;
 }

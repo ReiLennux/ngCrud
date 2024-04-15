@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DateSale } from '../models/sale';
+import { DateSale, Sale } from '../models/sale';
 import { catchError, map, throwError } from 'rxjs';
 
 @Injectable({
@@ -12,17 +12,21 @@ export class SalesService {
 
   constructor(private http: HttpClient) { }
 
-  public crearDateSale(dateSale: DateSale) {
-    console.log(dateSale);
-    return this.http.post<number>(`${this.API_URL}/DataSale`, dateSale).pipe(
+  public async crearDateSale(dateSale: DateSale): Promise<any> {
+    try {
+      const response = await this.http.post<any>(`${this.API_URL}/DataSale`, dateSale).toPromise();
+      return response; 
+    } catch (error) {
+      console.error('Error al crear la venta: ', error);
+      throw new Error('Error al crear la venta');
+    }
+  }
+
+  public insertarSale(sale: Sale){
+    console.log(sale);
+    return this.http.post<any>(`${this.API_URL}/`, sale).pipe(
       map(response => {
-        console.log(response);
-        return response; // Devuelve la respuesta para mantener el flujo del observable
-      }),
-      catchError(error => {
-        console.error('Error al crear la venta: ', error);
-        return throwError('Error al crear la venta');
-      })
-    );
+        return response;
+      }));
   }
 }

@@ -22,6 +22,7 @@ export class ActionsUserComponent implements OnInit {
     strPassword: "",
   };
   rPassword: string =""
+  userOnSesion: Number  = Number(localStorage.getItem('user'))
 
 
   constructor(private userService: UserService) {}

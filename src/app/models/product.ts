@@ -11,3 +11,8 @@ export interface product {
     decPrice: number;
     strImage: string | File
 }
+
+export interface SelectedProduct {
+    product: product;
+    quantity: number;
+}

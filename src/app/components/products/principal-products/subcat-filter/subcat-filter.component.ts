@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, output } from '@angular/core';
 import { ProductsService } from '../../../../services/products.service';
+import { product } from '../../../../models/product';
 
 @Component({
   selector: 'app-subcat-filter',
@@ -9,8 +10,9 @@ import { ProductsService } from '../../../../services/products.service';
 export class SubcatFilterComponent implements OnChanges {
   subcategorias: any[] = [];
   @Input() categoriaSeleccionadaId: number = 0;
-  
+  @Input() product: product | any ;
   @Output() subcategoriaSeleccionada = new EventEmitter<any>();
+
 
 
   constructor(private productsService: ProductsService) { }

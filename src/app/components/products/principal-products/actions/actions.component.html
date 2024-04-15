@@ -55,13 +55,13 @@
                         <label for="productIdCatCategoria"
                             class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Categoria</label>
-                        <app-cat-filter (categoriaSeleccionada)="onCategoriaSeleccionada($event)"></app-cat-filter>
+                        <app-cat-filter (categoriaSeleccionada)="onCategoriaSeleccionada($event)" [product]="producto"></app-cat-filter>
                     </div>
                     <div>
                         <label for="productIdCatCategoria"
                             class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Subcategoria</label>
-                        <app-subcat-filter (subcategoriaSeleccionada)="onsubcategoriaSeleccionada($event)" [categoriaSeleccionadaId]="categoriaSeleccionadoId"></app-subcat-filter>
+                        <app-subcat-filter (subcategoriaSeleccionada)="onsubcategoriaSeleccionada($event)" [categoriaSeleccionadaId]="categoriaSeleccionadoId" [product]="producto"></app-subcat-filter>
                     </div>
                 </div>
                 <div class="grid grid-cols-3 gap-4">

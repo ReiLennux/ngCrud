@@ -23,6 +23,17 @@ export class UserService {
       );
   }
 
+
+  public usuarioEnSesion() {
+    return this.http.get<any>(`${this.API_URL}/u/${localStorage.getItem('user')}`)
+      .pipe(
+        catchError(error => {
+          console.error('Error al obtener datos de usuario: ', error);
+          return throwError('Error al obtener datos de usuario');
+        })
+      );
+  }
+
   public eliminarUsuario(id: Number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`)
       .pipe(
@@ -45,7 +56,7 @@ export class UserService {
   public tipos(): Observable<any> {
     return this.http.get(`${this.API_URL}/tipos`)
       .pipe(
-        catchError(error => { 
+        catchError(error => {
           console.error('No se pueden obtener las categorías: ', error);
           return throwError('No se pueden obtener las categorías');
         })
@@ -71,5 +82,6 @@ export class UserService {
         })
       );
   }
+
 
 }
