@@ -1,5 +1,5 @@
 export interface User {
-  id: Number;
+  id: number;
   strName: String;
   idUsuCatEstadoFK:  number;
   idUsuCatTipoUsuario: number;

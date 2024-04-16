@@ -4,7 +4,6 @@ import { DateSale } from "../models/sale";
 export function createDateSale(): DateSale {
     const fecha: Date = new Date(); // Supongamos que esta es tu fecha en TypeScript
     const fechaFormateada: string = fecha.toISOString().split('T')[0]; // Formatea la fecha en 'YYYY-MM-DD'
-    console.log(fechaFormateada);
     const newDateSale: DateSale = {
         id: 0, // Asumiendo que 'idds' es un número, generamos un número aleatorio entre 1 y 1000.
         idUsuUsuario: Number(localStorage.getItem('user')),
@@ -28,4 +27,10 @@ function generarCadena(): string {
     }
 
     return cadenaGenerada;
+}
+
+
+export function formatoFecha(fecha: string): string {
+    fecha = fecha.split('T')[0]
+    return `${fecha}`;
 }

@@ -75,9 +75,11 @@ export class ActionsComponent {
 
   update(){
     if (!this.selectedFile) {
-      this.productsServices.editarProducto(this.putProducto); // Utiliza la copia independiente del producto
-      this.toggleModal();
-      console.log('Producto actualizado con éxito.');
+      this.productsServices.editarProducto(this.putProducto).subscribe(response => {
+        this.toggleModal();
+        this.productoActualizado.emit();
+      })
+
       return;
     }
 

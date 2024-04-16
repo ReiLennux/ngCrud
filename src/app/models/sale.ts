@@ -1,15 +1,15 @@
 export interface DateSale {
-    id?: Number;
-    idUsuUsuario: Number | null;
+    id: number;
+    idUsuUsuario: number;
     strFolio:  String;
-    dtDate?: String;
-    idVenCatState: Number;
+    dtDate: String;
+    idVenCatState: number;
 } 
 
 export interface Sale {
     id?: Number;
-    idVenVenta: Number;
-    idProProducto: Number;
-    decQuantity: Number;
+    idVenVenta: number;
+    idProProducto: number;
+    decQuantity: number;
     decSubtotal: Number;
 }

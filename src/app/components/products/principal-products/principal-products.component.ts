@@ -25,7 +25,6 @@ export class PrincipalProductsComponent implements OnInit {
     this.obtenerProductos();
     this.obtenerCategorias();
     this.obtenerSubcategorias();
-    console.log("lo hizo");
   }
 
   obtenerProductos() {
@@ -60,6 +59,7 @@ export class PrincipalProductsComponent implements OnInit {
   }
 
   actualizarProductos() {
+
     Swal.fire({
       position: "center",
       icon: "success",
@@ -67,7 +67,8 @@ export class PrincipalProductsComponent implements OnInit {
       showConfirmButton: false,
       timer: 1500
     });
-    this.obtenerProductos()
+    this.products = [];
+    this.ngOnInit();
   }
 
   obtenerCategoria(categoriaId: number): String {

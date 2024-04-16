@@ -6,6 +6,9 @@ import { createDateSale } from '../../../helpers/generateDateSale';
 import { SalesService } from '../../../services/sales.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../../../services/user.service';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
+
 
 @Component({
   selector: 'app-principal-sales',
@@ -70,7 +73,7 @@ export class PrincipalSalesComponent {
         this.products = data;
       }
     );
-    this.userService.usuarioEnSesion().subscribe(
+    this.userService.usuarioEnSesion(Number(localStorage.getItem('user'))).subscribe(
       (data: any) => {
         this.userOnSesion = data[0].strName;
       }
@@ -122,13 +125,13 @@ export class PrincipalSalesComponent {
           const newSale: Sale = {
             idVenVenta: this.idVenVenta,
             idProProducto: selectedProduct.product.id,
-            decQuantity: selectedProduct.quantity, // Utilizamos la cantidad asociada con cada producto
+            decQuantity: Number(selectedProduct.quantity), // Utilizamos la cantidad asociada con cada producto
             decSubtotal: selectedProduct.product.decPrice * selectedProduct.quantity // Calculamos el subtotal multiplicando el precio por la cantidad
           };
-  
+          
           this.saleService.insertarSale(newSale).subscribe(
             response => {
-              this.ImprimirTicket(this.selectedProducts)
+              generateAndDownloadTicket(this.selectedProducts)
               this.selectedProducts = [];
               Swal.fire({
                 icon:'success',
@@ -142,6 +145,7 @@ export class PrincipalSalesComponent {
             }
           );
         });
+        generateAndDownloadTicket(this.selectedProducts)
       } else {
         Swal.fire({
           title: 'Claro que no! 😄',
@@ -184,10 +188,6 @@ export class PrincipalSalesComponent {
         total += selectedProduct.product.decPrice * selectedProduct.quantity;
     });
     return total;
-}
-
-ImprimirTicket(selectedProducts: SelectedProduct[]) {
-  console.log(selectedProducts);
 }
 
   

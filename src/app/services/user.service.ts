@@ -24,8 +24,8 @@ export class UserService {
   }
 
 
-  public usuarioEnSesion() {
-    return this.http.get<any>(`${this.API_URL}/u/${localStorage.getItem('user')}`)
+  public usuarioEnSesion(id: number) {
+    return this.http.get<any>(`${this.API_URL}/u/${id}`)
       .pipe(
         catchError(error => {
           console.error('Error al obtener datos de usuario: ', error);

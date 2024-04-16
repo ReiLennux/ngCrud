@@ -97,7 +97,6 @@ export class ActionsUserComponent implements OnInit {
           text: "El usuario ha sido actualizado",
           icon: "success"
         });
-        console.log(res)
         this.usuarioCambio.emit();
       },
       err => {

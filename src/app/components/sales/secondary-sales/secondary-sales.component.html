@@ -12,13 +12,22 @@
             de la plataforma, así como editar algún atributo o eliminar definitivamente un producto.
     </div>
 
-    <div class="flex justify-evenly items-center py-3 px-2">
-        <div>
+    <div class="flex justify-between items-center py-3 px-2">
+        <div class="flex items-center justify-center">
+            <form class="max-w-sm mr-3">
+                <select
+                    class="block w-full p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    (input)="onUserChange($event)">
+                    <option selected value="0">Todos los cajeros</option>
+                    <option *ngFor="let usuario of usuarios" value="{{usuario.id}}">{{usuario.strName}}</option>
+                </select>
+            </form>
             <form class="max-w-sm mx-auto">
                 <select
-                    class="block w-full p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option selected value="0">Todas los cajeros</option>
-                    <option>un cajero</option>
+                    class="block w-full p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    (input)="onStateChange($event)">
+                    <option selected value="0">Todos los estados</option>
+                    <option *ngFor="let estado of estados" value="{{estado.id}}">{{estado.strName}}</option>
                 </select>
             </form>
         </div>
@@ -30,9 +39,11 @@
                         d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                 </svg>
             </div>
-            <input datepicker type="text"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="seleccione una fecha">
+            
+            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="seleccione una fecha"
+                type="date" [(ngModel)]="dateSearch" (input)="onDateChange($event) ">
+
         </div>
 
         <!-- Barra de búsqueda -->
@@ -41,7 +52,7 @@
             <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
                 <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
             </div>
-            <input type="text" id="table-search"
+            <input type="text" id="table-search" [(ngModel)]="searchTerm"
                 class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Buscar algún Folio">
         </div>
@@ -69,26 +80,31 @@
                 </tr>
             </thead>
             <tbody>
-                <tr
+                <tr *ngFor="let sale of filtrarSales()"
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                     <td class="px-6 py-4">
-                        Folio-20240412-0000
+                        {{sale.strFolio}}
                     </td>
                     <td class="px-6 py-4">
-                        usuario.name
+                        {{obtenerNombreUsuario(sale.idUsuUsuario)}}
                     </td>
                     <td class="px-6 py-4">
-                        <span class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500 ">
+                        <span
+                            class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500 ">
                             <i class="fa-solid fa-calendar-day mr-1"></i>
-                            venta.fecha
-                            </span>
+                            {{sale.dtDate}}
+                        </span>
                     </td>
-                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                        venta.estado
+                    <td class="px-6 py-4">
+                        <div class="flex items-center">
+                            <div [ngClass]="{'bg-green-500': sale.idVenCatState == 1, 'bg-red-500': sale.idVenCatState == 2}"
+                                class="h-2.5 w-2.5 rounded-full" style="margin-right: 0.5rem;"></div>
+                            {{obtenerEstado(sale.idVenCatState)}}
+                        </div>
                     </td>
                     <td class="px-6 py-4 font-semibold">
-                        <app-actions-sales></app-actions-sales>
+                        <app-actions-sales [dataSale]="sale" (saleActualizada)="getSales()"></app-actions-sales>
                     </td>
                 </tr>
             </tbody>

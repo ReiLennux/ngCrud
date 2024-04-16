@@ -13,6 +13,7 @@ export interface product {
 }
 
 export interface SelectedProduct {
+    id? : number;
     product: product;
     quantity: number;
 }

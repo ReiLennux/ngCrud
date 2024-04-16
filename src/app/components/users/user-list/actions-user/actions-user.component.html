@@ -23,18 +23,18 @@
             <form class="space-y-4" action="#">
                 <div>
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Editar Nombre de Usuario</label>
-                    <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" [(ngModel)]="putUser.strName" required />
+                    <input type="email" pattern="^(?!\s*$).+" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" [(ngModel)]="putUser.strName" required />
                 </div>
                 <div>
                     <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Editar contraseña</label>
                     <div class="relative">
-                        <input type="{{showPassword ? 'text' : 'password'}}" name="password" id="password" [(ngModel)]="putUser.strPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        <input pattern="^(?!\s*$).+" type="{{showPassword ? 'text' : 'password'}}" name="password" id="password" [(ngModel)]="putUser.strPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
                     </div>
                 </div>
                 <div>
                     <label for="rPassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirmar nueva contraseña</label>
                     <div class="relative">
-                        <input type="{{showPassword ? 'text' : 'password'}}" name="password" id="rPassword" [(ngModel)]="rPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        <input  pattern="^(?!\s*$).+" type="{{showPassword ? 'text' : 'password'}}" name="password" id="rPassword" [(ngModel)]="rPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
                         <button type="button" (click)="toggleShowPassword()" class="absolute inset-y-0 right-0 flex items-center px-3 bg-gray-50 border border-l-0 border-gray-300 text-gray-600 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300 rounded-r-lg focus:outline-none">
                             <i  *ngIf="!showPassword" class="fa-solid fa-eye-slash"></i>
                             <i *ngIf="showPassword" class="fa-solid fa-eye"></i>
