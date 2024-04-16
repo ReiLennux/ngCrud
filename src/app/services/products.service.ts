@@ -31,13 +31,13 @@ export class ProductsService {
     )
   }
 
-  public editarProducto(producto: product): Observable<void> {
-    return this.http.put<void>(`${this.API_URL}/${producto.id}`, producto)
-      .pipe(
-        catchError(error => {
-          console.error('Error al editar producto: ', error);
-          return throwError('Error al editar producto');
-        })
+  public editarProducto(producto: product): void {
+    this.http.put<void>(`${this.API_URL}/${producto.id}`, producto)
+      .subscribe(
+        res => {
+          console.log(res);
+        },
+        err => console.error(err)
       );
   }
 

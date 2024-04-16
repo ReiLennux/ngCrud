@@ -73,38 +73,33 @@ export class ActionsComponent {
     this.putProducto.idCatSubcategoria = this.subcategoriaSeleccionadoId;
   }
 
-  update(){
+  async update() {
     if (!this.selectedFile) {
-      this.productsServices.editarProducto(this.putProducto).subscribe(response => {
+      try {
+        await this.productsServices.editarProducto(this.putProducto);
         this.toggleModal();
         this.productoActualizado.emit();
-      })
-
+        console.log('Producto actualizado con éxito.');
+      } catch (err) {
+        console.error('Error al editar el producto:', err);
+      }
       return;
     }
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);
     formData.append('upload_preset', 'mypreset');
-    
-    this.http.post<any>('https://api.cloudinary.com/v1_1/dnx8n0vfe/image/upload', formData).subscribe(
-      (res) => {
-        this.putProducto.strImage = res.url;
 
-        of(this.productsServices.editarProducto(this.putProducto)).subscribe(
-          () => {
-            console.log('Producto actualizado con éxito.');
-            this.productoActualizado.emit();
-            this.toggleModal();
-          },
-          (err) => {
-            console.error('Error al editar el producto:', err);
-          }
-        );
-      },
-      (err) => {
-        console.error('Error al cargar la imagen a Cloudinary:', err);
-      }
-    );
+    try {
+      const res = await this.http.post<any>('https://api.cloudinary.com/v1_1/dnx8n0vfe/image/upload', formData).toPromise();
+      this.putProducto.strImage = res.url;
+      await of(this.productsServices.editarProducto(this.putProducto)).toPromise();
+      console.log(this.putProducto)
+      this.productoActualizado.emit();
+      this.toggleModal();
+      console.log('Producto actualizado con éxito.');
+    } catch (err) {
+      console.error('Error al cargar la imagen a Cloudinary:', err);
+    }
   }
 }

@@ -124,7 +124,6 @@ async updateSale() {
           decQuantity: Number(selectedProduct.quantity), 
           decSubtotal: selectedProduct.product.decPrice * selectedProduct.quantity
         };
-        console.log(newSale)
         this.saleService.actualizarSale(newSale).subscribe(
           response => {
             console.log("se logro")

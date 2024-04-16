@@ -6,7 +6,6 @@ import { createDateSale } from '../../../helpers/generateDateSale';
 import { SalesService } from '../../../services/sales.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../../../services/user.service';
-import * as pdfMake from 'pdfmake/build/pdfmake';
 import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
 
 
@@ -86,7 +85,11 @@ export class PrincipalSalesComponent {
         (p) => p.product.id === product.id
       );
       if (isProductExists) {
-        console.log("El producto ya está en la lista.");
+        Swal.fire({
+          icon: 'info',
+          title: 'el producto ya esta en la venta',
+          showConfirmButton: false
+        })
       } else {
         this.selectedProducts.push({ product: product, quantity: 1 }); // Por defecto, la cantidad es 1
       }

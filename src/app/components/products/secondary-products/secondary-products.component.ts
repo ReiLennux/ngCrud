@@ -3,6 +3,7 @@ import { product } from '../../../models/product';
 import { ProductsService } from '../../../services/products.service';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-secondary-products',
@@ -33,7 +34,7 @@ export class SecondaryProductsComponent {
     private http: HttpClient,
   ){}
 
-  submitForm(){
+  async submitForm() {
     if (!this.selectedFile) {
       this.productsService.agregarProducto(this.newProducto);
       console.log('Producto creado con éxito.');
@@ -43,27 +44,26 @@ export class SecondaryProductsComponent {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
     formData.append('upload_preset', 'mypreset');
-    
-    this.http.post<any>('https://api.cloudinary.com/v1_1/dnx8n0vfe/image/upload', formData).subscribe(
-      (res) => {
-        this.newProducto.strImage = res.url;
 
-        of(this.productsService.agregarProducto(this.newProducto)).subscribe(
-          () => {
-            console.log('Producto creado con éxito.');
-            console.log(this.newProducto);
-            // Resetear el formulario después de la creación exitosa
-            this.resetForm();
-          },
-          (err) => {
-            console.error('Error al crear el producto:', err);
-          }
-        );
-      },
-      (err) => {
-        console.error('Error al cargar la imagen a Cloudinary:', err);
-      }
-    );
+    try {
+      const res = await this.http.post<any>('https://api.cloudinary.com/v1_1/dnx8n0vfe/image/upload', formData).toPromise();
+      this.newProducto.strImage = res.url;
+      
+      const response = await of(this.productsService.agregarProducto(this.newProducto)).toPromise();
+      
+      console.log(response);
+      console.log(this.newProducto);
+      
+      Swal.fire({
+        icon: "success",
+        title: "Producto creado Creado",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      
+    } catch (err) {
+      console.error('Error:', err);
+    }
   }
 
   onFileSelected(event: any) {
@@ -87,10 +87,12 @@ export class SecondaryProductsComponent {
     };
     this.selectedFile = undefined;
   }
+  
   onCategoriaSeleccionada(categoria: any) {
     this.categoriaSeleccionadoId = categoria !== null ? categoria : 0;
     this.newProducto.idCatCategoria = parseInt(this.categoriaSeleccionadoId.toString())
   }
+  
   onsubcategoriaSeleccionada(subcategoria: any) {
     this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria : 0;
     this.newProducto.idCatSubcategoria = parseInt(this.subcategoriaSeleccionadoId.toString())
