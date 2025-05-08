@@ -8,7 +8,7 @@ import { UserFormComponent } from './components/users/user-form/user-form.compon
 import { StateFilterComponent } from './components/users/user-list/state-filter/state-filter.component';
 import { TypeFilterComponent } from './components/users/user-list/type-filter/type-filter.component';
 import { AlertComponent } from './components/users/user-form/alert/alert.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { Alert2Component } from './components/users/user-form/alert2/alert2.component';
@@ -24,38 +24,32 @@ import { SecondarySalesComponent } from './components/sales/secondary-sales/seco
 import { ActionsUserComponent } from './components/users/user-list/actions-user/actions-user.component';
 import { ActionsSalesComponent } from './components/sales/secondary-sales/actions-sales/actions-sales.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    NavigationComponent,
-    UserListComponent,
-    UserFormComponent,
-    StateFilterComponent,
-    TypeFilterComponent,
-    AlertComponent,
-    LoginComponent,
-    Alert2Component,
-    HomeComponent,
-    PaginatorComponent,
-    PrincipalProductsComponent,
-    SecondaryProductsComponent,
-    ActionsComponent,
-    CatFilterComponent,
-    SubcatFilterComponent,
-    PrincipalSalesComponent,
-    SecondarySalesComponent,
-    ActionsUserComponent,
-    ActionsSalesComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-  ],
-  providers: [
-    provideClientHydration()
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        NavigationComponent,
+        UserListComponent,
+        UserFormComponent,
+        StateFilterComponent,
+        TypeFilterComponent,
+        AlertComponent,
+        LoginComponent,
+        Alert2Component,
+        HomeComponent,
+        PaginatorComponent,
+        PrincipalProductsComponent,
+        SecondaryProductsComponent,
+        ActionsComponent,
+        CatFilterComponent,
+        SubcatFilterComponent,
+        PrincipalSalesComponent,
+        SecondarySalesComponent,
+        ActionsUserComponent,
+        ActionsSalesComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        FormsModule], providers: [
+        provideClientHydration(),
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
