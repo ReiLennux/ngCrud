@@ -3,9 +3,10 @@ import { ProductsService } from '../../../../services/products.service';
 import { product } from '../../../../models/product';
 
 @Component({
-  selector: 'app-cat-filter',
-  templateUrl: './cat-filter.component.html',
-  styleUrls: ['./cat-filter.component.css']
+    selector: 'app-cat-filter',
+    templateUrl: './cat-filter.component.html',
+    styleUrls: ['./cat-filter.component.css'],
+    standalone: false
 })
 export class CatFilterComponent implements OnInit {
   categorias: any[] = [];

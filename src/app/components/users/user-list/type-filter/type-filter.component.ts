@@ -3,9 +3,10 @@ import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/user';
 
 @Component({
-  selector: 'app-type-filter',
-  templateUrl: './type-filter.component.html',
-  styleUrls: ['./type-filter.component.css']
+    selector: 'app-type-filter',
+    templateUrl: './type-filter.component.html',
+    styleUrls: ['./type-filter.component.css'],
+    standalone: false
 })
 export class TypeFilterComponent implements OnInit {
   tipos: {id: number, strName: string }[] = [];

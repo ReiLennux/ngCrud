@@ -6,9 +6,10 @@ import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 
 @Component({
-  selector: 'app-actions',
-  templateUrl: './actions.component.html',
-  styleUrls: ['./actions.component.css']
+    selector: 'app-actions',
+    templateUrl: './actions.component.html',
+    styleUrls: ['./actions.component.css'],
+    standalone: false
 })
 export class ActionsComponent {
   @Input() producto!: product;

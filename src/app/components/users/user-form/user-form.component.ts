@@ -4,9 +4,10 @@ import { UserService } from '../../../services/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-user-form',
-  templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.css']
+    selector: 'app-user-form',
+    templateUrl: './user-form.component.html',
+    styleUrls: ['./user-form.component.css'],
+    standalone: false
 })
 export class UserFormComponent {
   tipos: { id: Number, strName: string }[] = [];

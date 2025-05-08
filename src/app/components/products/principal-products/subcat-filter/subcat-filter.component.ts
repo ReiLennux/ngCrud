@@ -3,9 +3,10 @@ import { ProductsService } from '../../../../services/products.service';
 import { product } from '../../../../models/product';
 
 @Component({
-  selector: 'app-subcat-filter',
-  templateUrl: './subcat-filter.component.html',
-  styleUrls: ['./subcat-filter.component.css']
+    selector: 'app-subcat-filter',
+    templateUrl: './subcat-filter.component.html',
+    styleUrls: ['./subcat-filter.component.css'],
+    standalone: false
 })
 export class SubcatFilterComponent implements OnChanges {
   subcategorias: any[] = [];

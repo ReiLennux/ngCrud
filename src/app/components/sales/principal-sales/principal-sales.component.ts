@@ -10,9 +10,11 @@ import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
 
 
 @Component({
-  selector: 'app-principal-sales',
-  templateUrl: './principal-sales.component.html',
-  styleUrls: ['./principal-sales.component.css'] // Corregido styleUrl a styleUrls
+    selector: 'app-principal-sales',
+    templateUrl: './principal-sales.component.html',
+    styleUrls: ['./principal-sales.component.css'] // Corregido styleUrl a styleUrls
+    ,
+    standalone: false
 })
 export class PrincipalSalesComponent {
   idVenVenta: number = 0;

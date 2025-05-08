@@ -6,9 +6,10 @@ import { SelectedProduct, product } from '../../../../models/product';
 import { ProductsService } from '../../../../services/products.service';
 
 @Component({
-  selector: 'app-actions-sales',
-  templateUrl: './actions-sales.component.html',
-  styleUrl: './actions-sales.component.css'
+    selector: 'app-actions-sales',
+    templateUrl: './actions-sales.component.html',
+    styleUrl: './actions-sales.component.css',
+    standalone: false
 })
 export class ActionsSalesComponent implements OnInit {
   @Input() dataSale!: DateSale;

@@ -3,9 +3,10 @@ import Swal from 'sweetalert2';
 import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/user';
 @Component({
-  selector: 'app-actions-user',
-  templateUrl: './actions-user.component.html',
-  styleUrl: './actions-user.component.css'
+    selector: 'app-actions-user',
+    templateUrl: './actions-user.component.html',
+    styleUrl: './actions-user.component.css',
+    standalone: false
 })
 export class ActionsUserComponent implements OnInit {
   @Input() user!: User;

@@ -5,9 +5,10 @@ import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user';
 import { formatoFecha } from '../../../helpers/generateDateSale';
 @Component({
-  selector: 'app-secondary-sales',
-  templateUrl: './secondary-sales.component.html',
-  styleUrl: './secondary-sales.component.css'
+    selector: 'app-secondary-sales',
+    templateUrl: './secondary-sales.component.html',
+    styleUrl: './secondary-sales.component.css',
+    standalone: false
 })
 export class SecondarySalesComponent implements OnInit {
   sales: DateSale[] = [];

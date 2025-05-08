@@ -4,9 +4,10 @@ import { ProductsService } from '../../../services/products.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-principal-products',
-  templateUrl: './principal-products.component.html',
-  styleUrls: ['./principal-products.component.css']
+    selector: 'app-principal-products',
+    templateUrl: './principal-products.component.html',
+    styleUrls: ['./principal-products.component.css'],
+    standalone: false
 })
 export class PrincipalProductsComponent implements OnInit {
   products: product[] = [];

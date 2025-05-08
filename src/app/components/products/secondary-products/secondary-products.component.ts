@@ -6,9 +6,10 @@ import { of } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-secondary-products',
-  templateUrl: './secondary-products.component.html',
-  styleUrls: ['./secondary-products.component.css']
+    selector: 'app-secondary-products',
+    templateUrl: './secondary-products.component.html',
+    styleUrls: ['./secondary-products.component.css'],
+    standalone: false
 })
 export class SecondaryProductsComponent {
   newProducto: product = {
