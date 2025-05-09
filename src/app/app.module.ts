@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { importProvidersFrom, NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,33 +23,50 @@ import { PrincipalSalesComponent } from './components/sales/principal-sales/prin
 import { SecondarySalesComponent } from './components/sales/secondary-sales/secondary-sales.component';
 import { ActionsUserComponent } from './components/users/user-list/actions-user/actions-user.component';
 import { ActionsSalesComponent } from './components/sales/secondary-sales/actions-sales/actions-sales.component';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { environment } from '../environments/environments';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
-@NgModule({ declarations: [
-        AppComponent,
-        NavigationComponent,
-        UserListComponent,
-        UserFormComponent,
-        StateFilterComponent,
-        TypeFilterComponent,
-        AlertComponent,
-        LoginComponent,
-        Alert2Component,
-        HomeComponent,
-        PaginatorComponent,
-        PrincipalProductsComponent,
-        SecondaryProductsComponent,
-        ActionsComponent,
-        CatFilterComponent,
-        SubcatFilterComponent,
-        PrincipalSalesComponent,
-        SecondarySalesComponent,
-        ActionsUserComponent,
-        ActionsSalesComponent,
+export function initializeFirebaseApp() {
+    return initializeApp(environment.firebase);
+  }
+
+  @NgModule({
+    declarations: [
+      AppComponent,
+      NavigationComponent,
+      UserListComponent,
+      UserFormComponent,
+      StateFilterComponent,
+      TypeFilterComponent,
+      AlertComponent,
+      LoginComponent,
+      Alert2Component,
+      HomeComponent,
+      PaginatorComponent,
+      PrincipalProductsComponent,
+      SecondaryProductsComponent,
+      ActionsComponent,
+      CatFilterComponent,
+      SubcatFilterComponent,
+      PrincipalSalesComponent,
+      SecondarySalesComponent,
+      ActionsUserComponent,
+      ActionsSalesComponent
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        AppRoutingModule,
-        FormsModule], providers: [
-        provideClientHydration(),
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
-export class AppModule { }
+    imports: [
+      BrowserModule,
+      AppRoutingModule,
+      FormsModule
+    ],
+    providers: [
+      provideClientHydration(),
+      provideHttpClient(withInterceptorsFromDi()),
+      provideFirebaseApp(() => initializeApp(environment.firebase)),
+      provideAuth(() => getAuth()),
+      provideFirestore(() => getFirestore())
+    ],
+    bootstrap: [AppComponent]
+  })
+  export class AppModule { }

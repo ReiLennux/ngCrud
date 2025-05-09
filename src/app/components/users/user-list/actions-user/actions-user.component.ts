@@ -51,7 +51,7 @@ export class ActionsUserComponent implements OnInit {
       confirmButtonText: "Continuar"
     }).then((result: { isConfirmed: any; }) => {
     if (result.isConfirmed) {
-    this.userService.eliminarUsuario(id).subscribe(
+    this.userService.eliminarUsuario(id.toString()).subscribe(
       res => {
         Swal.fire({
           title: "Eliminado",

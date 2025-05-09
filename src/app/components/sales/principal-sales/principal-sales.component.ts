@@ -74,7 +74,7 @@ export class PrincipalSalesComponent {
         this.products = data;
       }
     );
-    this.userService.usuarioEnSesion(Number(localStorage.getItem('user'))).subscribe(
+    this.userService.usuarioEnSesion(localStorage.getItem('user')!).subscribe(
       (data: any) => {
         this.userOnSesion = data[0].strName;
       }

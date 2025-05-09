@@ -11,8 +11,8 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent {
   userData = {
-    strName: '',
-    strPassword: ''
+    email: '',
+    password: ''
   };
 
   // Variable para controlar el estado de carga del inicio de sesión
@@ -26,7 +26,7 @@ export class LoginComponent {
 
     this.auth.login(this.userData).subscribe(
       res => {
-        this.userData = {strName: '', strPassword: ''};
+        this.userData = {email: '', password: ''};
         this.loading = false;
         this.router.navigate(['/home']);
       },

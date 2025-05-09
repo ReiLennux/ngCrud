@@ -1,37 +1,33 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, from, throwError } from 'rxjs';
+import {Auth, signInWithEmailAndPassword, UserCredential} from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { User } from '../models/user';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  API_URI= 'https://ng-api-crud.onrender.com/auth';
-  
+
   constructor(
-    private http: HttpClient, 
+    private auth: Auth,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
-  public login(user: any): Observable<void> {
-    return this.http.post<any>(`${this.API_URI}/login`, user).pipe(
-      map(response => {
-        const token = response.token;
-        const userId = response.userId
+  public login(user: any): Observable<UserCredential> {
+    return from(signInWithEmailAndPassword(this.auth, user.email, user.password)).pipe(
+      tap(userCredential => {
         if (isPlatformBrowser(this.platformId)) {
-          localStorage.setItem('token', token);
-          localStorage.setItem('user', userId);
+          localStorage.setItem('token', userCredential.user.uid); // Using UID as a simple token
+          localStorage.setItem('user', userCredential.user.email!);
         }
-        if (this.isLoggedIn()){
-          this.router.navigateByUrl('/home');
-        }
+        // Redirect or handle successful login as needed
+        this.router.navigateByUrl('/home');
       }),
       catchError(error => {
-        console.error('Error al iniciar sesión: ', error);
+        console.error('Error during Firebase login:', error);
         return throwError('Error al iniciar sesión');
       })
     );
