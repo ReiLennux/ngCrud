@@ -1,7 +1,7 @@
 export interface User {
-  id: number;
-  strName: String;
+  id: string;
+  strName: string;
   idUsuCatEstadoFK:  number;
   idUsuCatTipoUsuario: number;
-  strPassword?: String;
+  strPassword?: string;
   } 

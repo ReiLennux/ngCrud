@@ -6,7 +6,7 @@ export function createDateSale(): DateSale {
     const fechaFormateada: string = fecha.toISOString().split('T')[0]; // Formatea la fecha en 'YYYY-MM-DD'
     const newDateSale: DateSale = {
         id: 0, // Asumiendo que 'idds' es un número, generamos un número aleatorio entre 1 y 1000.
-        idUsuUsuario: Number(localStorage.getItem('user')),
+        idUsuUsuario: localStorage.getItem('user')!,
         strFolio: generarCadena(),
         dtDate: fechaFormateada,
         idVenCatState: 1

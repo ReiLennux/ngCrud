@@ -15,14 +15,14 @@ export class SecondarySalesComponent implements OnInit {
   estados: { strName: string; id: number; }[] = [];
   usuarios: User[] = [];
   dateSearch: string = "";
-  usuarioSeleccionado: number = 0;
+  usuarioSeleccionado: string = "";
   searchTerm: string = "";
   estadoSeleccionado: number = 0;
   constructor(private saleService: SalesService, private userService: UserService) { }
 
   filtrarSales(): DateSale[] {
     return this.sales.filter(sale =>
-      (this.usuarioSeleccionado == 0 || sale.idUsuUsuario == this.usuarioSeleccionado) &&
+      (this.usuarioSeleccionado == '' || sale.idUsuUsuario == this.usuarioSeleccionado) &&
       (this.dateSearch == "" || sale.dtDate === this.dateSearch) &&
       (this.estadoSeleccionado == 0 || sale.idVenCatState == this.estadoSeleccionado) &&
       (this.searchTerm == '' || sale.strFolio.toLowerCase().includes(this.searchTerm.toLowerCase()))
@@ -70,7 +70,7 @@ export class SecondarySalesComponent implements OnInit {
     return estado ? estado.strName : '';
   }
 
-  obtenerNombreUsuario(id: number): String {
+  obtenerNombreUsuario(id: string): String {
     const usuario = this.usuarios.find((usuario) => usuario.id === id);
     return usuario ? usuario.strName : '';
   }

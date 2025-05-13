@@ -1,8 +1,8 @@
 export interface DateSale {
     id: number;
-    idUsuUsuario: number;
-    strFolio:  String;
-    dtDate: String;
+    idUsuUsuario: string;
+    strFolio:  string;
+    dtDate: string;
     idVenCatState: number;
 } 
 

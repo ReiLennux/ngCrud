@@ -16,14 +16,14 @@ export class ActionsUserComponent implements OnInit {
   estados : {id: Number, strName: string}[] = []
   tipos: {id: Number, strName: string}[] = []
   putUser: User = {
-    id: 0,
+    id: '',
     strName: "",
     idUsuCatEstadoFK: 0,
     idUsuCatTipoUsuario: 0,
     strPassword: "",
   };
   rPassword: string =""
-  userOnSesion: Number  = Number(localStorage.getItem('user'))
+  userOnSesion: string = localStorage.getItem('user')!
 
 
   constructor(private userService: UserService) {}
@@ -37,7 +37,7 @@ export class ActionsUserComponent implements OnInit {
     this.putUser = {... this.user}
   }
 
-  deleteButton(id: Number) {
+  deleteButton(id: String) {
     Swal.fire({
       title: "¿Está seguro?",
       text: "Se eliminará este producto y su información.",

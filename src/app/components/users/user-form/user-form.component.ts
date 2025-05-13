@@ -1,63 +1,86 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../../../models/user';
 import { UserService } from '../../../services/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
-    selector: 'app-user-form',
-    templateUrl: './user-form.component.html',
-    styleUrls: ['./user-form.component.css'],
-    standalone: false
+  selector: 'app-user-form',
+  standalone: false,
+  templateUrl: './user-form.component.html',
+  styleUrls: ['./user-form.component.css']
 })
-export class UserFormComponent {
-  tipos: { id: Number, strName: string }[] = [];
-  user: User = {
-    strName: '', strPassword: '', idUsuCatTipoUsuario: 0,
-    id: 0,
-    idUsuCatEstadoFK: 0
-  };
+export class UserFormComponent implements OnInit {
+  tipos: Array<{ id: number, strName: string }> = [];
 
+  user: User = this.getEmptyUser();
   rPassword: string = "";
   comparePassword: boolean = true;
-  
+
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.tipos().subscribe(
-      (data: any) => {
-        this.tipos = data;
-      }
-    );
+    this.loadTipos();
   }
 
-  checkPasswordMatch() {
+  private getEmptyUser(): User {
+    return {
+      strName: '',
+      strPassword: '',
+      idUsuCatTipoUsuario: 0,
+      id: '',
+      idUsuCatEstadoFK: 0
+    };
+  }
+
+  private loadTipos(): void {
+    this.userService.tipos().subscribe({
+      next: (data: Array<{ id: number, strName: string }>) => this.tipos = data,
+      error: err => console.error('Error cargando tipos de usuario', err)
+    });
+  }
+
+  checkPasswordMatch(): void {
     this.comparePassword = this.user.strPassword === this.rPassword;
   }
-  
-  submitForm(form: any) {
+
+  submitForm(form: any): void {
+    this.checkPasswordMatch();
+
     if (form.valid && this.comparePassword) {
-      this.userService.crearUsuario(form.value).subscribe(
-        res => {
+      const newUser: User = {
+        ...form.value,
+        idUsuCatEstadoFK: 1,
+        idUsuCatTipoUsuario: Number(form.value.idUsuCatTipoUsuario)
+      };
+
+      this.userService.crearUsuario(newUser).subscribe({
+        next: () => {
           Swal.fire({
-            icon: "success",
-            title: "Usuario Creado",
+            icon: 'success',
+            title: 'Usuario creado',
             showConfirmButton: false,
             timer: 1500
           });
-          this.user = {strName: '', strPassword: '', idUsuCatTipoUsuario: 0, id: 0, idUsuCatEstadoFK: 0};
+          this.resetForm();
         },
-        err => {
+        error: err => {
           Swal.fire({
-            icon: "error",
-            title: "No se pudo crear el usuario, por favor intente nuevamente en un momento",
-            showConfirmButton: false,
-            timer: 1500
+            icon: 'error',
+            title: 'Error al crear el usuario',
+            text: 'Por favor, intente nuevamente más tarde',
+            showConfirmButton: true
           });
-          console.error(err);
+          console.error('Error creando usuario', err);
         }
-      );
+      });
     } else {
-      console.log('Formulario no válido o las contraseñas no coinciden');
+      console.warn('Formulario no válido o contraseñas no coinciden');
     }
+  }
+
+  private resetForm(): void {
+    this.user = this.getEmptyUser();
+    this.rPassword = '';
+    this.comparePassword = true;
   }
 }

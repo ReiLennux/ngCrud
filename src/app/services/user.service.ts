@@ -1,15 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, from, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Firestore, collection, collectionData, doc, getDoc, addDoc, deleteDoc, updateDoc, query, where } from '@angular/fire/firestore';
-import { getDocs } from 'firebase/firestore';
+import { getDocs, setDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private usersCollection = collection(this.firestore, 'users');
+  private auth: Auth = inject(Auth); // o usa el constructor si prefieres
+
 
   constructor(private firestore: Firestore) {}
 
@@ -79,9 +83,22 @@ export class UserService {
 
   // Función para crear un nuevo usuario
   public crearUsuario(user: User): Observable<any> {
-    return from(addDoc(this.usersCollection, user)).pipe(
+    return from(
+      createUserWithEmailAndPassword(this.auth, user.strName, user.strPassword!)
+        .then(cred => {
+          const newUser: User = {
+            id: cred.user.uid,
+            strName: user.strName,
+            idUsuCatEstadoFK: 1,
+            idUsuCatTipoUsuario: user.idUsuCatTipoUsuario
+          };
+
+          const userDocRef = doc(this.firestore, `users/${cred.user.uid}`);
+          return setDoc(userDocRef, newUser);
+        })
+    ).pipe(
       catchError(error => {
-        console.error('Error al crear usuario: ', error);
+        console.error('Error al crear usuario:', error);
         return throwError(() => new Error('Error al crear usuario'));
       })
     );
@@ -89,11 +106,11 @@ export class UserService {
 
   // Función de ejemplo para obtener tipos de usuario
   public tipos(): Observable<any> {
-    return of([{ id: 1, strName: 'Admin' }, { id: 2, strName: 'User' }]);
+    return of([{ id: 1, strName: 'Administrador' }, { id: 2, strName: 'Cajero' }]);
   }
 
   // Función de ejemplo para obtener estados de usuario
   public estados(): Observable<any> {
-    return of([{ id: 1, strName: 'Active' }, { id: 2, strName: 'Inactive' }]);
+    return of([{ id: 1, strName: 'Activo' }, { id: 2, strName: 'Inactivo' }]);
   }
 }
