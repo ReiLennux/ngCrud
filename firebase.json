@@ -1,7 +1,6 @@
 {
   "hosting": {
-    "site": "ng-crud-343",
-    "public": "dist/v1.11/browser",
+    "public": "dist/v1.11",
     "ignore": [
       "firebase.json",
       "**/.*",
