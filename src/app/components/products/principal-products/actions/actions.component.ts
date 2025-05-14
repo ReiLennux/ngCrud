@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ProductsService } from '../../../../services/products.service';
 import { product } from '../../../../models/product';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
+import { ProductsService } from '../../../../services/products/products.service';
 
 @Component({
     selector: 'app-actions',
@@ -16,8 +16,8 @@ export class ActionsComponent {
   @Output() productoActualizado = new EventEmitter<void>();
   showModal: boolean = false;
   selectedFile: File | undefined;
-  categoriaSeleccionadoId: number = 0;
-  subcategoriaSeleccionadoId: number = 0;
+  categoriaSeleccionadoId: string = "";
+  subcategoriaSeleccionadoId: string = "";
   putProducto: product = { ...this.producto }; // Copia independiente del producto
 
   constructor(

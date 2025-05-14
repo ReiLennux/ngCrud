@@ -3,7 +3,7 @@ import { SalesService } from '../../../../services/sales.service';
 import { DateSale, Sale } from '../../../../models/sale';
 import Swal from 'sweetalert2';
 import { SelectedProduct, product } from '../../../../models/product';
-import { ProductsService } from '../../../../services/products.service';
+import { ProductsService } from '../../../../services/products/products.service';
 
 @Component({
     selector: 'app-actions-sales',

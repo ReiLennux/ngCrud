@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, output } from '@angular/core';
-import { ProductsService } from '../../../../services/products.service';
 import { product } from '../../../../models/product';
+import { ProductsService } from '../../../../services/products/products.service';
+import { CategoriesService } from '../../../../services/products/catalog/categories.service';
 
 @Component({
     selector: 'app-subcat-filter',
@@ -10,21 +11,24 @@ import { product } from '../../../../models/product';
 })
 export class SubcatFilterComponent implements OnChanges {
   subcategorias: any[] = [];
-  @Input() categoriaSeleccionadaId: number = 0;
+  @Input() categoriaSeleccionadaId: string = "";
   @Input() product: product | any ;
   @Output() subcategoriaSeleccionada = new EventEmitter<any>();
 
 
 
-  constructor(private productsService: ProductsService) { }
+  constructor(
+    private productsService: ProductsService,
+    private categorisService: CategoriesService
+  ) { }
 
   ngOnChanges(): void {
     this.filtrarSubcategorias();
   }
 
   filtrarSubcategorias() {
-    if (this.categoriaSeleccionadaId != 0) {
-      this.productsService.getsubcategorias().subscribe(
+    if (this.categoriaSeleccionadaId != "") {
+      this.categorisService.obtenerSubcategorias(this.categoriaSeleccionadaId).subscribe(
         (data: any[]) => {
           this.subcategorias = data.filter(subcategoria => subcategoria.idCatCategorias == this.categoriaSeleccionadaId);
           if(this.product){

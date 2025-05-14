@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ProductsService } from '../../../services/products.service';
 import { SelectedProduct, product } from '../../../models/product';
 import { DateSale, Sale } from '../../../models/sale';
 import { createDateSale } from '../../../helpers/generateDateSale';
@@ -7,6 +6,7 @@ import { SalesService } from '../../../services/sales.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../../../services/user.service';
 import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
+import { ProductsService } from '../../../services/products/products.service';
 
 
 @Component({
@@ -26,8 +26,8 @@ export class PrincipalSalesComponent {
   products: product[] = [];
   selectedProducts: SelectedProduct[] = [];
 
-  categoriaSeleccionadoId: number = 0;
-  subcategoriaSeleccionadoId: number = 0;
+  categoriaSeleccionadoId: string = "";
+  subcategoriaSeleccionadoId: string = "";
 
   userOnSesion: String = ''
 
@@ -116,8 +116,8 @@ export class PrincipalSalesComponent {
 
   filtrarProductos(): product[] {
     return this.products.filter(producto =>
-      ((this.categoriaSeleccionadoId == 0 || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
-        (this.subcategoriaSeleccionadoId == 0 || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
+      ((this.categoriaSeleccionadoId == "" || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
+        (this.subcategoriaSeleccionadoId == "" || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
       (this.searchTerm === '' || producto.strName.toLowerCase().includes(this.searchTerm.toLowerCase()))
     );
   }

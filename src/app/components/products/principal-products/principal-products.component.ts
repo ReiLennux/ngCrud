@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { product } from '../../../models/product';
-import { ProductsService } from '../../../services/products.service';
 import Swal from 'sweetalert2';
+import { ProductsService } from '../../../services/products/products.service';
+import { Categoria, CategoriesService, Subcategoria } from '../../../services/products/catalog/categories.service';
 
 @Component({
     selector: 'app-principal-products',
@@ -11,14 +12,17 @@ import Swal from 'sweetalert2';
 })
 export class PrincipalProductsComponent implements OnInit {
   products: product[] = [];
-  categorias: { id: Number, strName: String, strDescription: String }[] = [];
-  subcategorias: any[] = [];
+  categorias: Categoria[] = [];
+  subcategorias: Subcategoria[] = [];
   productoSeleccionadoId!: string;
-  categoriaSeleccionadoId: number = 0;
-  subcategoriaSeleccionadoId: number = 0;
+  categoriaSeleccionadoId: string = "";
+  subcategoriaSeleccionadoId: string = "";
   searchTerm: string = '';
 
-  constructor(private productsService: ProductsService) { }
+  constructor(
+    private productsService: ProductsService,
+    private cateogoriesService: CategoriesService
+  ) { }
 
   ngOnInit(): void {
     this.obtenerProductos();
@@ -36,8 +40,8 @@ export class PrincipalProductsComponent implements OnInit {
   }
 
   obtenerCategorias() {
-    this.productsService.getcategorias().subscribe(
-      (data: []) => {
+    this.cateogoriesService.obtenerCategorias().subscribe(
+      (data: any[]) => {
         this.categorias = data;
       },
       err => console.error(err)
@@ -45,8 +49,8 @@ export class PrincipalProductsComponent implements OnInit {
   }
 
   obtenerSubcategorias() {
-    this.productsService.getsubcategorias().subscribe(
-      (data: []) => {
+    this.cateogoriesService.obtenerSubcategorias(this.categoriaSeleccionadoId).subscribe(
+      (data: any[]) => {
         this.subcategorias = data;
       },
       err => console.error(err)
@@ -70,12 +74,12 @@ export class PrincipalProductsComponent implements OnInit {
     this.ngOnInit();
   }
 
-  obtenerCategoria(categoriaId: number): String {
+  obtenerCategoria(categoriaId: string | undefined): String {
     const categoria = this.categorias.find(cat => cat.id === categoriaId);
     return categoria ? categoria.strName : '';
   }
 
-  obtenerSubcategoria(subcategoriaId: number): String {
+  obtenerSubcategoria(subcategoriaId: string | undefined): String {
     const subcategoria = this.subcategorias.find(subcat => subcat.id === subcategoriaId);
     return subcategoria ? subcategoria.strName : '';
   }
@@ -83,8 +87,8 @@ export class PrincipalProductsComponent implements OnInit {
   filtrarProductos(): product[] {
     return this.products
       .filter(producto =>
-        ((this.categoriaSeleccionadoId == 0 || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
-          (this.subcategoriaSeleccionadoId == 0 || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
+        ((this.categoriaSeleccionadoId == "" || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
+          (this.subcategoriaSeleccionadoId == "" || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
         (this.searchTerm === '' || producto.strName.toLowerCase().includes(this.searchTerm.toLowerCase()))
       )
   }

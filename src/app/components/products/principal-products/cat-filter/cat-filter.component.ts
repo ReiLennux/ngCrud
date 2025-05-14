@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { ProductsService } from '../../../../services/products.service';
 import { product } from '../../../../models/product';
+import { ProductsService } from '../../../../services/products/products.service';
+import { CategoriesService } from '../../../../services/products/catalog/categories.service';
 
 @Component({
     selector: 'app-cat-filter',
@@ -14,11 +15,14 @@ export class CatFilterComponent implements OnInit {
   @Input() product: product | any ;
   selectedCategoryId: any;
 
-  constructor(private productsService: ProductsService) { }
+  constructor(
+    private productsService: ProductsService,
+    private categorisService: CategoriesService
+  ) { }
 
   ngOnInit(): void {
-    this.productsService.getcategorias().subscribe(
-      (data: []) => {
+    this.categorisService.obtenerCategorias().subscribe(
+      (data: any[]) => {
         this.categorias = data;
         
         // Si el producto está definido y tiene una categoría, establece el valor seleccionado

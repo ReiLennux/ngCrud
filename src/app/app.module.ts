@@ -27,6 +27,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environments';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { AddCategoriesComponent } from './components/products/catalogs/add-categories/add-categories.component';
 
 export function initializeFirebaseApp() {
     return initializeApp(environment.firebase);
@@ -53,7 +54,8 @@ export function initializeFirebaseApp() {
       PrincipalSalesComponent,
       SecondarySalesComponent,
       ActionsUserComponent,
-      ActionsSalesComponent
+      ActionsSalesComponent,
+      AddCategoriesComponent
     ],
     imports: [
       BrowserModule,

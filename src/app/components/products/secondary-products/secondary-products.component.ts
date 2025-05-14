@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { product } from '../../../models/product';
-import { ProductsService } from '../../../services/products.service';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ProductsService } from '../../../services/products/products.service';
 
 @Component({
     selector: 'app-secondary-products',
@@ -16,8 +16,8 @@ export class SecondaryProductsComponent {
     id: 0,
     strName: '',
     strDescription: '',
-    idCatSubcategoria: 0,
-    idCatCategoria: 0,
+    idCatSubcategoria: "",
+    idCatCategoria: "",
     decMinimum: 0,
     decMaximum: 0,
     decStock: 0,
@@ -27,8 +27,8 @@ export class SecondaryProductsComponent {
   };
   selectedFile: File | undefined;
 
-  categoriaSeleccionadoId: number = 0;
-  subcategoriaSeleccionadoId: number = 0;
+  categoriaSeleccionadoId: string = "";
+  subcategoriaSeleccionadoId: string = "";
 
   constructor(
     private productsService: ProductsService,
@@ -72,13 +72,12 @@ export class SecondaryProductsComponent {
   }
 
   resetForm() {
-    // Resetear el objeto del nuevo producto y el archivo seleccionado
     this.newProducto = {
       id: 0,
       strName: '',
       strDescription: '',
-      idCatSubcategoria: 0,
-      idCatCategoria: 0,
+      idCatSubcategoria: "",
+      idCatCategoria: "",
       decMinimum: 0,
       decMaximum: 0,
       decStock: 0,
@@ -91,11 +90,11 @@ export class SecondaryProductsComponent {
   
   onCategoriaSeleccionada(categoria: any) {
     this.categoriaSeleccionadoId = categoria !== null ? categoria : 0;
-    this.newProducto.idCatCategoria = parseInt(this.categoriaSeleccionadoId.toString())
+    this.newProducto.idCatCategoria = this.categoriaSeleccionadoId.toString()
   }
   
   onsubcategoriaSeleccionada(subcategoria: any) {
     this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria : 0;
-    this.newProducto.idCatSubcategoria = parseInt(this.subcategoriaSeleccionadoId.toString())
+    this.newProducto.idCatSubcategoria = this.subcategoriaSeleccionadoId.toString()
   }
 }

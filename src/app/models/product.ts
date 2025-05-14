@@ -2,8 +2,8 @@ export interface product {
     id: number;
     strName: string;
     strDescription: string; //--
-    idCatSubcategoria: number;
-    idCatCategoria: number;
+    idCatSubcategoria: string;
+    idCatCategoria: string;
     decMinimum: number;  //--
     decMaximum: number; //--
     decStock: number;

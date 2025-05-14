@@ -9,6 +9,7 @@ import { PrincipalProductsComponent } from './components/products/principal-prod
 import { SecondaryProductsComponent } from './components/products/secondary-products/secondary-products.component';
 import { PrincipalSalesComponent } from './components/sales/principal-sales/principal-sales.component';
 import { SecondarySalesComponent } from './components/sales/secondary-sales/secondary-sales.component';
+import { AddCategoriesComponent } from './components/products/catalogs/add-categories/add-categories.component';
 
 
 const routes: Routes = [
@@ -29,7 +30,14 @@ const routes: Routes = [
   {
     path:"products",
     component: PrincipalProductsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'add-categories',
+        component: AddCategoriesComponent,
+        canActivate: [AuthGuard]
+      }
+    ]
   },
   {
     path:'register-product',
