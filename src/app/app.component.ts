@@ -1,5 +1,5 @@
+import { StorageService } from './core/services/storage.service';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './core/services/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -10,10 +10,10 @@ import { AuthService } from './core/services/auth.service';
 export class AppComponent {
   title = 'v1.11';
   isLoggedIn: boolean = false;
-  constructor(private auth: AuthService) { }
+  constructor(private storageService: StorageService) { }
 
   check(): boolean { 
-    return this.auth.isLoggedIn();
+    return this.storageService.isAuthenticated();
   }
   
 }

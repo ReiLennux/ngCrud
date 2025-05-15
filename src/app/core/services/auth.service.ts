@@ -4,6 +4,7 @@ import { Observable, from, throwError } from 'rxjs';
 import {Auth, signInWithEmailAndPassword, UserCredential} from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
   constructor(
     private auth: Auth,
     private router: Router,
+    private storageService: StorageService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -20,8 +22,8 @@ export class AuthService {
     return from(signInWithEmailAndPassword(this.auth, user.email, user.password)).pipe(
       tap(userCredential => {
         if (isPlatformBrowser(this.platformId)) {
-          localStorage.setItem('token', userCredential.user.uid); // Using UID as a simple token
-          localStorage.setItem('user', userCredential.user.email!);
+                  this.storageService.setToken(userCredential.user.uid);
+        this.storageService.saveUserData(userCredential.user.email!, userCredential.user.email!, userCredential.user.email!);
         }
         // Redirect or handle successful login as needed
         this.router.navigateByUrl('/home');
@@ -35,14 +37,8 @@ export class AuthService {
 
   public logout(): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('token');
+      this.storageService.clearSession();
+      window.location.reload();
     }
-  }
-
-  public isLoggedIn(): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('token') !== null;
-    }
-    return false;
   }
 }

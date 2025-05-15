@@ -1,3 +1,4 @@
+import { StorageService } from './../../../core/services/storage.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -9,12 +10,16 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class NavigationComponent implements OnInit {
   isLoggedIn: boolean = false;
-constructor(private auth: AuthService){ }
+
+constructor(
+  private storageService: StorageService,
+  private authService: AuthService,
+){ }
   ngOnInit(): void {
-    this.isLoggedIn = this.auth.isLoggedIn();
+    this.isLoggedIn = this.storageService.isAuthenticated();
   }
 
   logout(): void {
-    this.auth.logout();
+    this.authService.logout();
   }
 }

@@ -31,6 +31,7 @@
     "firebase": "^11.7.1",
     "flowbite": "^2.3.0",
     "mssql": "^10.0.2",
+    "ngx-cookie-service": "^19.1.2",
     "ngx-filter-pipe": "^2.1.2",
     "ngx-pagination": "^6.0.3",
     "pdfmake": "^0.2.10",
