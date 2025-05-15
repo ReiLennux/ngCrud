@@ -9,7 +9,8 @@ import { PrincipalProductsComponent } from './features/products/principal-produc
 import { SecondaryProductsComponent } from './features/products/secondary-products/secondary-products.component';
 import { PrincipalSalesComponent } from './features/sales/principal-sales/principal-sales.component';
 import { SecondarySalesComponent } from './features/sales/secondary-sales/secondary-sales.component';
-import { AddCategoriesComponent } from './features/products/catalogs/add-categories/add-categories.component';
+import { AddCategoriesComponent } from './features/catalogs/products/add-categories/add-categories.component';
+import { CatalogPrincipalComponent } from './features/catalogs/catalog-principal/catalog-principal.component';
 
 
 const routes: Routes = [
@@ -31,13 +32,6 @@ const routes: Routes = [
     path:"products",
     component: PrincipalProductsComponent,
     canActivate: [AuthGuard],
-    children: [
-      {
-        path: 'add-categories',
-        component: AddCategoriesComponent,
-        canActivate: [AuthGuard]
-      }
-    ]
   },
   {
     path:'register-product',
@@ -53,6 +47,18 @@ const routes: Routes = [
     path:'register-sales',
     component: SecondarySalesComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path:'catalogs',
+    component: CatalogPrincipalComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'products',
+        component: AddCategoriesComponent,
+        canActivate: [AuthGuard]
+      }
+    ]
   },
   {
     path:'home',

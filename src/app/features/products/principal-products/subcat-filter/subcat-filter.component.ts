@@ -26,11 +26,11 @@ export class SubcatFilterComponent implements OnChanges {
     this.filtrarSubcategorias();
   }
 
-  filtrarSubcategorias() {
+  filtrarSubcategorias() {  
     if (this.categoriaSeleccionadaId != "") {
       this.categorisService.obtenerSubcategorias(this.categoriaSeleccionadaId).subscribe(
         (data: any[]) => {
-          this.subcategorias = data.filter(subcategoria => subcategoria.idCatCategorias == this.categoriaSeleccionadaId);
+          this.subcategorias = data.filter(subcategoria => subcategoria.idCatCategoria == this.categoriaSeleccionadaId);
           if(this.product){
             this.subcategoriaSeleccionada.emit(this.product.idCatSubcategoria);
           }

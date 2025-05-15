@@ -1,7 +1,7 @@
 <form class="max-w-sm mx-auto">
     <select id="countries"  (change)="onSubcategoriaSeleccionada($event)"
         class="block w-full p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option [hidden]="product" [selected]="!product" value="0">Todas las subcategorías</option>
+        <option [hidden]="product" [selected]="!product" value="">Todas las subcategorías</option>
         <option [selected]="product && (subcategoria.id == product.idCatSubcategoria )" *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id">{{subcategoria.strName}}</option>
         <option [hidden]="product" disabled *ngIf="subcategorias.length == 0">Seleccione una categoria</option>
     </select>
