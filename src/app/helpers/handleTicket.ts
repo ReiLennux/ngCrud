@@ -2,7 +2,7 @@
 import fs from 'fs';
 import blobStream from 'blob-stream';
 
-import { SelectedProduct } from "../models/product";
+import { SelectedProduct } from "../core/models/product";
 
 export function generateAndDownloadTicket(selectedProducts: SelectedProduct[]): void {
   

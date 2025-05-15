@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserListComponent } from './components/users/user-list/user-list.component';
-import { UserFormComponent } from './components/users/user-form/user-form.component';
-import { LoginComponent } from './components/login/login.component';
+import { UserListComponent } from './features/users/user-list/user-list.component';
+import { UserFormComponent } from './features/users/user-form/user-form.component';
+import { LoginComponent } from './shared/components/login/login.component';
 import { AuthGuard } from './auth.guard';
-import { HomeComponent } from './components/home/home.component';
-import { PrincipalProductsComponent } from './components/products/principal-products/principal-products.component';
-import { SecondaryProductsComponent } from './components/products/secondary-products/secondary-products.component';
-import { PrincipalSalesComponent } from './components/sales/principal-sales/principal-sales.component';
-import { SecondarySalesComponent } from './components/sales/secondary-sales/secondary-sales.component';
-import { AddCategoriesComponent } from './components/products/catalogs/add-categories/add-categories.component';
+import { HomeComponent } from './shared/components/home/home.component';
+import { PrincipalProductsComponent } from './features/products/principal-products/principal-products.component';
+import { SecondaryProductsComponent } from './features/products/secondary-products/secondary-products.component';
+import { PrincipalSalesComponent } from './features/sales/principal-sales/principal-sales.component';
+import { SecondarySalesComponent } from './features/sales/secondary-sales/secondary-sales.component';
+import { AddCategoriesComponent } from './features/products/catalogs/add-categories/add-categories.component';
 
 
 const routes: Routes = [

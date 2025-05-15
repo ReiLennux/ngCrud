@@ -1,0 +1,199 @@
+import { Component } from '@angular/core';
+import { SelectedProduct, product } from '../../../core/models/product';
+import { DateSale, Sale } from '../../../core/models/sale';
+import { createDateSale } from '../../../helpers/generateDateSale';
+import Swal from 'sweetalert2';
+import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
+import { SalesService } from '../../../core/services/sales.service';
+import { ProductsService } from '../../../core/services/products/products.service';
+import { UserService } from '../../../core/services/user.service';
+
+
+@Component({
+    selector: 'app-principal-sales',
+    templateUrl: './principal-sales.component.html',
+    styleUrls: ['./principal-sales.component.css'] // Corregido styleUrl a styleUrls
+    ,
+    standalone: false
+})
+export class PrincipalSalesComponent {
+  idVenVenta: number = 0;
+  searchTerm: String = '';
+
+  newDateSale: DateSale = createDateSale()
+  newSales: Sale[] = []
+
+  products: product[] = [];
+  selectedProducts: SelectedProduct[] = [];
+
+  categoriaSeleccionadoId: string = "";
+  subcategoriaSeleccionadoId: string = "";
+
+  userOnSesion: String = ''
+
+
+  constructor(private saleService: SalesService, private productsService: ProductsService, private userService:UserService) { }
+
+  incrementQuantity(selectedProduct: SelectedProduct) {
+    selectedProduct.quantity++
+  }
+
+  decrementQuantity(selectedProduct: SelectedProduct) {
+    if (selectedProduct.quantity > 1) {
+        selectedProduct.quantity--;
+    } else {
+        Swal.fire({
+            title: '¿Eliminar producto?',
+            text: '¿Estás seguro de que deseas eliminar este producto de la lista?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const index = this.selectedProducts.indexOf(selectedProduct);
+                if (index !== -1) {
+                    this.selectedProducts.splice(index, 1);
+                    Swal.fire(
+                        'Producto eliminado',
+                        'El producto ha sido eliminado de la lista.',
+                        'success'
+                    );
+                }
+            }
+        });
+    }
+}
+
+
+  ngOnInit(): void {
+    this.productsService.obtenerProductos().subscribe(
+      (data: product[]) => {
+        this.products = data;
+      }
+    );
+    this.userService.usuarioEnSesion(localStorage.getItem('user')!).subscribe(
+      (data: any) => {
+        this.userOnSesion = data[0].strName;
+      }
+    )
+  }
+
+  pushProduct(product: product) {
+    if(product.decStock !== 0){
+      const isProductExists = this.selectedProducts.some(
+        (p) => p.product.id === product.id
+      );
+      if (isProductExists) {
+        Swal.fire({
+          icon: 'info',
+          title: 'el producto ya esta en la venta',
+          showConfirmButton: false
+        })
+      } else {
+        this.selectedProducts.push({ product: product, quantity: 1 }); // Por defecto, la cantidad es 1
+      }
+    }else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Stock insuficiente',
+        showConfirmButton: false
+      })
+    }
+    
+  }
+
+
+  onCategoriaSeleccionada(categoria: any) {
+    this.categoriaSeleccionadoId = categoria !== null ? categoria : 0;
+  }
+
+  onsubcategoriaSeleccionada(subcategoria: any) {
+    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria : 0;
+  }
+
+  filtrarProductos(): product[] {
+    return this.products.filter(producto =>
+      ((this.categoriaSeleccionadoId == "" || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
+        (this.subcategoriaSeleccionadoId == "" || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
+      (this.searchTerm === '' || producto.strName.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    );
+  }
+
+  async crearSale() {
+    await this.crearDateSale();
+    if (this.idVenVenta !== 0) {
+      if (this.selectedProducts.length > 0) {
+        this.selectedProducts.forEach(selectedProduct => {
+          const newSale: Sale = {
+            idVenVenta: this.idVenVenta,
+            idProProducto: selectedProduct.product.id,
+            decQuantity: Number(selectedProduct.quantity), // Utilizamos la cantidad asociada con cada producto
+            decSubtotal: selectedProduct.product.decPrice * selectedProduct.quantity // Calculamos el subtotal multiplicando el precio por la cantidad
+          };
+          
+          this.saleService.insertarSale(newSale).subscribe(
+            response => {
+              generateAndDownloadTicket(this.selectedProducts)
+              this.selectedProducts = [];
+              Swal.fire({
+                icon:'success',
+                title: 'Venta creada con éxito',
+                showConfirmButton: false
+              })
+              
+            },
+            error => {
+              console.error(error);
+            }
+          );
+        });
+        generateAndDownloadTicket(this.selectedProducts)
+      } else {
+        Swal.fire({
+          title: 'Claro que no! 😄',
+          text: "Venta con 0 productos, imposible cobrar.",
+          icon: "error",
+          background: "#111827",
+          color: "#fff",
+          showConfirmButton: false
+        });
+      }
+    } else {
+      console.log('no hay idventa')
+    }
+  }
+  
+  async crearDateSale() {
+    if (this.selectedProducts.length > 0) {
+      try {
+        const response = await this.saleService.crearDateSale(this.newDateSale);
+        this.idVenVenta = response.insertedId;
+      } catch (error) {
+        // Manejar el error si es necesario
+        console.error('Error al crear la venta: ', error);
+      }
+    } else {
+      Swal.fire({
+        title: 'Claro que no! 😄',
+        text: "Venta con 0 productos, imposible cobrar.",
+        icon: "error",
+        background: "#111827",
+        color: "#fff",
+        showConfirmButton: false
+      })
+    }
+  }
+
+  calTotal(): number {
+    let total = 0;
+    this.selectedProducts.forEach(selectedProduct => {
+        total += selectedProduct.product.decPrice * selectedProduct.quantity;
+    });
+    return total;
+}
+
+  
+}
