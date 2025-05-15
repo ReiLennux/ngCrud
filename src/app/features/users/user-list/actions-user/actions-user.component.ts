@@ -110,7 +110,7 @@ export class ActionsUserComponent implements OnInit {
   }
 
   setEstado(estado: number) {
-    this.putUser.idUsuCatEstadoFK = estado;
+    this.putUser.idUsuCatEstadoFK = +estado;
   }
   setTipo(tipo: number) {
     this.putUser.idUsuCatTipoUsuario = tipo;
