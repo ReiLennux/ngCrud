@@ -23,7 +23,7 @@ export class SalesService {
       );
   }
 
-  public obtenerSaleById(id: Number): Observable<Sale>{
+  public obtenerSaleById(id: string): Observable<Sale>{
     return this.http.get<Sale>(`${this.API_URL}/s/${id}`)
       .pipe(
         catchError(error => {
@@ -61,7 +61,7 @@ export class SalesService {
       }));
   }
 
-  public eliminarSale(id: Number){
+  public eliminarSale(id: string){
     return this.http.delete<any>(`${this.API_URL}/${id}`).pipe(
       map(response => {
         return response;

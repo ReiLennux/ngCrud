@@ -1,15 +1,18 @@
 export interface DateSale {
-    id: number;
+    id: string; // este es el id interno guardado
     idUsuUsuario: string;
-    strFolio:  string;
+    strFolio: string;
     dtDate: string;
     idVenCatState: number;
-} 
+    firebaseId?: string; // este es opcional si decides incluirlo
+}
+  
 
 export interface Sale {
-    id?: Number;
-    idVenVenta: number;
+    id?: string; // este es el id interno guardado
+    idVenVenta: string;
     idProProducto: number;
     decQuantity: number;
     decSubtotal: Number;
+    firebaseId?: string; // este es opcional si decides incluirlo
 }

@@ -49,7 +49,7 @@ export class PrincipalProductsComponent implements OnInit {
   }
 
   obtenerSubcategorias() {
-    this.cateogoriesService.obtenerSubcategorias(this.categoriaSeleccionadoId).subscribe(
+    this.cateogoriesService.obtenerTodasSubCategorias().subscribe(
       (data: any[]) => {
         this.subcategorias = data;
       },

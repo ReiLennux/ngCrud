@@ -115,7 +115,7 @@ export class ActionsSalesComponent implements OnInit {
 
 async updateSale() {
   console.log('updateSales');
-  if (this.dataSale.id != 0) {
+  if (this.dataSale.id != "") {
     if (this.selectedProducts.length > 0) {
       this.selectedProducts.forEach(selectedProduct => {
         const newSale: Sale = {

@@ -17,7 +17,7 @@ import { UserService } from '../../../core/services/user.service';
     standalone: false
 })
 export class PrincipalSalesComponent {
-  idVenVenta: number = 0;
+  idVenVenta: string = "";
   searchTerm: String = '';
 
   newDateSale: DateSale = createDateSale()
@@ -124,7 +124,7 @@ export class PrincipalSalesComponent {
 
   async crearSale() {
     await this.crearDateSale();
-    if (this.idVenVenta !== 0) {
+    if (this.idVenVenta !== "") {
       if (this.selectedProducts.length > 0) {
         this.selectedProducts.forEach(selectedProduct => {
           const newSale: Sale = {

@@ -110,7 +110,8 @@
                                 type="file" (change)="onFileSelected($event)" accept="image/*">
                         </div>
                         <!-- Muestra la imagen actual -->
-                        <img *ngIf="putProducto.strImage" [src]="putProducto.strImage" alt="{{putProducto.strName}}">
+                        <img class="w-16 md:w-32 max-w-full max-h-32 object-cover"
+                        *ngIf="putProducto.strImage" [src]="putProducto.strImage" alt="{{putProducto.strName}}">
                         <!-- Input para seleccionar una nueva imagen -->
 
                     </div>

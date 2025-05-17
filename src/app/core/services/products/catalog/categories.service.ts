@@ -47,6 +47,14 @@ export class CategoriesService {
     );
   }
 
+    // ▶ Obtener todas las categorías
+    obtenerTodasSubCategorias(): Observable<Subcategoria[]> {
+      return from(getDocs(this.subcategoriasCollection)).pipe(
+        // Transformar los documentos a objetos con ID incluido
+        map((snapshot: { docs: any[]; }) => snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Subcategoria)))
+      );
+    }
+
   // ▶ Obtener todas las subcategorías de la categoria id 
   obtenerSubcategorias(categoriaId: string ): Observable<Subcategoria[]> {
     return from(getDocs(this.subcategoriasCollection)).pipe(

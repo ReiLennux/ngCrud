@@ -27,7 +27,7 @@ export interface productView {
 }
 
 export interface SelectedProduct {
-    id? : number;
+    id? : string;
     product: product;
     quantity: number;
 }
