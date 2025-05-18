@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
 import { SalesService } from '../../../core/services/sales.service';
 import { ProductsService } from '../../../core/services/products/products.service';
-import { UserService } from '../../../core/services/user.service';
 
 
 @Component({
