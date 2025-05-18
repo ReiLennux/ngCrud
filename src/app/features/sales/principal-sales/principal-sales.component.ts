@@ -29,7 +29,7 @@ export class PrincipalSalesComponent {
   categoriaSeleccionadoId: string = "";
   subcategoriaSeleccionadoId: string = "";
 
-  userOnSesion: String = ''
+  userOnSession: String = ''
 
 
   constructor(
@@ -78,7 +78,7 @@ export class PrincipalSalesComponent {
         this.products = data;
       }
     );
-    this.userOnSesion = this.storageService.getUserInSession()
+    this.userOnSession = this.storageService.getUserInSession()
   }
 
   pushProduct(product: product) {
