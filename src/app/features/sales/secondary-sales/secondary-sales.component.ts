@@ -11,7 +11,7 @@ import { SalesService } from '../../../core/services/sales.service';
     standalone: false
 })
 export class SecondarySalesComponent implements OnInit {
-  sales: DateSale[] = [];
+  sales: Sale[] = [];
   estados: { strName: string; id: number; }[] = [];
   usuarios: User[] = [];
   dateSearch: string = "";
@@ -20,12 +20,12 @@ export class SecondarySalesComponent implements OnInit {
   estadoSeleccionado: number = 0;
   constructor(private saleService: SalesService, private userService: UserService) { }
 
-  filtrarSales(): DateSale[] {
+  filtrarSales(): Sale[] {
     return this.sales.filter(sale =>
-      (this.usuarioSeleccionado == '' || sale.idUsuUsuario == this.usuarioSeleccionado) &&
-      (this.dateSearch == "" || sale.dtDate === this.dateSearch) &&
-      (this.estadoSeleccionado == 0 || sale.idVenCatState == this.estadoSeleccionado) &&
-      (this.searchTerm == '' || sale.strFolio.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      (this.usuarioSeleccionado == '' || sale.DateSale.idUsuUsuario == this.usuarioSeleccionado) &&
+      (this.dateSearch == "" || sale.DateSale.dtDate === this.dateSearch) &&
+      (this.estadoSeleccionado == 0 || sale.DateSale.idVenCatState == this.estadoSeleccionado) &&
+      (this.searchTerm == '' || sale.DateSale.strFolio.toLowerCase().includes(this.searchTerm.toLowerCase()))
     );
   }
   
@@ -41,7 +41,7 @@ export class SecondarySalesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSales();
-    this.saleService.obtenerEstados().subscribe(
+    this.saleService.getSaleStates().subscribe(
       (data: any) => {
         this.estados = data;
       }
@@ -54,12 +54,9 @@ export class SecondarySalesComponent implements OnInit {
 
   getSales() {
     this.sales = [];
-    this.saleService.obtenerDataSale().subscribe(
+    this.saleService.getSaleData().subscribe(
       (data: any) => {
-        this.sales = data.map((sale: any) => ({
-          ...sale,
-          dtDate: formatoFecha(sale.dtDate)
-        }));
+        this.sales = data
       }
     );
   }

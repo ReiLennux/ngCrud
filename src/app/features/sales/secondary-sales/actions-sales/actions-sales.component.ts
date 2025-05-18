@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DateSale, Sale } from '../../../../core/models/sale';
+import { DateSale, Sale, SaleDetails } from '../../../../core/models/sale';
 import Swal from 'sweetalert2';
 import { SelectedProduct, product } from '../../../../core/models/product';
 import { SalesService } from '../../../../core/services/sales.service';
@@ -12,7 +12,7 @@ import { ProductsService } from '../../../../core/services/products/products.ser
     standalone: false
 })
 export class ActionsSalesComponent implements OnInit {
-  @Input() dataSale!: DateSale;
+  @Input() Sale!: Sale;
   @Output() saleActualizada = new EventEmitter<void>();
   showModal: boolean = false;
   postSales:any[] = []; 
@@ -20,60 +20,65 @@ export class ActionsSalesComponent implements OnInit {
   constructor(private saleService: SalesService, private productsService: ProductsService) { }
 
   ngOnInit(): void {
-    this.saleService.obtenerSaleById(this.dataSale.id).subscribe(
+    this.saleService.getSaleById(this.Sale.id!).subscribe(
       (data: any) => {
         this.postSales = data;
         console.log(this.postSales);
   
         // Obtener todos los productos
-        this.productsService.obtenerProductos().subscribe(
-          (productos: product[]) => {
-            // Filtrar los productos basados en los IDs de los productos de las ventas y la cantidad
-            this.selectedProducts = productos
-              .filter((product: product) => {
-                const saleMatch = this.postSales.find((sale: Sale) => sale.idProProducto === product.id);
-                return saleMatch !== undefined; // Retornar true si hay una coincidencia
-              })
-              .map((product: product) => {
-                const saleMatch = this.postSales.find((sale: Sale) => sale.idProProducto === product.id);
-                return {id:saleMatch.id, product: product, quantity: saleMatch ? saleMatch.decQuantity : 0 };
-              });
-          }
-        );
+        this.productsService.obtenerProductos().subscribe((productos: product[]) => {
+          const selectedProducts: { id: string; product: product; quantity: number }[] = [];
+        
+          this.postSales.forEach((sale: Sale) => {
+            sale.SaleDetails.forEach((detail: SaleDetails) => {
+              const matchedProduct = productos.find(p => p.id === detail.idProProducto);
+              if (matchedProduct) {
+                selectedProducts.push({
+                  id: sale.id ?? '', // si `id` puede ser undefined
+                  product: matchedProduct,
+                  quantity: detail.decQuantity
+                });
+              }
+            });
+          });
+        
+          this.selectedProducts = selectedProducts;
+        });
+        
       }
     );
   }
 
 
-  delete() {
-    Swal.fire({
-      title: "¿Realmente quieres eliminar esta venta?",
-      text: "Si eliminas esta venta, se perderán sus datos para siempre y el stock de los productos sera devuelto.",
-      icon: "warning",
-      background: "#111827",
-      color:"#fff",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#374151",
-      cancelButtonText: "Cancelar",
-      confirmButtonText: "Continuar"
-    }).then((result: { isConfirmed: any; }) => {
-      if (result.isConfirmed) {
-        this.saleService.eliminarSale(this.dataSale.id).subscribe(
-          res => {
-            console.log(res); 
-            this.saleActualizada.emit();
-          },
-          err => console.error(err)
-        );
-        Swal.fire({
-          title: "Eliminado",
-          text: "La venta fue eliminada",
-          icon: "success"
-        });
-      }
-    });
-  }
+  // delete() {
+  //   Swal.fire({
+  //     title: "¿Realmente quieres eliminar esta venta?",
+  //     text: "Si eliminas esta venta, se perderán sus datos para siempre y el stock de los productos sera devuelto.",
+  //     icon: "warning",
+  //     background: "#111827",
+  //     color:"#fff",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#d33",
+  //     cancelButtonColor: "#374151",
+  //     cancelButtonText: "Cancelar",
+  //     confirmButtonText: "Continuar"
+  //   }).then((result: { isConfirmed: any; }) => {
+  //     if (result.isConfirmed) {
+  //       this.saleService.deleteSale(this.sale.id).subscribe(
+  //         res => {
+  //           console.log(res); 
+  //           this.saleActualizada.emit();
+  //         },
+  //         err => console.error(err)
+  //       );
+  //       Swal.fire({
+  //         title: "Eliminado",
+  //         text: "La venta fue eliminada",
+  //         icon: "success"
+  //       });
+  //     }
+  //   });
+  // }
 
   toggleModal(){
     this.showModal = !this.showModal;
@@ -115,45 +120,52 @@ export class ActionsSalesComponent implements OnInit {
 
 async updateSale() {
   console.log('updateSales');
-  if (this.dataSale.id != "") {
-    if (this.selectedProducts.length > 0) {
-      this.selectedProducts.forEach(selectedProduct => {
-        const newSale: Sale = {
-          id: selectedProduct.id,
-          idVenVenta: this.dataSale.id,
-          idProProducto: selectedProduct.product.id,
-          decQuantity: Number(selectedProduct.quantity), 
-          decSubtotal: selectedProduct.product.decPrice * selectedProduct.quantity
-        };
-        this.saleService.actualizarSale(newSale).subscribe(
-          response => {
-            console.log("se logro")
-            this.selectedProducts = [];
-            Swal.fire({
-              icon:'success',
-              title: 'Venta creada con éxito',
-              showConfirmButton: false
-            })
-            
-          },
-          error => {
-            console.error(error);
-          }
-        );
-      });
-    } else {
-      Swal.fire({
-        title: 'Claro que no! 😄',
-        text: "Venta con 0 productos, imposible cobrar.",
-        icon: "error",
-        background: "#111827",
-        color: "#fff",
-        showConfirmButton: false
-      });
-    }
+
+  if (this.selectedProducts.length > 0) {
+    const saleDetails: SaleDetails[] = this.selectedProducts.map(selectedProduct => ({
+      idProProducto: selectedProduct.product.id,
+      decQuantity: Number(selectedProduct.quantity)
+    }));
+
+    const subtotal = this.selectedProducts.reduce((total, p) => {
+      return total + (p.product.decPrice * p.quantity);
+    }, 0);
+
+    const newSale: Sale = {
+      id: this.Sale.id, // si es una actualización
+      DateSale: this.Sale.DateSale, // usa camelCase como en tu modelo
+      SaleDetails: saleDetails,
+      decSubtotal: subtotal,
+      firebaseId: this.Sale.firebaseId // si aplica
+    };
+
+    this.saleService.updateSale(newSale).subscribe(
+      response => {
+        console.log("Venta actualizada con éxito");
+        this.selectedProducts = [];
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Venta actualizada con éxito',
+          showConfirmButton: false
+        });
+      },
+      error => {
+        console.error("Error al actualizar venta:", error);
+      }
+    );
+
   } else {
-    console.log('no hay idventa')
+    Swal.fire({
+      title: '¡Claro que no! 😄',
+      text: "Venta con 0 productos, imposible cobrar.",
+      icon: "error",
+      background: "#111827",
+      color: "#fff",
+      showConfirmButton: false
+    });
   }
 }
+
 
 }

@@ -1,6 +1,7 @@
+import { StorageService } from './../../../core/services/storage.service';
 import { Component } from '@angular/core';
 import { SelectedProduct, product } from '../../../core/models/product';
-import { DateSale, Sale } from '../../../core/models/sale';
+import { DateSale, Sale, SaleDetails } from '../../../core/models/sale';
 import { createDateSale } from '../../../helpers/generateDateSale';
 import Swal from 'sweetalert2';
 import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
@@ -17,8 +18,7 @@ import { UserService } from '../../../core/services/user.service';
     standalone: false
 })
 export class PrincipalSalesComponent {
-  idVenVenta: string = "";
-  searchTerm: String = '';
+  searchTerm: string = '';
 
   newDateSale: DateSale = createDateSale()
   newSales: Sale[] = []
@@ -32,7 +32,11 @@ export class PrincipalSalesComponent {
   userOnSesion: String = ''
 
 
-  constructor(private saleService: SalesService, private productsService: ProductsService, private userService:UserService) { }
+  constructor(
+    private saleService: SalesService, 
+    private productsService: ProductsService,
+    private storageService: StorageService,
+  ) { }
 
   incrementQuantity(selectedProduct: SelectedProduct) {
     selectedProduct.quantity++
@@ -74,11 +78,7 @@ export class PrincipalSalesComponent {
         this.products = data;
       }
     );
-    this.userService.usuarioEnSesion(localStorage.getItem('user')!).subscribe(
-      (data: any) => {
-        this.userOnSesion = data[0].strName;
-      }
-    )
+    this.userOnSesion = this.storageService.getUserInSession()
   }
 
   pushProduct(product: product) {
@@ -123,70 +123,49 @@ export class PrincipalSalesComponent {
   }
 
   async crearSale() {
-    await this.crearDateSale();
-    if (this.idVenVenta !== "") {
-      if (this.selectedProducts.length > 0) {
-        this.selectedProducts.forEach(selectedProduct => {
-          const newSale: Sale = {
-            idVenVenta: this.idVenVenta,
-            idProProducto: selectedProduct.product.id,
-            decQuantity: Number(selectedProduct.quantity), // Utilizamos la cantidad asociada con cada producto
-            decSubtotal: selectedProduct.product.decPrice * selectedProduct.quantity // Calculamos el subtotal multiplicando el precio por la cantidad
-          };
-          
-          this.saleService.insertarSale(newSale).subscribe(
-            response => {
-              generateAndDownloadTicket(this.selectedProducts)
-              this.selectedProducts = [];
-              Swal.fire({
-                icon:'success',
-                title: 'Venta creada con éxito',
-                showConfirmButton: false
-              })
-              
-            },
-            error => {
-              console.error(error);
-            }
-          );
-        });
-        generateAndDownloadTicket(this.selectedProducts)
-      } else {
-        Swal.fire({
-          title: 'Claro que no! 😄',
-          text: "Venta con 0 productos, imposible cobrar.",
-          icon: "error",
-          background: "#111827",
-          color: "#fff",
-          showConfirmButton: false
-        });
-      }
-    } else {
-      console.log('no hay idventa')
-    }
-  }
-  
-  async crearDateSale() {
     if (this.selectedProducts.length > 0) {
-      try {
-        const response = await this.saleService.crearDateSale(this.newDateSale);
-        this.idVenVenta = response.insertedId;
-      } catch (error) {
-        // Manejar el error si es necesario
-        console.error('Error al crear la venta: ', error);
-      }
+      const saleDetails: SaleDetails[] = this.selectedProducts.map(selectedProduct => ({
+        idProProducto: selectedProduct.product.id,
+        decQuantity: Number(selectedProduct.quantity)
+      }));
+  
+      const subtotal = this.selectedProducts.reduce((total, p) =>
+        total + (p.product.decPrice * p.quantity), 0);
+  
+      const newSale: Sale = {
+        DateSale: this.newDateSale,
+        SaleDetails: saleDetails,
+        decSubtotal: subtotal
+      };
+  
+      this.saleService.postSale(newSale).subscribe(
+        response => {
+          generateAndDownloadTicket(this.selectedProducts);
+          this.selectedProducts = [];
+  
+          Swal.fire({
+            icon: 'success',
+            title: 'Venta creada con éxito',
+            showConfirmButton: false
+          });
+        },
+        error => {
+          console.error("Error al crear venta:", error);
+        }
+      );
+  
     } else {
       Swal.fire({
-        title: 'Claro que no! 😄',
+        title: '¡Claro que no! 😄',
         text: "Venta con 0 productos, imposible cobrar.",
         icon: "error",
         background: "#111827",
         color: "#fff",
         showConfirmButton: false
-      })
+      });
     }
   }
-
+  
   calTotal(): number {
     let total = 0;
     this.selectedProducts.forEach(selectedProduct => {

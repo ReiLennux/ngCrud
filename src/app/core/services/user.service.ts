@@ -39,24 +39,6 @@ export class UserService {
     );
   }
 
-  // Función para obtener un usuario por su id
-  public usuarioEnSesion(id: string): Observable<User> {
-    const userDocRef = doc(this.firestore, `users/${id}`);
-    return from(getDoc(userDocRef)).pipe(
-      map(snapshot => {
-        if (snapshot.exists()) {
-          return { id: snapshot.id, ...snapshot.data() } as unknown as User;
-        } else {
-          throw new Error('Usuario no encontrado');
-        }
-      }),
-      catchError(error => {
-        console.error('Error al obtener datos de usuario desde Firestore: ', error);
-        return throwError(() => new Error('Error al obtener datos de usuario'));
-      })
-    );
-  }
-
   // Función para eliminar un usuario por su id
   public eliminarUsuario(id: string): Observable<void> {
     const userDocRef = doc(this.firestore, `users/${id}`);

@@ -40,4 +40,12 @@ export class StorageService {
   isAuthenticated(): boolean {
     return this.cookieService.check('authToken');
   }
+
+  getRole(): string {
+    return localStorage.getItem(this.storageKeys.role) || '';
+  }
+
+  getUserInSession(): string {
+    return localStorage.getItem(this.storageKeys.name) || '';
+  }
 }

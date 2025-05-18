@@ -1,12 +1,10 @@
-import { randomInt } from "crypto";
 import { DateSale } from "../core/models/sale";
 
 export function createDateSale(): DateSale {
     const fecha: Date = new Date(); // Supongamos que esta es tu fecha en TypeScript
     const fechaFormateada: string = fecha.toISOString().split('T')[0]; // Formatea la fecha en 'YYYY-MM-DD'
     const newDateSale: DateSale = {
-        id: "", // Asumiendo que 'idds' es un número, generamos un número aleatorio entre 1 y 1000.
-        idUsuUsuario: localStorage.getItem('user')!,
+        idUsuUsuario: localStorage.getItem('name') || '',
         strFolio: generarCadena(),
         dtDate: fechaFormateada,
         idVenCatState: 1
