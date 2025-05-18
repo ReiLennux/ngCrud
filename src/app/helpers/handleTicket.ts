@@ -1,48 +1,71 @@
-
-import fs from 'fs';
-import blobStream from 'blob-stream';
-
-import { SelectedProduct } from "../core/models/product";
+import { jsPDF } from 'jspdf';
+import { SelectedProduct } from '../core/models/product';
 
 export function generateAndDownloadTicket(selectedProducts: SelectedProduct[]): void {
-  
-  // Crear un nuevo documento PDF
-  // const doc = new PDFDocument();
+  const doc = new jsPDF();
 
-  // // Crear un flujo de blob para almacenar el PDF
-  // const stream = doc.pipe(blobStream());
+  // Encabezado
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.text('TICKET DE VENTA', 105, 20, { align: 'center' });
 
-  // // Agregar contenido al documento PDF
-  // selectedProducts.forEach((product, index) => {
-  //   doc.fontSize(14).text(`Producto ${index + 1}`, { underline: true }).moveDown();
-  //   doc.fontSize(12).text(`Nombre: ${product.product.strName}`).moveDown();
-  //   doc.text(`Precio: ${product.product.decPrice}`).moveDown();
-  //   doc.text(`Cantidad: ${product.quantity}`).moveDown();
-  //   doc.text(`Total: ${product.product.decPrice * product.quantity}`).moveDown();
-  //   doc.moveDown();
-  // });
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`Fecha: ${new Date().toLocaleString()}`, 10, 30);
 
-  // // Finalizar el documento PDF
-  // doc.end();
+  // Línea divisoria
+  doc.line(10, 35, 200, 35);
 
-  // // Manejar el evento 'finish' del flujo de blob
-  // stream.on('finish', function() {
-  //   // Obtener el blob del PDF
-  //   const pdfBlob = stream.toBlob('application/pdf');
+  // Encabezados de tabla
+  let y = 42;
+  doc.setFont('helvetica', 'bold');
+  doc.text('Producto', 10, y);
+  doc.text('Precio', 90, y);
+  doc.text('Cant.', 120, y);
+  doc.text('Subtotal', 160, y);
+  doc.setFont('helvetica', 'normal');
 
-  //   // Convertir el blob a un arrayBuffer
-  //   pdfBlob.arrayBuffer().then(buffer => {
-  //     // Crear un nuevo buffer a partir del arrayBuffer
-  //     const pdfBuffer = Buffer.from(buffer);
+  y += 6;
 
-  //     // Escribir el buffer en un archivo
-  //     fs.writeFile('ticket.pdf', pdfBuffer, (err) => {
-  //       if (err) {
-  //         console.error('Error al escribir el archivo PDF:', err);
-  //       } else {
-  //         console.log('Archivo PDF generado con éxito');
-  //       }
-  //     });
-  //   });
-  // });
+  let total = 0;
+
+  selectedProducts.forEach((product) => {
+    const name = product.product.strName;
+    const price = product.product.decPrice;
+    const quantity = product.quantity;
+    const subtotal = price * quantity;
+    total += subtotal;
+
+    // Evitar desbordamiento de página
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
+    }
+
+    // Texto del producto
+    const productName = name.length > 30 ? name.slice(0, 27) + '...' : name;
+    doc.text(productName, 10, y);
+    doc.text(`$${price.toFixed(2)}`, 90, y);
+    doc.text(`${quantity}`, 125, y);
+    doc.text(`$${subtotal.toFixed(2)}`, 160, y);
+    y += 8;
+  });
+
+  // Línea divisoria
+  doc.line(10, y, 200, y);
+  y += 10;
+
+  // Total
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.text(`TOTAL: $${total.toFixed(2)}`, 160, y, { align: 'right' });
+
+  // Footer
+  y += 20;
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'italic');
+  doc.text('Gracias por su compra', 105, y, { align: 'center' });
+
+  // Descargar PDF
+  doc.save('ticket.pdf');
 }

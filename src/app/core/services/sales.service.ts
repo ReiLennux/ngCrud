@@ -1,6 +1,7 @@
+import { product } from './../models/product';
 import { Injectable } from '@angular/core';
 import { Sale } from '../models/sale';
-import { Observable, catchError, from, map, throwError } from 'rxjs';
+import { Observable, catchError, from, map, mergeAll, throwError } from 'rxjs';
 import { Firestore, collection, collectionData, doc, getDoc, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 
 @Injectable({
@@ -9,6 +10,7 @@ import { Firestore, collection, collectionData, doc, getDoc, addDoc, deleteDoc, 
 export class SalesService {
 
   private saleCollection = collection(this.firestore, 'Sales');
+  private productCollection = collection(this.firestore, 'Products');
   static decQuantity: any;
 
   constructor(private firestore: Firestore) { }
@@ -33,6 +35,22 @@ export class SalesService {
     );
   }
 
+  private async updateProductStock(productId: number, quantityChange: number): Promise<void> {
+    const productDocRef = doc(this.firestore, `products/${productId}`);
+    const productSnapshot = await getDoc(productDocRef);
+  
+    if (productSnapshot.exists()) {
+      console.log('Producto encontrado:', productSnapshot.data());
+      const product = productSnapshot.data() as product;
+      const newStock = product.decStock + quantityChange;
+  
+      await updateDoc(productDocRef, { decStock: newStock });
+    } else {
+      console.error(`Producto con ID ${productId} no encontrado para ajustar stock.`);
+    }
+  }
+  
+
   public getSaleById(id: string): Observable<Sale> {
     const saleDocRef = doc(this.firestore, `Sales/${id}`);
     return from(getDoc(saleDocRef)).pipe(
@@ -52,25 +70,43 @@ export class SalesService {
 
 
   public postSale(sale: Sale): Observable<Sale> {
-    const saleDocRef = doc(this.firestore, `Sales/${sale.id}`);
     return from(addDoc(this.saleCollection, sale)).pipe(
-      map(snapshot => {
-        if (snapshot.id) {
-          return { id: snapshot.id, ...sale } as unknown as Sale;
-        } else {
+      map(async snapshot => {
+        if (!snapshot.id) {
           throw new Error('Error al agregar la venta');
         }
+  
+        // Reducir el stock de cada producto vendido
+        for (const detail of sale.SaleDetails) {
+          await this.updateProductStock(detail.idProProducto, -detail.decQuantity);
+        }
+  
+        return { id: snapshot.id, ...sale } as Sale;
       }),
+      map(promise => from(promise)),
       catchError(error => {
         console.error('Error al agregar venta a Firestore: ', error);
         return throwError(() => new Error('Error al agregar venta'));
-      })
+      }),
+      map(obs => obs as unknown as Observable<Sale>),
+      mergeAll()
     );
   }
+  
+  
 
-  public deleteSale(id: string): Observable<void> {
-    const saleDocRef = doc(this.firestore, `Sales/${id}`);
-    return from(deleteDoc(saleDocRef)).pipe(
+  public deleteSale(sale: Sale): Observable<void> {
+    return from((async () => {
+      const saleDocRef = doc(this.firestore, `Sales/${sale.id}`);
+  
+      // Reponer el stock de cada producto involucrado
+      for (const detail of sale.SaleDetails) {
+        await this.updateProductStock(detail.idProProducto, detail.decQuantity); // Se suma de vuelta
+      }
+  
+      // Eliminar la venta
+      await deleteDoc(saleDocRef);
+    })()).pipe(
       map(() => void 0),
       catchError(error => {
         console.error('Error al eliminar venta de Firestore: ', error);
@@ -78,17 +114,38 @@ export class SalesService {
       })
     );
   }
+  
 
-  public updateSale(sale: Sale): Observable<void> {
-    const saleDocRef = doc(this.firestore, `Sales/${sale.id}`);
-    return from(updateDoc(saleDocRef, { ...sale })).pipe(
-      map(() => void 0),
-      catchError(error => {
-        console.error('Error al actualizar venta en Firestore: ', error);
-        return throwError(() => new Error('Error al actualizar venta'));
-      })
-    );
+  public async updateSale(sale: Sale): Promise<void> {
+    try {
+      const saleDocRef = doc(this.firestore, `Sales/${sale.id}`);
+      const prevSaleSnap = await getDoc(saleDocRef);
+  
+      if (!prevSaleSnap.exists()) {
+        throw new Error('Venta original no encontrada');
+      }
+  
+      const prevSale = prevSaleSnap.data() as Sale;
+  
+      // 1. Revertir stock anterior
+      for (const detail of prevSale.SaleDetails) {
+        await this.updateProductStock(detail.idProProducto, detail.decQuantity); // sumamos lo anterior
+      }
+  
+      // 2. Aplicar nuevo stock
+      for (const detail of sale.SaleDetails) {
+        await this.updateProductStock(detail.idProProducto, -detail.decQuantity); // restamos lo nuevo
+      }
+  
+      // 3. Actualizar la venta
+      await updateDoc(saleDocRef, { ...sale });
+  
+    } catch (error) {
+      console.error('Error al actualizar venta y ajustar stock:', error);
+      throw new Error('Error al actualizar venta y ajustar stock');
+    }
   }
+  
 
   public getSaleStates(): Observable<any[]> {
     const statesCollection = collection(this.firestore, 'VenCatState');

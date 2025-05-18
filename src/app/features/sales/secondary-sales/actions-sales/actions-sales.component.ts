@@ -25,7 +25,7 @@ export class ActionsSalesComponent implements OnInit {
         this.postSales = data;
         console.log(this.postSales);
   
-        // Obtener todos los productos
+         //Obtener todos los productos
         this.productsService.obtenerProductos().subscribe((productos: product[]) => {
           const selectedProducts: { id: string; product: product; quantity: number }[] = [];
         
@@ -50,35 +50,35 @@ export class ActionsSalesComponent implements OnInit {
   }
 
 
-  // delete() {
-  //   Swal.fire({
-  //     title: "¿Realmente quieres eliminar esta venta?",
-  //     text: "Si eliminas esta venta, se perderán sus datos para siempre y el stock de los productos sera devuelto.",
-  //     icon: "warning",
-  //     background: "#111827",
-  //     color:"#fff",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#d33",
-  //     cancelButtonColor: "#374151",
-  //     cancelButtonText: "Cancelar",
-  //     confirmButtonText: "Continuar"
-  //   }).then((result: { isConfirmed: any; }) => {
-  //     if (result.isConfirmed) {
-  //       this.saleService.deleteSale(this.sale.id).subscribe(
-  //         res => {
-  //           console.log(res); 
-  //           this.saleActualizada.emit();
-  //         },
-  //         err => console.error(err)
-  //       );
-  //       Swal.fire({
-  //         title: "Eliminado",
-  //         text: "La venta fue eliminada",
-  //         icon: "success"
-  //       });
-  //     }
-  //   });
-  // }
+   delete() {
+     Swal.fire({
+       title: "¿Realmente quieres eliminar esta venta?",
+       text: "Si eliminas esta venta, se perderán sus datos para siempre y el stock de los productos sera devuelto.",
+       icon: "warning",
+       background: "#111827",
+       color:"#fff",
+       showCancelButton: true,
+       confirmButtonColor: "#d33",
+       cancelButtonColor: "#374151",
+       cancelButtonText: "Cancelar",
+       confirmButtonText: "Continuar"
+     }).then((result: { isConfirmed: any; }) => {
+       if (result.isConfirmed) {
+         this.saleService.deleteSale(this.Sale).subscribe(
+           res => {
+             console.log(res); 
+             this.saleActualizada.emit();
+           },
+           err => console.error(err)
+         );
+         Swal.fire({
+           title: "Eliminado",
+           text: "La venta fue eliminada",
+           icon: "success"
+         });
+       }
+     });
+   }
 
   toggleModal(){
     this.showModal = !this.showModal;
@@ -117,6 +117,10 @@ export class ActionsSalesComponent implements OnInit {
     }
 }
 
+async reprintTicket() {
+  
+}
+
 
 async updateSale() {
   console.log('updateSales');
@@ -133,14 +137,14 @@ async updateSale() {
 
     const newSale: Sale = {
       id: this.Sale.id, // si es una actualización
-      DateSale: this.Sale.DateSale, // usa camelCase como en tu modelo
+      DateSale: this.Sale.DateSale,  //usa camelCase como en tu modelo
       SaleDetails: saleDetails,
       decSubtotal: subtotal,
-      firebaseId: this.Sale.firebaseId // si aplica
+      firebaseId: this.Sale.firebaseId  //si aplica
     };
 
-    this.saleService.updateSale(newSale).subscribe(
-      response => {
+    this.saleService.updateSale(newSale).then(
+      () => {
         console.log("Venta actualizada con éxito");
         this.selectedProducts = [];
 
@@ -149,7 +153,8 @@ async updateSale() {
           title: 'Venta actualizada con éxito',
           showConfirmButton: false
         });
-      },
+      }
+    ).catch(
       error => {
         console.error("Error al actualizar venta:", error);
       }

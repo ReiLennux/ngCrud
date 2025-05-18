@@ -63,7 +63,7 @@ export class SecondarySalesComponent implements OnInit {
   
 
   obtenerEstado(estadoId: number): String {
-    const estado = this.estados.find((estado) => estado.id === estadoId);
+    const estado = this.estados.find((estado) => estado.id == estadoId);
     return estado ? estado.strName : '';
   }
 
