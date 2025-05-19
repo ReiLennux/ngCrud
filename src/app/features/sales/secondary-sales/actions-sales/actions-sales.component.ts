@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { SelectedProduct, product } from '../../../../core/models/product';
 import { SalesService } from '../../../../core/services/sales.service';
 import { ProductsService } from '../../../../core/services/products/products.service';
+import { generateAndDownloadTicket } from '../../../../helpers/handleTicket';
 
 @Component({
     selector: 'app-actions-sales',
@@ -15,39 +16,31 @@ export class ActionsSalesComponent implements OnInit {
   @Input() Sale!: Sale;
   @Output() saleActualizada = new EventEmitter<void>();
   showModal: boolean = false;
-  postSales:any[] = []; 
+  postSales!: Sale; 
   selectedProducts:SelectedProduct[] = [];
   constructor(private saleService: SalesService, private productsService: ProductsService) { }
 
   ngOnInit(): void {
     this.saleService.getSaleById(this.Sale.id!).subscribe(
-      (data: any) => {
-        this.postSales = data;
-        console.log(this.postSales);
-  
-         //Obtener todos los productos
+      (sale: any) => {
+        this.postSales = sale;
         this.productsService.obtenerProductos().subscribe((productos: product[]) => {
-          const selectedProducts: { id: string; product: product; quantity: number }[] = [];
-        
-          this.postSales.forEach((sale: Sale) => {
-            sale.SaleDetails.forEach((detail: SaleDetails) => {
-              const matchedProduct = productos.find(p => p.id === detail.idProProducto);
-              if (matchedProduct) {
-                selectedProducts.push({
-                  id: sale.id ?? '', // si `id` puede ser undefined
-                  product: matchedProduct,
-                  quantity: detail.decQuantity
-                });
-              }
-            });
+          sale.SaleDetails.forEach((detail: SaleDetails) => {
+            const matchedProduct = productos.find(p => p.id == detail.idProProducto);
+            if (matchedProduct) {
+              this.selectedProducts.push({
+                id: sale.id,
+                product: matchedProduct,
+                quantity: detail.decQuantity
+              });
+            }
           });
-        
-          this.selectedProducts = selectedProducts;
+          console.log("productos dentro de la venta: ", this.selectedProducts);
         });
-        
       }
     );
   }
+  
 
 
    delete() {
@@ -66,7 +59,6 @@ export class ActionsSalesComponent implements OnInit {
        if (result.isConfirmed) {
          this.saleService.deleteSale(this.Sale).subscribe(
            res => {
-             console.log(res); 
              this.saleActualizada.emit();
            },
            err => console.error(err)
@@ -118,12 +110,11 @@ export class ActionsSalesComponent implements OnInit {
 }
 
 async reprintTicket() {
-  
+    generateAndDownloadTicket(this.selectedProducts);
 }
 
 
 async updateSale() {
-  console.log('updateSales');
 
   if (this.selectedProducts.length > 0) {
     const saleDetails: SaleDetails[] = this.selectedProducts.map(selectedProduct => ({
@@ -145,7 +136,6 @@ async updateSale() {
 
     this.saleService.updateSale(newSale).then(
       () => {
-        console.log("Venta actualizada con éxito");
         this.selectedProducts = [];
 
         Swal.fire({

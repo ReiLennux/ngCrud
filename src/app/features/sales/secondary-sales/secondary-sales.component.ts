@@ -21,6 +21,8 @@ export class SecondarySalesComponent implements OnInit {
   constructor(private saleService: SalesService, private userService: UserService) { }
 
   filtrarSales(): Sale[] {
+    console.log(this.sales);
+    console.log(this.usuarioSeleccionado);
     return this.sales.filter(sale =>
       (this.usuarioSeleccionado == '' || sale.DateSale.idUsuUsuario == this.usuarioSeleccionado) &&
       (this.dateSearch == "" || sale.DateSale.dtDate === this.dateSearch) &&
@@ -33,6 +35,7 @@ export class SecondarySalesComponent implements OnInit {
     this.estadoSeleccionado = event.target.value;
   }
   onUserChange(event: any) {
+    console.log(event.target.value);
     this.usuarioSeleccionado = event.target.value;
   }
   onDateChange(event: any) {
@@ -65,11 +68,6 @@ export class SecondarySalesComponent implements OnInit {
   obtenerEstado(estadoId: number): String {
     const estado = this.estados.find((estado) => estado.id == estadoId);
     return estado ? estado.strName : '';
-  }
-
-  obtenerNombreUsuario(id: string): String {
-    const usuario = this.usuarios.find((usuario) => usuario.id === id);
-    return usuario ? usuario.strName : '';
   }
 
 }
