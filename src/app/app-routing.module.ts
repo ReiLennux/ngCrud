@@ -16,54 +16,64 @@ import { CatalogPrincipalComponent } from './features/catalogs/catalog-principal
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    data: { hideNavbar: false }
   },
   {
       path: "users",
       component: UserListComponent,
-      canActivate: [AuthGuard]
+      canActivate: [AuthGuard],
+      data: { hideNavbar: true }
   },
   {
       path: "register-user",
       component: UserFormComponent,
-      canActivate: [AuthGuard]
+      canActivate: [AuthGuard],
+      data: { hideNavbar: true }
   },
   {
     path:"products",
     component: PrincipalProductsComponent,
     canActivate: [AuthGuard],
+    data: { hideNavbar: true }
   },
   {
     path:'register-product',
     component: SecondaryProductsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { hideNavbar: true }
   },
   {
     path:'sales',
     component: PrincipalSalesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { hideNavbar: true }
   },
   {
     path:'register-sales',
     component: SecondarySalesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { hideNavbar: true }
   },
   {
     path:'catalogs',
     component: CatalogPrincipalComponent,
     canActivate: [AuthGuard],
+    data: { hideNavbar: true },
     children: [
       {
         path: 'products',
         component: AddCategoriesComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: { hideNavbar: true }
       }
     ]
   },
   {
     path:'home',
     component: HomeComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: { hideNavbar: true }
   },
   {
     path:'**',
