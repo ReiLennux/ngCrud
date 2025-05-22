@@ -13,7 +13,7 @@
       class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white placeholder-gray-400" 
       [attr.placeholder]="placeholder"
     >
-      <option *ngIf="placeholder" value="" disabled selected>seleccione un {{ placeholder }}</option>
+      <option *ngIf="placeholder" value="" disabled selected>Select a {{ placeholder }}</option>
       <!-- Mostrar las opciones dinámicamente -->
       <option *ngFor="let option of options" [value]="option.id">
         {{ option.strName }}

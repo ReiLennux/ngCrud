@@ -1,68 +1,111 @@
-<div class="m-4 max-w-6xl mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-    <div class="mb-5">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center sm:text-left">
-            Administración de usuarios
-        </h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400 text-center sm:text-left">
-            Este apartado permite visualizar a todos los usuarios de la plataforma, así como editar algún atributo o eliminar definitivamente a un usuario
-        </p>
-    </div>
-    <div class="flex flex-col sm:flex-row justify-between mb-4 gap-4">
-        <div class="flex flex-col sm:flex-row gap-4">
-            <app-state-filter (filterChanged)="filterByEstado($event)"></app-state-filter>
-            <app-type-filter (filterChanged)="filterByTipo($event)"></app-type-filter>
-        </div>
-        
-        <a href="/register-user" class="self-center sm:self-auto">
-            <button type="button" class="px-3 py-2 text-xs font-medium text-green-500 hover:text-white border border-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-center dark:border-green-400 dark:text-green-400 dark:hover:text-white dark:hover:bg-green-700 dark:focus:ring-green-900">
-                <i class="fa-solid fa-plus mr-1"></i>Agregar usuario
-            </button>
-        </a>
-        <div class="relative">
-            <input type="text" placeholder="Buscar Usuario" #filter (input)="filterByName(filter.value)" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-2">
-                <i class="fa-solid fa-magnifying-glass ml-1" style="color: #9a9996;"></i>
-            </div>
-        </div>
-    </div>
+<div
+  class="m-4 max-w-6xl mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">Nombre de usuario</th>
-                    <th scope="col" class="px-6 py-3">Estado</th>
-                    <th scope="col" class="px-6 py-3">Tipo</th>
-                    <th scope="col" class="px-6 py-3">Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of filteredUsers" class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{ user.strName }}
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
-                            <div [ngClass]="{'bg-green-500': user.idUsuCatEstadoFK == 1, 'bg-red-500': user.idUsuCatEstadoFK == 2}" class="h-2.5 w-2.5 rounded-full mr-2"></div>
-                            {{obtenerEstado(user.idUsuCatEstadoFK)}}
-                        </div>
-                    </td>
-                    <td class="px-6 py-2">
-                        {{obtenerTipo(user.idUsuCatTipoUsuario)}}
-                    </td>
-                    <td class="flex px-6 py-4">
-                        <app-actions-user [user]="user" (usuarioCambio)="loadData()"></app-actions-user>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="4">
-                        <div class="flex align-center justify-center items-center m-2">
-                        </div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+  <!-- Título y descripción -->
+  <div class="mb-5">
+    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center sm:text-left">
+      User Management
+    </h5>
+    <p class="text-gray-700 dark:text-gray-400 text-center sm:text-left">
+        Manage your users efficiently with our user management system. You can filter, search, and add new users easily.
+    </p>
+  </div>
+
+<!-- Contenedor de filtros, búsqueda y botón -->
+<div class="flex flex-col sm:flex-row sm:items-end sm:justify-between sm:flex-wrap gap-4 mb-4">
+
+    <!-- Inputs de filtro (estatus y tipo) -->
+    <div class="m-auto grid grid-row-1 grid-cols-5 items-center gap-6">
+      <app-g-select
+        (ngModelChange)="filterUsers()"
+        [(ngModel)]="filteredStatus"
+        placeholder="status"
+        name="estatus"
+        label="Status"
+        [options]="estados">
+      </app-g-select>
+  
+      <app-g-select
+        (ngModelChange)="filterUsers()"
+        [(ngModel)]="filteredType"
+        placeholder="type"
+        name="tipo"
+        label="Types"
+        [options]="tipos">
+      </app-g-select>
+
+      <div class="col-span-2">
+
+        <app-g-text
+          (ngModelChange)="filterUsers()"
+          [(ngModel)]="filteredEmail"
+          name="text"
+          label="Search by email:"
+          placeholder="user@example.com"
+          type="email">
+        </app-g-text>
+      </div>
+
+          <!-- Botón agregar -->
+    <a href="/register-user" class="">
+        <button
+          type="button"
+          class="px-4 py-2.5 mt-7 text-sm font-medium text-green-600 border border-green-500 rounded-lg hover:bg-green-600 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-300 dark:border-green-400 dark:text-green-400 dark:hover:bg-green-700 dark:hover:text-white dark:focus:ring-green-900">
+          <i class="fa-solid fa-plus mr-2"></i> Add User
+        </button>
+      </a>
     </div>
+  
+
+  </div>
+  
+
+  <!-- Tabla -->
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="px-6 py-3">Nombre de usuario</th>
+          <th scope="col" class="px-6 py-3">Estado</th>
+          <th scope="col" class="px-6 py-3">Tipo</th>
+          <th scope="col" class="px-6 py-3">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let user of filteredUsers"
+          class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {{ user.strName }}
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex items-center">
+              <div
+                [ngClass]="{
+                  'bg-green-500': user.idUsuCatEstadoFK == 1,
+                  'bg-red-500': user.idUsuCatEstadoFK == 2
+                }"
+                class="h-2.5 w-2.5 rounded-full mr-2"></div>
+              {{ getStatusName(user.idUsuCatEstadoFK) }}
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            {{ getTypeName(user.idUsuCatTipoUsuario) }}
+          </td>
+          <td class="px-6 py-4">
+            <app-actions-user [user]="user" (usuarioCambio)="loadUserData()"></app-actions-user>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">
+            <div class="flex justify-center items-center m-2">
+              <!-- Paginación u otros controles opcionales -->
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 </div>

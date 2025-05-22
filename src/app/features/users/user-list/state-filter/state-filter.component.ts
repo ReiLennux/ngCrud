@@ -10,21 +10,12 @@ import { UserService } from '../../../../core/services/user.service';
 })
 export class StateFilterComponent implements OnInit {
   estados: {id: number, strName: string }[] = [];
-  @Output() filterChanged = new EventEmitter<number>();
-  @Input() user: User | any;
-
-  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.estados().subscribe(
-      (data: any) => {
-        this.estados = data;
-      }
-    );
+
   }
 
   onFilterChange(event: any) {
     const selectedEstadoId = event.target.value;
-    this.filterChanged.emit(selectedEstadoId);
   }
 }

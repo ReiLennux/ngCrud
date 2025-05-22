@@ -17,17 +17,19 @@
                 type="email" [validation]="true">
             </app-g-text>
 
-            <app-g-select [(ngModel)]="user.idUsuCatTipoUsuario" name="idUsuCatTipoUsuario" [placeholder]="'User type'"
+            <app-g-select [(ngModel)]="user.idUsuCatTipoUsuario" name="idUsuCatTipoUsuario" placeholder="User type"
                 label="User Type" [options]="tipos" [validation]="true" [errorMessage]="''">
             </app-g-select>
         </div>
-        <app-g-text [(ngModel)]="user.strPassword" name="password" label="Password:" placeholder="•••••••••"
-            type="password" [validation]="true">
-        </app-g-text>
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <app-g-text [(ngModel)]="user.strPassword" name="password" label="Password:" placeholder="•••••••••"
+                type="password" [validation]="true">
+            </app-g-text>
 
-        <app-g-text (keyup)="checkPasswordMatch()" [(ngModel)]="rPassword" name="confirm_password"
-            label="Confirm password:" placeholder="•••••••••" type="password" [validation]="true">
-        </app-g-text>
+            <app-g-text (keyup)="checkPasswordMatch()" [(ngModel)]="rPassword" name="confirm_password"
+                label="Confirm password:" placeholder="•••••••••" type="password" [validation]="true">
+            </app-g-text>
+        </div>
         <div class="m-3">
             <app-alert *ngIf="user.idUsuCatTipoUsuario == 1"></app-alert>
 

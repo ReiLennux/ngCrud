@@ -13,8 +13,9 @@ export class ActionsUserComponent implements OnInit {
   @Output() usuarioCambio = new EventEmitter<void>();
   showModal : boolean = false;
   showPassword: boolean = false;
-  estados : {id: Number, strName: string}[] = []
-  tipos: {id: Number, strName: string}[] = []
+
+  estados: {id: number, strName: string }[] = [];
+  tipos: {id: number, strName: string }[] = [];
   putUser: User = {
     id: '',
     strName: "",
