@@ -80,8 +80,7 @@ export class UserService {
         })
     ).pipe(
       catchError(error => {
-        console.error('Error al crear usuario:', error);
-        return throwError(() => new Error('Error al crear usuario'));
+        return throwError(() => new Error('Error al crear usuario: ' + error));
       })
     );
   }

@@ -21,7 +21,7 @@ export class GSelectInputComponent implements ControlValueAccessor {
   @Input() label = '';
   @Input() readOnly = false;
   @Input() errorMessage = '';
-  @Input() options: { value: number; label: string }[] = [{ value: 0, label: '' }];
+  @Input() options: { id: number; strName: string }[] = [{ id: 0, strName: '' }];
 
   private _value = 0;
 

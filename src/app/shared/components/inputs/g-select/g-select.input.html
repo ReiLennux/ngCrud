@@ -1,6 +1,6 @@
-<div class="">
+<div class="p-2">
     <!-- Etiqueta del campo -->
-    <label [for]="name" class="block text-sm font-medium text-gray-900 dark:text-white">
+    <label [for]="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
       {{ label }}
     </label>
     
@@ -10,19 +10,14 @@
       [name]="name"
       [(ngModel)]="value"
       [disabled]="disabled"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white placeholder-gray-400" 
       [attr.placeholder]="placeholder"
     >
       <option *ngIf="placeholder" value="" disabled selected>seleccione un {{ placeholder }}</option>
       <!-- Mostrar las opciones dinámicamente -->
-      <option *ngFor="let option of options" [value]="option.value">
-        {{ option.label }}
+      <option *ngFor="let option of options" [value]="option.id">
+        {{ option.strName }}
       </option>
     </select>
-  
-    <!-- Mensaje de error (si aplica) -->
-    <div *ngIf="validation" class="error-message">
-      {{ errorMessage }}
-    </div>
   </div>
   
