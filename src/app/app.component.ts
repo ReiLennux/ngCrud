@@ -1,6 +1,5 @@
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { StorageService } from './core/services/storage.service';
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { filter } from 'rxjs';
 
 @Component({
@@ -12,9 +11,7 @@ import { filter } from 'rxjs';
 export class AppComponent {
   title = 'Angular 15 CRUD';
   showNavbar = true;
-  constructor(private storageService: StorageService,
-    private router: Router,
-    private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {

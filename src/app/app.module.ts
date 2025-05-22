@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './shared/components/login/login.component';
 import { Alert2Component } from './features/users/user-form/alert2/alert2.component';
 import { HomeComponent } from './shared/components/home/home.component';
-import { PaginatorComponent } from './shared/components/paginator/paginator.component';
 import { PrincipalProductsComponent } from './features/products/principal-products/principal-products.component';
 import { SecondaryProductsComponent } from './features/products/secondary-products/secondary-products.component';
 import { ActionsComponent } from './features/products/principal-products/actions/actions.component';
@@ -29,6 +28,10 @@ import { environment } from '../environments/environments';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { AddCategoriesComponent } from './features/catalogs/products/add-categories/add-categories.component';
 import { CatalogPrincipalComponent } from './features/catalogs/catalog-principal/catalog-principal.component';
+import { GTextAreaInput } from './shared/components/inputs/g-text-area/g-text-area.input';
+import { GTextInput } from './shared/components/inputs/g-text/g-text.input';
+import { GDateInput } from './shared/components/inputs/g-date/g-date.input';
+import { GSelectInputComponent } from './shared/components/inputs/g-select/g-select.input';
 
 export function initializeFirebaseApp() {
     return initializeApp(environment.firebase);
@@ -36,6 +39,10 @@ export function initializeFirebaseApp() {
 
   @NgModule({
     declarations: [
+      GTextAreaInput,
+      GTextInput,
+      GDateInput,
+      GSelectInputComponent,
       AppComponent,
       NavigationComponent,
       UserListComponent,
@@ -46,7 +53,6 @@ export function initializeFirebaseApp() {
       LoginComponent,
       Alert2Component,
       HomeComponent,
-      PaginatorComponent,
       PrincipalProductsComponent,
       SecondaryProductsComponent,
       ActionsComponent,

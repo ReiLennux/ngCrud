@@ -1,0 +1,29 @@
+<div class="g-date-wrapper">
+  <label [for]="name" class="block text-sm font-medium text-gray-900 dark:text-white">
+    {{ label }}
+  </label>
+  
+  <input 
+    [id]="name" 
+    [name]="name" 
+    type="date"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [readOnly]="readOnly"
+    [value]="_value"
+    (input)="onInputChange($event)"
+    (blur)="onTouched()"
+    class="g-date-input"
+    [ngClass]="{
+      'g-date-disabled': disabled,
+      'g-date-readonly': readOnly
+    }"
+    required
+  />
+
+  <div *ngIf="validation">
+    <p class="error-message">
+      {{ errorMessage }}
+    </p>
+  </div>
+</div>

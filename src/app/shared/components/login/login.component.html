@@ -1,27 +1,27 @@
 <section class="flex flex-col justify-center items-center h-screen px-4 sm:px-6 lg:px-8">
     <div
-        class="mt-8 flex flex-col items-center bg-white dark:bg-gray-700 border border-gray-200 rounded-lg shadow-lg md:flex-row md:max-w-4xl w-full">
+        class="mt-8 flex flex-col items-center bg-white dark:bg-gray-800 border border-gray-200 rounded-lg shadow-lg md:flex-row md:max-w-4xl w-full">
         <img class="object-cover w-full rounded-t-lg h-48 sm:h-64 md:h-auto md:w-1/3 md:rounded-none md:rounded-s-lg"
             src="../../../assets/img/store.jpg" alt="Store">
         <div class="flex flex-col justify-between p-4 w-full md:w-2/3 leading-normal">
             <form class="space-y-6 w-full" #form="ngForm" (ngSubmit)="onSubmit()">
                 <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center md:text-left">Inicia sesión</h5>
-                <div>
-                    <label for="username"
-                        class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de
-                        Usuario</label>
-                    <input type="text" name="username" id="username" [(ngModel)]="userData.email" pattern="^(?!\s*$).+"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="Ej. Reyes Lenny" required />
-                </div>
-                <div>
-                    <label for="password"
-                        class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
-                    <input type="password" name="password" id="password" [(ngModel)]="userData.password" pattern="^(?!\s*$).+"
-                        placeholder="••••••••"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        required />
-                </div>
+                <app-g-text 
+                [(ngModel)]="userData.email"
+                name="username"
+                label="Username:"
+                placeholder="user@example.com"
+                type="email"
+                [validation]="true">
+              </app-g-text>
+              <app-g-text 
+              [(ngModel)]="userData.password"
+              name="password"
+              label="Password:"
+              placeholder="•••••••••••"
+              type="password"
+              [validation]="true">
+            </app-g-text>
                 <ng-container *ngIf="!loading; else elseTemplate">
                     <button
                         class="w-full mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Iniciar

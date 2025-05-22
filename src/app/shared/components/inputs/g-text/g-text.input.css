@@ -1,0 +1,4 @@
+:host {
+    background-color: transparent; /* Elimina cualquier fondo heredado */
+    border: none; /* Elimina el borde */
+  }

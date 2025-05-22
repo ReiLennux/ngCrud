@@ -1,0 +1,27 @@
+
+<div>
+    <label 
+        [for]="name" 
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        {{label}}
+    </label>
+    <textarea 
+        [id]="name" 
+        [rows]="rows" 
+        class="block p-2.5 w-full text-sm placeholder-gray-400 text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+        [placeholder]="placeholder"
+        [disabled]="disabled"
+        [attr.minlength]="minLength"
+        [attr.maxlength]="maxLength"
+        [value]="value"
+        (input)="onInputChange($event)"
+        (blur)="onTouched()"
+        [readOnly]="readOnly"
+        >
+    </textarea>
+    <div *ngIf="validation">
+        <p class="error-message">
+          {{ errorMessage }}
+        </p>
+      </div> 
+</div>
