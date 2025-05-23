@@ -1,9 +1,0 @@
-<form class="max-w-sm mx-auto">
-    <select
-        class="block w-full p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        (change)="onCategoriaSeleccionada($event)"
-    >
-        <option [hidden]="product" selected value="">Todas las categorías</option>
-        <option [selected]="product && (categoria.id == product.idCatCategoria)" *ngFor="let categoria of categorias" [value]="categoria.id">{{categoria.strName}}</option>
-    </select>
-</form>

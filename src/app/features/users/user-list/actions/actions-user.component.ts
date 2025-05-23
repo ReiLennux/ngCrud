@@ -14,13 +14,13 @@ export class ActionsUserComponent implements OnInit {
   showModal : boolean = false;
   showPassword: boolean = false;
 
-  estados: {id: number, strName: string }[] = [];
-  tipos: {id: number, strName: string }[] = [];
+  estados: {id: string, strName: string }[] = [];
+  tipos: {id: string, strName: string }[] = [];
   putUser: User = {
     id: '',
     email: "",
-    idUsuCatEstadoFK: 0,
-    idUsuCatTipoUsuario: 0,
+    idUsuCatEstadoFK: '',
+    idUsuCatTipoUsuario: '',
     strPassword: "",
   };
   rPassword: string =""
@@ -110,10 +110,10 @@ export class ActionsUserComponent implements OnInit {
     );
   }
 
-  setEstado(estado: number) {
-    this.putUser.idUsuCatEstadoFK = +estado;
+  setEstado(estado: string) {
+    this.putUser.idUsuCatEstadoFK = estado;
   }
-  setTipo(tipo: number) {
+  setTipo(tipo: string) {
     this.putUser.idUsuCatTipoUsuario = tipo;
   }
 

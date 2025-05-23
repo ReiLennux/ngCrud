@@ -10,7 +10,7 @@ import { UserService } from '../../../core/services/user.service';
   styleUrls: ['./user-form.component.css']
 })
 export class UserFormComponent implements OnInit {
-  tipos: Array<{ id: number, strName: string }> = [];
+  tipos: { id: string, strName: string }[] = [];
 
   user: User = this.getEmptyUser();
   rPassword: string = "";
@@ -26,15 +26,15 @@ export class UserFormComponent implements OnInit {
     return {
       email: '',
       strPassword: '',
-      idUsuCatTipoUsuario: 0,
+      idUsuCatTipoUsuario: '',
       id: '',
-      idUsuCatEstadoFK: 0
+      idUsuCatEstadoFK: ''
     };
   }
 
   private loadTipos(): void {
     this.userService.tipos().subscribe({
-      next: (data: Array<{ id: number, strName: string }>) => this.tipos = data,
+      next: (data: { id: string, strName: string }[]) => this.tipos = data,
       error: err => console.error('Error cargando tipos de usuario', err)
     });
   }

@@ -72,7 +72,7 @@ export class UserService {
           const newUser: User = {
             id: cred.user.uid,
             email: user.email,
-            idUsuCatEstadoFK: 1,
+            idUsuCatEstadoFK: '1',
             idUsuCatTipoUsuario: user.idUsuCatTipoUsuario
           };
 

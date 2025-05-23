@@ -5,7 +5,7 @@ import { Observable, from, map } from 'rxjs';
 export interface Categoria {
   id?: string;
   strName: string;
-  strDescription: string;
+  strDescription?: string;
 }
 
 export interface Subcategoria {

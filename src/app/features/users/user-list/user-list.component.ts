@@ -14,12 +14,12 @@ export class UserListComponent implements OnInit {
   users: User[] = [];
   filteredUsers: User[] = [];
 
-  filteredStatus: number = 0;
-  filteredType: number = 0;
+  filteredStatus: string = '';
+  filteredType: string = '';
   filteredEmail: string = '';
 
-  estados: {id: number, strName: string }[] = [];
-  tipos: {id: number, strName: string }[] = [];
+  estados: {id: string, strName: string }[] = [];
+  tipos: {id: string, strName: string }[] = [];
   //#endregion
 
   //#region constructor
@@ -49,20 +49,20 @@ export class UserListComponent implements OnInit {
 
   filterUsers() {
     let filteredUsers = this.users.filter(user =>
-      (this.filteredStatus == 0 || user.idUsuCatEstadoFK == this.filteredStatus) &&
-      (this.filteredType == 0 || user.idUsuCatTipoUsuario == this.filteredType) &&
+      (this.filteredStatus == '' || user.idUsuCatEstadoFK == this.filteredStatus) &&
+      (this.filteredType == '' || user.idUsuCatTipoUsuario == this.filteredType) &&
       (this.filteredEmail == '' || user.email.toLowerCase().includes(this.filteredEmail.toLowerCase()))
     );
     this.filteredUsers = filteredUsers;
   }
 
-  getStatusName(estadoId: number): String {
-    const estado = this.estados.find((estado: { id: number; }) => estado.id === estadoId);
+  getStatusName(estadoId: string): String {
+    const estado = this.estados.find((estado: { id: string; }) => estado.id === estadoId);
     return estado ? estado.strName : '';
   }
 
-  getTypeName(tipoId: number): String {
-    const tipo = this.tipos.find((tipo: { id: number; }) => tipo.id === tipoId);
+  getTypeName(tipoId: string): String {
+    const tipo = this.tipos.find((tipo: { id: string; }) => tipo.id === tipoId);
     return tipo ? tipo.strName : '';
   }
   //#endregion

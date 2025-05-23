@@ -12,8 +12,8 @@ import { ProductsService } from '../../../core/services/products/products.servic
 })
 export class PrincipalProductsComponent implements OnInit {
   products: product[] = [];
-  categorias: Categoria[] = [];
-  subcategorias: Subcategoria[] = [];
+  categorias: {id: string; strName: string}[] = [];
+  subcategorias: {id: string; strName: string}[] = [];
   productoSeleccionadoId!: string;
   categoriaSeleccionadoId: string = "";
   subcategoriaSeleccionadoId: string = "";
@@ -21,7 +21,7 @@ export class PrincipalProductsComponent implements OnInit {
 
   constructor(
     private productsService: ProductsService,
-    private cateogoriesService: CategoriesService
+    private categoriesService: CategoriesService
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +29,10 @@ export class PrincipalProductsComponent implements OnInit {
     this.obtenerCategorias();
     this.obtenerSubcategorias();
   }
+
+  //#region Filters
+
+  //#endregion
 
   obtenerProductos() {
     this.productsService.obtenerProductos().subscribe(
@@ -40,7 +44,7 @@ export class PrincipalProductsComponent implements OnInit {
   }
 
   obtenerCategorias() {
-    this.cateogoriesService.obtenerCategorias().subscribe(
+    this.categoriesService.obtenerCategorias().subscribe(
       (data: any[]) => {
         this.categorias = data;
       },
@@ -49,7 +53,7 @@ export class PrincipalProductsComponent implements OnInit {
   }
 
   obtenerSubcategorias() {
-    this.cateogoriesService.obtenerTodasSubCategorias().subscribe(
+    this.categoriesService.obtenerTodasSubCategorias().subscribe(
       (data: any[]) => {
         this.subcategorias = data;
       },
@@ -74,7 +78,7 @@ export class PrincipalProductsComponent implements OnInit {
     this.ngOnInit();
   }
 
-  obtenerCategoria(categoriaId: string | undefined): String {
+  obtenerCategoria(categoriaId: string): String {
     const categoria = this.categorias.find(cat => cat.id === categoriaId);
     return categoria ? categoria.strName : '';
   }
@@ -91,11 +95,6 @@ export class PrincipalProductsComponent implements OnInit {
           (this.subcategoriaSeleccionadoId == "" || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
         (this.searchTerm === '' || producto.strName.toLowerCase().includes(this.searchTerm.toLowerCase()))
       )
-  }
-
-
-  onCategoriaSeleccionada(categoria: any) {
-    this.categoriaSeleccionadoId = categoria !== null ? categoria : 0;
   }
 
   onsubcategoriaSeleccionada(subcategoria: any) {

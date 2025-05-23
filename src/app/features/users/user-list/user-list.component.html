@@ -84,8 +84,8 @@
             <div class="flex items-center">
               <div
                 [ngClass]="{
-                  'bg-green-500': user.idUsuCatEstadoFK == 1,
-                  'bg-red-500': user.idUsuCatEstadoFK == 2
+                  'bg-green-500': user.idUsuCatEstadoFK == '1',
+                  'bg-red-500': user.idUsuCatEstadoFK == '2'
                 }"
                 class="h-2.5 w-2.5 rounded-full mr-2"></div>
               {{ getStatusName(user.idUsuCatEstadoFK) }}

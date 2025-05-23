@@ -22,7 +22,7 @@ export class GSelectInputComponent implements ControlValueAccessor {
   @Input() readOnly = false;
   @Input() isFilter = false;
   @Input() errorMessage = '';
-  @Input() options: { id: number; strName: string }[] = [{ id: 0, strName: '' }];
+  @Input() options: { id: string; strName: string }[] = [{ id: "", strName: '' }];
 
   private _value = 0;
 

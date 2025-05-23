@@ -1,4 +1,4 @@
-import { importProvidersFrom, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,11 +14,9 @@ import { HomeComponent } from './shared/components/home/home.component';
 import { PrincipalProductsComponent } from './features/products/principal-products/principal-products.component';
 import { SecondaryProductsComponent } from './features/products/secondary-products/secondary-products.component';
 import { ActionsComponent } from './features/products/principal-products/actions/actions.component';
-import { CatFilterComponent } from './features/products/principal-products/cat-filter/cat-filter.component';
-import { SubcatFilterComponent } from './features/products/principal-products/subcat-filter/subcat-filter.component';
 import { PrincipalSalesComponent } from './features/sales/principal-sales/principal-sales.component';
 import { SecondarySalesComponent } from './features/sales/secondary-sales/secondary-sales.component';
-import { ActionsUserComponent } from './features/users/user-list/actions-user/actions-user.component';
+import { ActionsUserComponent } from './features/users/user-list/actions/actions-user.component';
 import { ActionsSalesComponent } from './features/sales/secondary-sales/actions-sales/actions-sales.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -52,8 +50,6 @@ export function initializeFirebaseApp() {
       PrincipalProductsComponent,
       SecondaryProductsComponent,
       ActionsComponent,
-      CatFilterComponent,
-      SubcatFilterComponent,
       PrincipalSalesComponent,
       SecondarySalesComponent,
       ActionsUserComponent,
