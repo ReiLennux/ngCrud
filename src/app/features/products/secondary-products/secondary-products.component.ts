@@ -1,6 +1,6 @@
 import { FileService } from './../../../core/services/file.service';
 import { CategoriesService, Categoria } from './../../../core/services/products/catalog/categories.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { product } from '../../../core/models/product';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
@@ -13,7 +13,7 @@ import { ProductsService } from '../../../core/services/products/products.servic
     styleUrls: ['./secondary-products.component.css'],
     standalone: false
 })
-export class SecondaryProductsComponent {
+export class SecondaryProductsComponent implements OnInit {
   newProducto: product = {
     id: 0,
     strName: '',
@@ -27,6 +27,7 @@ export class SecondaryProductsComponent {
     decPrice: 0,
     strImage: ''
   };
+  
   selectedFile: File | undefined;
 
   categorias: {id: string, strName: string}[] = [];
@@ -39,6 +40,11 @@ export class SecondaryProductsComponent {
     private categoriesService: CategoriesService,
     private fileService: FileService,
   ){}
+
+  ngOnInit(): void {
+    this.obtenerCategorias();
+    this.obtenerSubcategorias();
+  }
 
   async submitForm() {
     if (!this.selectedFile) {

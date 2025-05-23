@@ -4,19 +4,19 @@
         <a href="/products"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-26 h-8 ms-auto inline-flex justify-center items-center mb-4 p-3">
             <i class="fa-solid fa-arrow-left mr-1"></i>
-            Regresar
+            Back
         </a>
         <div class="mb-1">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Crea un nuevo producto</h5>
-            <p class="font-normal text-gray-700 dark:text-gray-400">Guarda un producto en el sistema.</p>
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Register a new product</h5>
+            <p class="font-normal text-gray-700 dark:text-gray-400">Save a product in the system.</p>
         </div>
         <div class="p-1 md:p-5 space-y-4">
-            <app-g-text [(ngModel)]="newProducto.strName" name="strName" label="Product Name:" placeholder="0"
-                type="number" [validation]="true">
+            <app-g-text [(ngModel)]="newProducto.strName" name="strName" label="Product Name:" placeholder="eggs"
+                type="text" [validation]="true">
             </app-g-text>
 
             <app-g-text-area class="col-span-2" [(ngModel)]="newProducto.strDescription" name="strDescription"
-                label="strDescription" placeholder="Product Description" [validation]="true" [errorMessage]="''">
+                label="Description:" placeholder="Product Description" [validation]="true" [errorMessage]="''">
             </app-g-text-area>
 
             <div class="grid grid-cols-2 gap-4">
@@ -29,7 +29,7 @@
                 </app-g-select>
             </div>
 
-            <div class="grid grid-cols-3 gap-1">
+            <div class="grid grid-cols-3">
                 <app-g-text [(ngModel)]="newProducto.decMinimum" name="decMinimum" label="Minimum Stock:"
                     placeholder="0" type="number" [validation]="true">
                 </app-g-text>
@@ -56,8 +56,7 @@
                 <ng-container *ngIf="!selectedFile; else elseTemplate">
                     <div ngif>
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2"
                                     d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
