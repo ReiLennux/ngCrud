@@ -25,7 +25,7 @@ export class UserService {
           // Asegúrate de que los datos de Firestore se transformen en un objeto User.
           return {
             id: usuario.id, // Esto es necesario para que el campo 'id' se mapee correctamente.
-            strName: usuario.strName,
+            email: usuario.email,
             idUsuCatEstadoFK: usuario.idUsuCatEstadoFK,
             idUsuCatTipoUsuario: usuario.idUsuCatTipoUsuario,
             strPassword: usuario.strPassword, // Esta propiedad es opcional según lo que tengas en Firestore
@@ -66,11 +66,12 @@ export class UserService {
   // Función para crear un nuevo usuario
   public crearUsuario(user: User): Observable<any> {
     return from(
-      createUserWithEmailAndPassword(this.auth, user.strName, user.strPassword!)
+
+      createUserWithEmailAndPassword(this.auth, user.email, user.strPassword!)
         .then(cred => {
           const newUser: User = {
             id: cred.user.uid,
-            strName: user.strName,
+            email: user.email,
             idUsuCatEstadoFK: 1,
             idUsuCatTipoUsuario: user.idUsuCatTipoUsuario
           };

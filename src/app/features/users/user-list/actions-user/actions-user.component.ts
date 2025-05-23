@@ -18,7 +18,7 @@ export class ActionsUserComponent implements OnInit {
   tipos: {id: number, strName: string }[] = [];
   putUser: User = {
     id: '',
-    strName: "",
+    email: "",
     idUsuCatEstadoFK: 0,
     idUsuCatTipoUsuario: 0,
     strPassword: "",

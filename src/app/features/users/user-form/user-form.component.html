@@ -13,16 +13,15 @@
             <p class="font-normal text-gray-700 dark:text-gray-400">Guarda un usuario para acceder al sistema</p>
         </div>
         <div class="grid gap-6 mb-6 md:grid-cols-2">
-            <app-g-text [(ngModel)]="user.strName" name="email" label="Email:" placeholder="user@example.com"
+            <app-g-text [(ngModel)]="user.email" name="email" label="Email:" placeholder="user@example.com"
                 type="email" [validation]="true">
             </app-g-text>
-
             <app-g-select [(ngModel)]="user.idUsuCatTipoUsuario" name="idUsuCatTipoUsuario" placeholder="User type"
                 label="User Type" [options]="tipos" [validation]="true" [errorMessage]="''">
             </app-g-select>
         </div>
         <div class="grid gap-6 mb-6 md:grid-cols-2">
-            <app-g-text [(ngModel)]="user.strPassword" name="password" label="Password:" placeholder="•••••••••"
+            <app-g-text [(ngModel)]="user.strPassword" name="strPassword" label="Password:" placeholder="•••••••••"
                 type="password" [validation]="true">
             </app-g-text>
 

@@ -51,7 +51,7 @@ export class UserListComponent implements OnInit {
     let filteredUsers = this.users.filter(user =>
       (this.filteredStatus == 0 || user.idUsuCatEstadoFK == this.filteredStatus) &&
       (this.filteredType == 0 || user.idUsuCatTipoUsuario == this.filteredType) &&
-      (this.filteredEmail == '' || user.strName.toLowerCase().includes(this.filteredEmail.toLowerCase()))
+      (this.filteredEmail == '' || user.email.toLowerCase().includes(this.filteredEmail.toLowerCase()))
     );
     this.filteredUsers = filteredUsers;
   }

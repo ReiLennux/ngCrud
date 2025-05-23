@@ -24,7 +24,7 @@ export class UserFormComponent implements OnInit {
 
   private getEmptyUser(): User {
     return {
-      strName: '',
+      email: '',
       strPassword: '',
       idUsuCatTipoUsuario: 0,
       id: '',
