@@ -14,6 +14,9 @@ export class AddCategoriesComponent {
     strDescription: '',
   };
 
+  categorias: {id: string, strName: string}[] = [];
+
+
   newSubcategory: Subcategoria = {
     strName: '',
     strDescription: '',
@@ -57,5 +60,14 @@ export class AddCategoriesComponent {
       },
       error: (err) => console.error('Error al crear subcategoría:', err)
     });
+  }
+
+  obtenerCategorias() {
+    this.categoriesService.obtenerCategorias().subscribe(
+      (data: any[]) => {
+        this.categorias = data;
+      },
+      err => console.error(err)
+    );
   }
 }

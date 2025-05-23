@@ -11,72 +11,42 @@
             <p class="font-normal text-gray-700 dark:text-gray-400">Guarda un producto en el sistema.</p>
         </div>
         <div class="p-1 md:p-5 space-y-4">
-            <div>
-                <label for="productName" class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre
-                    del Producto</label>
-                <input type="text" id="productName" [(ngModel)]="newProducto.strName" placeholder="" name="strName" pattern="^(?!\s*$).+"
-                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow-sm sm:text-sm ">
-            </div>
-            <div>
-                <label for="productDescription"
-                    class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción del
-                    Producto</label>
-                <textarea id="productDescription" [(ngModel)]="newProducto.strDescription" name="productDescription" pattern="^(?!\s*$).+"
-                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500dark:text-white mt-1  shadow-sm sm:text-sm "></textarea>
-            </div>
+            <app-g-text [(ngModel)]="newProducto.strName" name="strName" label="Product Name:" placeholder="0"
+                type="number" [validation]="true">
+            </app-g-text>
+
+            <app-g-text-area class="col-span-2" [(ngModel)]="newProducto.strDescription" name="strDescription"
+                label="strDescription" placeholder="Product Description" [validation]="true" [errorMessage]="''">
+            </app-g-text-area>
 
             <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label for="productIdCatCategoria"
-                        class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Categoria</label>
-                    <app-cat-filter (categoriaSeleccionada)="onCategoriaSeleccionada($event)"></app-cat-filter>
-                </div>
-                <div>
-                    <label for="productIdCatCategoria"
-                        class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Subcategoria</label>
-                    <app-subcat-filter (subcategoriaSeleccionada)="onsubcategoriaSeleccionada($event)"
-                        [categoriaSeleccionadaId]="categoriaSeleccionadoId"></app-subcat-filter>
-                </div>
+                <app-g-select [(ngModel)]="categoriaSeleccionadoId" placeholder="Category" name="category"
+                    label="Categories" [options]="categorias">
+                </app-g-select>
+
+                <app-g-select [(ngModel)]="subcategoriaSeleccionadoId" placeholder="Subcategory" name="Subcategory"
+                    label="Subcategory" [options]="subcategorias">
+                </app-g-select>
             </div>
 
             <div class="grid grid-cols-3 gap-1">
-                <div>
-                    <label for="productMin"
-                        class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Stock
-                        Mínimo</label>
-                    <input type="number" id="productMin" [(ngModel)]="newProducto.decMinimum" name="productMin" pattern="^(?!\s*$).+"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
-                </div>
-                <div>
-                    <label for="productMax"
-                        class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Stock
-                        Máximo</label>
-                    <input type="number" id="productMax" [(ngModel)]="newProducto.decMaximum" name="productMax" pattern="^(?!\s*$).+"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
-                </div>
-                <div>
-                    <label for="productStock"
-                        class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Cantidad en
-                        Stock</label>
-                    <input type="number" id="productStock" [(ngModel)]="newProducto.decStock" name="productStock" pattern="^(?!\s*$).+"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
-                </div>
+                <app-g-text [(ngModel)]="newProducto.decMinimum" name="decMinimum" label="Minimum Stock:"
+                    placeholder="0" type="number" [validation]="true">
+                </app-g-text>
+                <app-g-text [(ngModel)]="newProducto.decMaximum" name="decMaximum" label="Maximum Stock:"
+                    placeholder="100" type="number" [validation]="true">
+                </app-g-text>
+                <app-g-text [(ngModel)]="newProducto.decStock" name="decStock" label="Current Stock:" placeholder="0"
+                    type="number" [validation]="true">
+                </app-g-text>
             </div>
             <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label for="productCost"
-                        class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Costo</label>
-                    <input type="number" id="productCost" [(ngModel)]="newProducto.decCost" name="costo" pattern="^(?!\s*$).+"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
-                </div>
-                <div>
-                    <label for="productPrice"
-                        class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Precio</label>
-                    <input type="number" id="productPrice" [(ngModel)]="newProducto.decPrice" name="productPrice" pattern="^(?!\s*$).+"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 shadow-sm sm:text-sm">
-                </div>
+                <app-g-text [(ngModel)]="newProducto.decCost" name="decCost" label="Cost:" placeholder="0" type="money"
+                    [validation]="true">
+                </app-g-text>
+                <app-g-text [(ngModel)]="newProducto.decPrice" name="decPrice" label="Price:" placeholder="100"
+                    type="money" [validation]="true">
+                </app-g-text>
             </div>
         </div>
         <!--Image Input-->

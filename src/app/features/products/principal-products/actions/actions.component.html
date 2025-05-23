@@ -51,19 +51,13 @@
                 <!--FILTROS-->
 
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="productIdCatCategoria"
-                            class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Categoria</label>
-                        <app-cat-filter (categoriaSeleccionada)="onCategoriaSeleccionada($event)" [product]="producto"></app-cat-filter>
-                    </div>
-                    <div>
-                        <label for="productIdCatCategoria"
-                            class="p-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Subcategoria</label>
-                        <app-subcat-filter (subcategoriaSeleccionada)="onsubcategoriaSeleccionada($event)" [categoriaSeleccionadaId]="categoriaSeleccionadoId" [product]="producto"></app-subcat-filter>
-                        
-                    </div>
+                    <app-g-select [(ngModel)]="categoriaSeleccionadoId" placeholder="Category" name="category"
+                        label="Categories" [options]="categorias">
+                    </app-g-select>
+    
+                    <app-g-select [(ngModel)]="subcategoriaSeleccionadoId" placeholder="Subcategory" name="Subcategory"
+                        label="Subcategory" [options]="subcategorias">
+                    </app-g-select>
                 </div>
                 <div class="grid grid-cols-3 gap-4">
                     <div>

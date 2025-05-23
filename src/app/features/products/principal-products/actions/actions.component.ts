@@ -1,3 +1,5 @@
+import { CategoriesService } from './../../../../core/services/products/catalog/categories.service';
+import { FileService } from './../../../../core/services/file.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { product } from '../../../../core/models/product';
 import Swal from 'sweetalert2';
@@ -16,13 +18,16 @@ export class ActionsComponent {
   @Output() productoActualizado = new EventEmitter<void>();
   showModal: boolean = false;
   selectedFile: File | undefined;
+  categorias: {id: string, strName: string}[] = [];
+  subcategorias: {id: string, strName: string}[] = [];
   categoriaSeleccionadoId: string = "";
   subcategoriaSeleccionadoId: string = "";
-  putProducto: product = { ...this.producto }; // Copia independiente del producto
+  putProducto: product = { ...this.producto };
 
   constructor(
     private productsServices: ProductsService, 
-    private http: HttpClient,
+    private fileService: FileService,
+    private categoriesService: CategoriesService,
   ) {}
 
   delete() {
@@ -74,6 +79,24 @@ export class ActionsComponent {
     this.putProducto.idCatSubcategoria = this.subcategoriaSeleccionadoId;
   }
 
+  obtenerCategorias() {
+    this.categoriesService.obtenerCategorias().subscribe(
+      (data: any[]) => {
+        this.categorias = data;
+      },
+      err => console.error(err)
+    );
+  }
+  
+  obtenerSubcategorias() {
+    this.categoriesService.obtenerTodasSubCategorias().subscribe(
+      (data: any[]) => {
+        this.subcategorias = data;
+      },
+      err => console.error(err)
+    );
+  }
+
   async update() {
     if (!this.selectedFile) {
       try {
@@ -92,7 +115,7 @@ export class ActionsComponent {
     formData.append('upload_preset', 'mypreset');
 
     try {
-      const res = await this.http.post<any>('https://api.cloudinary.com/v1_1/dnx8n0vfe/image/upload', formData).toPromise();
+      const res: any = await this.fileService.uploadFile(formData, 'upload');
       this.putProducto.strImage = res.url;
       await of(this.productsServices.editarProducto(this.putProducto)).toPromise();
       console.log(this.putProducto)

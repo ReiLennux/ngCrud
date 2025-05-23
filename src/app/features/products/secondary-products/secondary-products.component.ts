@@ -1,3 +1,5 @@
+import { FileService } from './../../../core/services/file.service';
+import { CategoriesService, Categoria } from './../../../core/services/products/catalog/categories.service';
 import { Component } from '@angular/core';
 import { product } from '../../../core/models/product';
 import { HttpClient } from '@angular/common/http';
@@ -27,12 +29,15 @@ export class SecondaryProductsComponent {
   };
   selectedFile: File | undefined;
 
+  categorias: {id: string, strName: string}[] = [];
+  subcategorias: {id: string, strName: string}[] = [];
   categoriaSeleccionadoId: string = "";
   subcategoriaSeleccionadoId: string = "";
 
   constructor(
     private productsService: ProductsService,
-    private http: HttpClient,
+    private categoriesService: CategoriesService,
+    private fileService: FileService,
   ){}
 
   async submitForm() {
@@ -47,7 +52,7 @@ export class SecondaryProductsComponent {
     formData.append('upload_preset', 'mypreset');
 
     try {
-      const res = await this.http.post<any>('https://api.cloudinary.com/v1_1/dnx8n0vfe/image/upload', formData).toPromise();
+      const res: any = await this.fileService.uploadFile(formData, 'mypreset');
       this.newProducto.strImage = res.url;
       
       const response = await of(this.productsService.agregarProducto(this.newProducto)).toPromise();
@@ -96,5 +101,23 @@ export class SecondaryProductsComponent {
   onsubcategoriaSeleccionada(subcategoria: any) {
     this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria : 0;
     this.newProducto.idCatSubcategoria = this.subcategoriaSeleccionadoId.toString()
+  }
+
+  obtenerCategorias() {
+    this.categoriesService.obtenerCategorias().subscribe(
+      (data: any[]) => {
+        this.categorias = data;
+      },
+      err => console.error(err)
+    );
+  }
+
+  obtenerSubcategorias() {
+    this.categoriesService.obtenerTodasSubCategorias().subscribe(
+      (data: any[]) => {
+        this.subcategorias = data;
+      },
+      err => console.error(err)
+    );
   }
 }

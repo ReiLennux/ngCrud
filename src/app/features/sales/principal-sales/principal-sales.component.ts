@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
 import { SalesService } from '../../../core/services/sales.service';
 import { ProductsService } from '../../../core/services/products/products.service';
+import { CategoriesService } from '../../../core/services/products/catalog/categories.service';
 
 
 @Component({
@@ -25,6 +26,9 @@ export class PrincipalSalesComponent {
   products: product[] = [];
   selectedProducts: SelectedProduct[] = [];
 
+  categorias: {id: string, strName: string}[] = [];
+  subcategorias: {id: string, strName: string}[] = [];
+
   categoriaSeleccionadoId: string = "";
   subcategoriaSeleccionadoId: string = "";
 
@@ -35,6 +39,7 @@ export class PrincipalSalesComponent {
     private saleService: SalesService, 
     private productsService: ProductsService,
     private storageService: StorageService,
+    private categoriesService: CategoriesService
   ) { }
 
   incrementQuantity(selectedProduct: SelectedProduct) {
@@ -68,6 +73,24 @@ export class PrincipalSalesComponent {
             }
         });
     }
+}
+
+obtenerCategorias() {
+  this.categoriesService.obtenerCategorias().subscribe(
+    (data: any[]) => {
+      this.categorias = data;
+    },
+    err => console.error(err)
+  );
+}
+
+obtenerSubcategorias() {
+  this.categoriesService.obtenerTodasSubCategorias().subscribe(
+    (data: any[]) => {
+      this.subcategorias = data;
+    },
+    err => console.error(err)
+  );
 }
 
 

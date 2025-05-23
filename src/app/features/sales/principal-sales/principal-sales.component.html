@@ -11,8 +11,13 @@
   
       <div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-          <app-cat-filter (categoriaSeleccionada)="onCategoriaSeleccionada($event)" class="mr-3"></app-cat-filter>
-          <app-subcat-filter [categoriaSeleccionadaId]="categoriaSeleccionadoId"></app-subcat-filter>
+          <app-g-select [(ngModel)]="categoriaSeleccionadoId" placeholder="Category" name="category"
+          label="Categories" [isFilter]="true" [options]="categorias">
+      </app-g-select>
+
+      <app-g-select [(ngModel)]="subcategoriaSeleccionadoId" placeholder="Subcategory" name="Subcategory"
+          label="Subcategory" [isFilter]="true" [options]="subcategorias">
+      </app-g-select>
         </div>
   
         <label for="table-search" class="sr-only font-thin">Buscar</label>

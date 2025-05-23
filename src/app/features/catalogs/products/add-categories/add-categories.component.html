@@ -56,7 +56,9 @@
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
           Categoría asociada
         </label>
-        <app-cat-filter (categoriaSeleccionada)="onCategoriaSeleccionada($event)"></app-cat-filter>
+        <app-g-select [(ngModel)]="newSubcategory.idCatCategoria" placeholder="Category" name="category"
+        label="Categories" [options]="categorias">
+    </app-g-select>
       </div>
 
       <div>
