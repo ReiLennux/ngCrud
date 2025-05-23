@@ -1,8 +1,0 @@
-<form class="max-w-sm mx-auto">
-  <select
-      class="block w-full p-2 text-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      (change)="onFilterChange($event)">
-      <option value="0" [hidden]="user" [selected]="!user">Todos los tipos</option>
-      <option [selected]="user && tipo.id == user.idUsuCatTipoUsuario" *ngFor="let tipo of tipos" [value]="tipo.id">{{tipo.strName}}</option>
-  </select>
-</form>

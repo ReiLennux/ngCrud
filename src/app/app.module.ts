@@ -5,8 +5,6 @@ import { AppComponent } from './app.component';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
 import { UserListComponent } from './features/users/user-list/user-list.component';
 import { UserFormComponent } from './features/users/user-form/user-form.component';
-import { StateFilterComponent } from './features/users/user-list/state-filter/state-filter.component';
-import { TypeFilterComponent } from './features/users/user-list/type-filter/type-filter.component';
 import { AlertComponent } from './features/users/user-form/alert/alert.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -47,8 +45,6 @@ export function initializeFirebaseApp() {
       NavigationComponent,
       UserListComponent,
       UserFormComponent,
-      StateFilterComponent,
-      TypeFilterComponent,
       AlertComponent,
       LoginComponent,
       Alert2Component,

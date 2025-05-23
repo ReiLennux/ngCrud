@@ -1,23 +1,24 @@
 <div class="p-2">
-    <!-- Etiqueta del campo -->
-    <label [for]="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-      {{ label }}
-    </label>
-    
-    <!-- Select de opciones -->
-    <select 
-      [id]="name"
-      [name]="name"
-      [(ngModel)]="value"
-      [disabled]="disabled"
-      class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white placeholder-gray-400" 
-      [attr.placeholder]="placeholder"
-    >
-      <option *ngIf="placeholder" value="" disabled selected>Select a {{ placeholder }}</option>
-      <!-- Mostrar las opciones dinámicamente -->
-      <option *ngFor="let option of options" [value]="option.id">
-        {{ option.strName }}
-      </option>
-    </select>
-  </div>
+  <!-- Etiqueta del campo -->
+  <label [for]="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+    {{ label }}
+  </label>
   
+  <!-- Select de opciones -->
+  <select 
+    [id]="name"
+    [name]="name"
+    [(ngModel)]="value"
+    [disabled]="disabled"
+    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white placeholder-gray-400"
+  >
+    <!-- Opción por defecto según el contexto -->
+    <option *ngIf="isFilter" value="0">Show all {{ placeholder }}</option>
+    <option *ngIf="!isFilter" disabled [selected]="!value" value="0">Seleccione a {{ placeholder }}</option>
+
+    <!-- Opciones dinámicas -->
+    <option *ngFor="let option of options" [value]="option.id">
+      {{ option.strName }}
+    </option>
+  </select>
+</div>
