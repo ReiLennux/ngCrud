@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../../core/models/user';
-import Swal from 'sweetalert2';
 import { UserService } from '../../../core/services/user.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-user-form',
@@ -16,7 +16,7 @@ export class UserFormComponent implements OnInit {
   rPassword: string = "";
   comparePassword: boolean = true;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.loadTipos();
@@ -55,26 +55,16 @@ export class UserFormComponent implements OnInit {
 
       this.userService.crearUsuario(newUser).subscribe({
         next: () => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Usuario creado',
-            showConfirmButton: false,
-            timer: 1500
-          });
+          this.alertService.success('Usuario creado exitosamente.');
           this.resetForm();
         },
         error: err => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al crear el usuario',
-            text: 'Por favor, intente nuevamente más tarde',
-            showConfirmButton: true
-          });
+          this.alertService.error('Error al crear el usuario. Por favor, intente nuevamente.');
           console.error('Error creando usuario', err);
         }
       });
     } else {
-      console.warn('Formulario no válido o contraseñas no coinciden');
+      this.alertService.warning('Formulario no válido o contraseñas no coinciden.');
     }
   }
 

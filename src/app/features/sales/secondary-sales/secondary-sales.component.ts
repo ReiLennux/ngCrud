@@ -21,8 +21,6 @@ export class SecondarySalesComponent implements OnInit {
   constructor(private saleService: SalesService, private userService: UserService) { }
 
   filtrarSales(): Sale[] {
-    console.log(this.sales);
-    console.log(this.usuarioSeleccionado);
     return this.sales.filter(sale =>
       (this.usuarioSeleccionado == '' || sale.DateSale.idUsuUsuario == this.usuarioSeleccionado) &&
       (this.dateSearch == "" || sale.DateSale.dtDate === this.dateSearch) &&
@@ -35,7 +33,6 @@ export class SecondarySalesComponent implements OnInit {
     this.estadoSeleccionado = event.target.value;
   }
   onUserChange(event: any) {
-    console.log(event.target.value);
     this.usuarioSeleccionado = event.target.value;
   }
   onDateChange(event: any) {

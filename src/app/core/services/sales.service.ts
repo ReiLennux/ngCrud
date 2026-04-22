@@ -40,7 +40,6 @@ export class SalesService {
     const productSnapshot = await getDoc(productDocRef);
   
     if (productSnapshot.exists()) {
-      console.log('Producto encontrado:', productSnapshot.data());
       const product = productSnapshot.data() as product;
       const newStock = product.decStock + quantityChange;
   

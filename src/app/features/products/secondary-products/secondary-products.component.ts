@@ -4,8 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { product } from '../../../core/models/product';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
-import Swal from 'sweetalert2';
 import { ProductsService } from '../../../core/services/products/products.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
     selector: 'app-secondary-products',
@@ -39,6 +39,7 @@ export class SecondaryProductsComponent implements OnInit {
     private productsService: ProductsService,
     private categoriesService: CategoriesService,
     private fileService: FileService,
+    private alertService: AlertService,
   ){}
 
   ngOnInit(): void {
@@ -49,7 +50,8 @@ export class SecondaryProductsComponent implements OnInit {
   async submitForm() {
     if (!this.selectedFile) {
       this.productsService.agregarProducto(this.newProducto);
-      console.log('Producto creado con éxito.');
+      this.alertService.success('Producto creado correctamente.');
+      this.resetForm();
       return;
     }
 
@@ -63,18 +65,11 @@ export class SecondaryProductsComponent implements OnInit {
       
       const response = await of(this.productsService.agregarProducto(this.newProducto)).toPromise();
       
-      console.log(response);
-      console.log(this.newProducto);
-      
-      Swal.fire({
-        icon: "success",
-        title: "Producto creado Creado",
-        showConfirmButton: false,
-        timer: 1500
-      });
+      this.alertService.success('Producto creado correctamente.');
+      this.resetForm();
       
     } catch (err) {
-      console.error('Error:', err);
+      this.alertService.error('Error al crear el producto.');
     }
   }
 

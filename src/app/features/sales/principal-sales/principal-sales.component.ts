@@ -3,18 +3,17 @@ import { Component } from '@angular/core';
 import { SelectedProduct, product } from '../../../core/models/product';
 import { DateSale, Sale, SaleDetails } from '../../../core/models/sale';
 import { createDateSale } from '../../../helpers/generateDateSale';
-import Swal from 'sweetalert2';
 import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
 import { SalesService } from '../../../core/services/sales.service';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { CategoriesService } from '../../../core/services/products/catalog/categories.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 
 @Component({
     selector: 'app-principal-sales',
     templateUrl: './principal-sales.component.html',
-    styleUrls: ['./principal-sales.component.css'] // Corregido styleUrl a styleUrls
-    ,
+    styleUrls: ['./principal-sales.component.css'],
     standalone: false
 })
 export class PrincipalSalesComponent {
@@ -34,12 +33,12 @@ export class PrincipalSalesComponent {
 
   userOnSession: String = ''
 
-
   constructor(
     private saleService: SalesService, 
     private productsService: ProductsService,
     private storageService: StorageService,
-    private categoriesService: CategoriesService
+    private categoriesService: CategoriesService,
+    private alertService: AlertService,
   ) { }
 
   incrementQuantity(selectedProduct: SelectedProduct) {
@@ -50,48 +49,31 @@ export class PrincipalSalesComponent {
     if (selectedProduct.quantity > 1) {
         selectedProduct.quantity--;
     } else {
-        Swal.fire({
-            title: '¿Eliminar producto?',
-            text: '¿Estás seguro de que deseas eliminar este producto de la lista?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const index = this.selectedProducts.indexOf(selectedProduct);
-                if (index !== -1) {
-                    this.selectedProducts.splice(index, 1);
-                    Swal.fire(
-                        'Producto eliminado',
-                        'El producto ha sido eliminado de la lista.',
-                        'success'
-                    );
-                }
-            }
-        });
+        const index = this.selectedProducts.indexOf(selectedProduct);
+        if (index !== -1) {
+            this.selectedProducts.splice(index, 1);
+            this.alertService.success('El producto ha sido eliminado de la lista.');
+        }
     }
-}
+  }
 
-obtenerCategorias() {
-  this.categoriesService.obtenerCategorias().subscribe(
-    (data: any[]) => {
-      this.categorias = data;
-    },
-    err => console.error(err)
-  );
-}
+  obtenerCategorias() {
+    this.categoriesService.obtenerCategorias().subscribe(
+      (data: any[]) => {
+        this.categorias = data;
+      },
+      err => console.error(err)
+    );
+  }
 
-obtenerSubcategorias() {
-  this.categoriesService.obtenerTodasSubCategorias().subscribe(
-    (data: any[]) => {
-      this.subcategorias = data;
-    },
-    err => console.error(err)
-  );
-}
+  obtenerSubcategorias() {
+    this.categoriesService.obtenerTodasSubCategorias().subscribe(
+      (data: any[]) => {
+        this.subcategorias = data;
+      },
+      err => console.error(err)
+    );
+  }
 
 
   ngOnInit(): void {
@@ -109,20 +91,12 @@ obtenerSubcategorias() {
         (p) => p.product.id === product.id
       );
       if (isProductExists) {
-        Swal.fire({
-          icon: 'info',
-          title: 'el producto ya esta en la venta',
-          showConfirmButton: false
-        })
+        this.alertService.info('El producto ya está en la venta.');
       } else {
-        this.selectedProducts.push({ product: product, quantity: 1 }); // Por defecto, la cantidad es 1
+        this.selectedProducts.push({ product: product, quantity: 1 });
       }
     }else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Stock insuficiente',
-        showConfirmButton: false
-      })
+      this.alertService.error('Stock insuficiente.');
     }
     
   }
@@ -160,31 +134,19 @@ obtenerSubcategorias() {
         decSubtotal: subtotal
       };
   
-      this.saleService.postSale(newSale).subscribe(
+this.saleService.postSale(newSale).subscribe(
         response => {
           generateAndDownloadTicket(this.selectedProducts);
           this.selectedProducts = [];
-  
-          Swal.fire({
-            icon: 'success',
-            title: 'Venta creada con éxito',
-            showConfirmButton: false
-          });
+          this.alertService.success('Venta creada con éxito.');
         },
         error => {
-          console.error("Error al crear venta:", error);
+          this.alertService.error('Error al crear la venta.');
         }
       );
-  
+   
     } else {
-      Swal.fire({
-        title: '¡Claro que no! 😄',
-        text: "Venta con 0 productos, imposible cobrar.",
-        icon: "error",
-        background: "#111827",
-        color: "#fff",
-        showConfirmButton: false
-      });
+      this.alertService.error('Venta con 0 productos, imposible cobrar.');
     }
   }
   
@@ -194,7 +156,7 @@ obtenerSubcategorias() {
         total += selectedProduct.product.decPrice * selectedProduct.quantity;
     });
     return total;
-}
+  }
 
   
 }

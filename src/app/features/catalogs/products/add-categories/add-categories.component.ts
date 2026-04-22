@@ -38,7 +38,6 @@ export class AddCategoriesComponent {
 
     this.categoriesService.crearCategoria(this.newCategory).subscribe({
       next: (res) => {
-        console.log('Categoría creada:', res);
         this.newCategory = { strName: '', strDescription: '' }; // reset form
       },
       error: (err) => console.error('Error al crear categoría:', err)
@@ -46,7 +45,6 @@ export class AddCategoriesComponent {
   }
 
   submitSubForm() {
-    console.log('Subcategoría:', this.newSubcategory);
     if (!this.newSubcategory.strName.trim() || !this.newSubcategory.idCatCategoria) {
       console.error('Subcategoría o categoría asociada inválida');
       return;
@@ -54,7 +52,6 @@ export class AddCategoriesComponent {
 
     this.categoriesService.crearSubcategoria(this.newSubcategory).subscribe({
       next: (res) => {
-        console.log('Subcategoría creada:', res);
         this.newSubcategory = { strName: '', strDescription: '', idCatCategoria: "" }; // reset form
         this.onCategoriaSeleccionada(0);
       },

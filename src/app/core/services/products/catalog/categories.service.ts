@@ -35,7 +35,6 @@ export class CategoriesService {
 
   // ▶ Crear subcategoría
   crearSubcategoria(subcategoria: Subcategoria): Observable<any> {
-    console.log('Subcategoría a crear:', subcategoria);
     return from(addDoc(this.subcategoriasCollection, subcategoria));
   }
 

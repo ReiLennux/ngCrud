@@ -25,16 +25,12 @@
                 type="password" [validation]="true">
             </app-g-text>
 
-            <app-g-text (keyup)="checkPasswordMatch()" [(ngModel)]="rPassword" name="confirm_password"
-                label="Confirm password:" placeholder="•••••••••" type="password" [validation]="true">
-            </app-g-text>
-        </div>
-        <div class="m-3">
-            <app-alert *ngIf="user.idUsuCatTipoUsuario == '1'"></app-alert>
-
-        </div>
-        <div class="m-3">
-            <app-alert2 *ngIf="!comparePassword"></app-alert2>
+            <div class="flex flex-col">
+                <app-g-text (keyup)="checkPasswordMatch()" [(ngModel)]="rPassword" name="confirm_password"
+                    label="Confirm password:" placeholder="•••••••••" type="password" [validation]="true">
+                </app-g-text>
+                <span *ngIf="rPassword && !comparePassword" class="text-sm text-red-600 mt-1">Las contraseñas no coinciden</span>
+            </div>
         </div>
 
         <button type="submit" [disabled]="!userForm.valid || !comparePassword"

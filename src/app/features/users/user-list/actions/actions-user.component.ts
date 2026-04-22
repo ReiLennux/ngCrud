@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import Swal from 'sweetalert2';
 import { User } from '../../../../core/models/user';
 import { UserService } from '../../../../core/services/user.service';
+import { AlertService } from '../../../../core/services/alert.service';
 @Component({
     selector: 'app-actions-user',
     templateUrl: './actions-user.component.html',
@@ -26,8 +26,9 @@ export class ActionsUserComponent implements OnInit {
   rPassword: string =""
   userOnSesion: string = localStorage.getItem('user')!
 
+  showAlert: boolean = false;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private alertService: AlertService) {}
 
 
   ngOnInit(): void {
@@ -36,40 +37,21 @@ export class ActionsUserComponent implements OnInit {
   toggleModal() {
     this.showModal = !this.showModal;
     this.putUser = {... this.user}
+    this.showAlert = false;
   }
 
   deleteButton(id: String) {
-    Swal.fire({
-      title: "¿Está seguro?",
-      text: "Se eliminará este producto y su información.",
-      icon: "warning",
-      background: "#111827",
-      color:"#fff",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#374151",
-      cancelButtonText: "Cancelar",
-      confirmButtonText: "Continuar"
-    }).then((result: { isConfirmed: any; }) => {
-    if (result.isConfirmed) {
     this.userService.eliminarUsuario(id.toString()).subscribe(
       res => {
-        Swal.fire({
-          title: "Eliminado",
-          text: "El usuario ha sido eliminado",
-          icon: "success"
-        });
+        this.alertService.success('El usuario ha sido eliminado.');
         this.usuarioCambio.emit();
+        setTimeout(() => this.showModal = false, 1500);
       },
       err => {
-        Swal.fire({
-        title: "Error",
-        text: "El usuario no ha sido eliminado debido a un error en el sistema, por favor intente nuevamente en otro momento",
-        icon: "info"
-      });}
+        this.alertService.error('El usuario no ha sido eliminado debido a un error en el sistema.');
+        this.showAlert = true;
+      }
     );
-    }
-  })
   }
 
   updateButton(id: Number) {}
@@ -94,19 +76,12 @@ export class ActionsUserComponent implements OnInit {
   update(){
     this.userService.updateUsuario(this.putUser).subscribe(
       res => {
-        Swal.fire({
-          title: "Actualizado",
-          text: "El usuario ha sido actualizado",
-          icon: "success"
-        });
+        this.alertService.success('El usuario ha sido actualizado.');
         this.usuarioCambio.emit();
       },
       err => {
-        Swal.fire({
-        title: "Error",
-        text: "El usuario no ha sido actualizado debido a un error en el sistema, por favor intente nuevamente en otro momento",
-        icon: "info"
-      });}
+        this.alertService.error('El usuario no ha sido actualizado debido a un error en el sistema.');
+      }
     );
   }
 

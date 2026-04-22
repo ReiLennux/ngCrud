@@ -2,10 +2,10 @@ import { CategoriesService } from './../../../../core/services/products/catalog/
 import { FileService } from './../../../../core/services/file.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { product } from '../../../../core/models/product';
-import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { ProductsService } from '../../../../core/services/products/products.service';
+import { AlertService } from '../../../../core/services/alert.service';
 
 @Component({
     selector: 'app-actions',
@@ -24,45 +24,33 @@ export class ActionsComponent {
   subcategoriaSeleccionadoId: string = "";
   putProducto: product = { ...this.producto };
 
+  showAlert: boolean = false;
+
   constructor(
     private productsServices: ProductsService, 
     private fileService: FileService,
     private categoriesService: CategoriesService,
+    private alertService: AlertService,
   ) {}
 
   delete() {
-    Swal.fire({
-      title: "¿Está seguro?",
-      text: "Se eliminará este producto y su información.",
-      icon: "warning",
-      background: "#111827",
-      color:"#fff",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#374151",
-      cancelButtonText: "Cancelar",
-      confirmButtonText: "Continuar"
-    }).then((result: { isConfirmed: any; }) => {
-      if (result.isConfirmed) {
-        this.productsServices.eliminarProducto(this.producto.id).subscribe(
-          res => {
-            console.log(res); 
-            this.productoActualizado.emit();
-          },
-          err => console.error(err)
-        );
-        Swal.fire({
-          title: "Eliminado",
-          text: "El producto ha sido eliminado",
-          icon: "success"
-        });
+    this.productsServices.eliminarProducto(this.producto.id).subscribe(
+      res => {
+        this.alertService.success('El producto ha sido eliminado.');
+        this.productoActualizado.emit();
+        setTimeout(() => this.showModal = false, 1500);
+      },
+      err => {
+        this.alertService.error('Error al eliminar el producto.');
+        this.showAlert = true;
       }
-    });
+    );
   }
 
   toggleModal() {
     this.showModal = !this.showModal;
-    this.putProducto = { ...this.producto }; // Actualiza la copia independiente del producto
+    this.putProducto = { ...this.producto };
+    this.showAlert = false;
   }
 
   onFileSelected(event: any) {
@@ -103,9 +91,9 @@ export class ActionsComponent {
         await this.productsServices.editarProducto(this.putProducto);
         this.toggleModal();
         this.productoActualizado.emit();
-        console.log('Producto actualizado con éxito.');
+        this.alertService.success('Producto actualizado correctamente.');
       } catch (err) {
-        console.error('Error al editar el producto:', err);
+        this.alertService.error('Error al editar el producto.');
       }
       return;
     }
@@ -118,12 +106,11 @@ export class ActionsComponent {
       const res: any = await this.fileService.uploadFile(formData, 'upload');
       this.putProducto.strImage = res.url;
       await of(this.productsServices.editarProducto(this.putProducto)).toPromise();
-      console.log(this.putProducto)
       this.productoActualizado.emit();
       this.toggleModal();
-      console.log('Producto actualizado con éxito.');
+      this.alertService.success('Producto actualizado correctamente.');
     } catch (err) {
-      console.error('Error al cargar la imagen a Cloudinary:', err);
+      this.alertService.error('Error al cargar la imagen a Cloudinary.');
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { AuthService } from '../../../core/services/auth.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
     selector: 'app-login',
@@ -15,13 +15,11 @@ export class LoginComponent {
     password: ''
   };
 
-  // Variable para controlar el estado de carga del inicio de sesión
   loading: boolean = false;
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(private router: Router, private auth: AuthService, private alertService: AlertService) {}
 
   onSubmit(): void {
-    // Muestra el indicador de carga
     this.loading = true;
 
     this.auth.login(this.userData).subscribe(
@@ -31,17 +29,7 @@ export class LoginComponent {
         this.router.navigate(['/home']);
       },
       err => {
-        Swal.fire({
-          title: '"You shall not pass!"',
-          html: `
-          <img src="https://cdn.vox-cdn.com/thumbor/lyJqnnNCu3Mkbsov-Lup5_jdiVg=/0x0:3831x1587/2070x1164/filters:focal(1835x397:2447x1009):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/70123899/4k_fellowship_movie_screencaps.com_23524.0.jpg">`,
-          text: "- Gandalf",
-          icon: "error",
-          background: "#111827",
-          color:"#fff",
-          showConfirmButton: false
-        })
-        // Oculta el indicador de carga en caso de error
+        this.alertService.error('Credenciales incorrectas. Por favor, intente de nuevo.');
         this.loading = false;
       }
     );

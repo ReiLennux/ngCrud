@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { product } from '../../../core/models/product';
-import Swal from 'sweetalert2';
 import { Categoria, CategoriesService, Subcategoria } from '../../../core/services/products/catalog/categories.service';
 import { ProductsService } from '../../../core/services/products/products.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
     selector: 'app-principal-products',
@@ -21,7 +21,8 @@ export class PrincipalProductsComponent implements OnInit {
 
   constructor(
     private productsService: ProductsService,
-    private categoriesService: CategoriesService
+    private categoriesService: CategoriesService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -66,14 +67,7 @@ export class PrincipalProductsComponent implements OnInit {
   }
 
   actualizarProductos() {
-
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Producto actualizado",
-      showConfirmButton: false,
-      timer: 1500
-    });
+    this.alertService.success('Producto actualizado correctamente.');
     this.products = [];
     this.ngOnInit();
   }

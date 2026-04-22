@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DateSale, Sale, SaleDetails } from '../../../../core/models/sale';
-import Swal from 'sweetalert2';
 import { SelectedProduct, product } from '../../../../core/models/product';
 import { SalesService } from '../../../../core/services/sales.service';
 import { ProductsService } from '../../../../core/services/products/products.service';
 import { generateAndDownloadTicket } from '../../../../helpers/handleTicket';
+import { AlertService } from '../../../../core/services/alert.service';
 
 @Component({
     selector: 'app-actions-sales',
@@ -18,7 +18,10 @@ export class ActionsSalesComponent implements OnInit {
   showModal: boolean = false;
   postSales!: Sale; 
   selectedProducts:SelectedProduct[] = [];
-  constructor(private saleService: SalesService, private productsService: ProductsService) { }
+
+  showAlert: boolean = false;
+
+  constructor(private saleService: SalesService, private productsService: ProductsService, private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.saleService.getSaleById(this.Sale.id!).subscribe(
@@ -35,7 +38,6 @@ export class ActionsSalesComponent implements OnInit {
               });
             }
           });
-          console.log("productos dentro de la venta: ", this.selectedProducts);
         });
       }
     );
@@ -44,36 +46,21 @@ export class ActionsSalesComponent implements OnInit {
 
 
    delete() {
-     Swal.fire({
-       title: "¿Realmente quieres eliminar esta venta?",
-       text: "Si eliminas esta venta, se perderán sus datos para siempre y el stock de los productos sera devuelto.",
-       icon: "warning",
-       background: "#111827",
-       color:"#fff",
-       showCancelButton: true,
-       confirmButtonColor: "#d33",
-       cancelButtonColor: "#374151",
-       cancelButtonText: "Cancelar",
-       confirmButtonText: "Continuar"
-     }).then((result: { isConfirmed: any; }) => {
-       if (result.isConfirmed) {
-         this.saleService.deleteSale(this.Sale).subscribe(
-           res => {
-             this.saleActualizada.emit();
-           },
-           err => console.error(err)
-         );
-         Swal.fire({
-           title: "Eliminado",
-           text: "La venta fue eliminada",
-           icon: "success"
-         });
+     this.saleService.deleteSale(this.Sale).subscribe(
+       res => {
+         this.alertService.success('La venta fue eliminada.');
+         this.saleActualizada.emit();
+         setTimeout(() => this.showModal = false, 1500);
+       },
+       err => {
+         this.alertService.error('Error al eliminar la venta.');
        }
-     });
+     );
    }
 
   toggleModal(){
     this.showModal = !this.showModal;
+    this.showAlert = false;
   }
 
   incrementQuantity(selectedProduct: SelectedProduct) {
@@ -84,28 +71,11 @@ export class ActionsSalesComponent implements OnInit {
     if (selectedProduct.quantity > 1) {
         selectedProduct.quantity--;
     } else {
-        Swal.fire({
-            title: '¿Eliminar producto?',
-            text: '¿Estás seguro de que deseas eliminar este producto de la lista?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const index = this.selectedProducts.indexOf(selectedProduct);
-                if (index !== -1) {
-                    this.selectedProducts.splice(index, 1);
-                    Swal.fire(
-                        'Producto eliminado',
-                        'El producto ha sido eliminado de la lista.',
-                        'success'
-                    );
-                }
-            }
-        });
+        const index = this.selectedProducts.indexOf(selectedProduct);
+        if (index !== -1) {
+            this.selectedProducts.splice(index, 1);
+            this.alertService.success('El producto ha sido eliminado de la lista.');
+        }
     }
 }
 
@@ -127,38 +97,26 @@ async updateSale() {
     }, 0);
 
     const newSale: Sale = {
-      id: this.Sale.id, // si es una actualización
-      DateSale: this.Sale.DateSale,  //usa camelCase como en tu modelo
+      id: this.Sale.id,
+      DateSale: this.Sale.DateSale,
       SaleDetails: saleDetails,
       decSubtotal: subtotal,
-      firebaseId: this.Sale.firebaseId  //si aplica
+      firebaseId: this.Sale.firebaseId
     };
 
     this.saleService.updateSale(newSale).then(
       () => {
         this.selectedProducts = [];
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Venta actualizada con éxito',
-          showConfirmButton: false
-        });
+        this.alertService.success('Venta actualizada con éxito.');
       }
     ).catch(
       error => {
-        console.error("Error al actualizar venta:", error);
+        this.alertService.error('Error al actualizar la venta.');
       }
     );
 
   } else {
-    Swal.fire({
-      title: '¡Claro que no! 😄',
-      text: "Venta con 0 productos, imposible cobrar.",
-      icon: "error",
-      background: "#111827",
-      color: "#fff",
-      showConfirmButton: false
-    });
+    this.alertService.error('Venta con 0 productos, imposible cobrar.');
   }
 }
 

@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
 import { UserListComponent } from './features/users/user-list/user-list.component';
 import { UserFormComponent } from './features/users/user-form/user-form.component';
-import { AlertComponent } from './features/users/user-form/alert/alert.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './shared/components/login/login.component';
-import { Alert2Component } from './features/users/user-form/alert2/alert2.component';
 import { HomeComponent } from './shared/components/home/home.component';
 import { PrincipalProductsComponent } from './features/products/principal-products/principal-products.component';
 import { SecondaryProductsComponent } from './features/products/secondary-products/secondary-products.component';
@@ -43,9 +44,7 @@ export function initializeFirebaseApp() {
       NavigationComponent,
       UserListComponent,
       UserFormComponent,
-      AlertComponent,
       LoginComponent,
-      Alert2Component,
       HomeComponent,
       PrincipalProductsComponent,
       SecondaryProductsComponent,
@@ -60,7 +59,10 @@ export function initializeFirebaseApp() {
     imports: [
       BrowserModule,
       AppRoutingModule,
-      FormsModule
+      FormsModule,
+      CommonModule,
+      BrowserAnimationsModule,
+      ToastrModule.forRoot()
     ],
     providers: [
       provideClientHydration(),
