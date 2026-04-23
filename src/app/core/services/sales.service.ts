@@ -1,8 +1,8 @@
 import { product } from './../models/product';
 import { Injectable } from '@angular/core';
 import { Sale } from '../models/sale';
-import { Observable, catchError, from, map, mergeAll, throwError, tap } from 'rxjs';
-import { Firestore, collection, collectionData, doc, getDoc, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
+import { Observable, catchError, from, map, mergeAll, throwError, tap, switchMap } from 'rxjs';
+import { Firestore, collection, collectionData, doc, getDoc, addDoc, deleteDoc, updateDoc, DocumentReference, CollectionReference } from '@angular/fire/firestore';
 import { AlertService } from './alert.service';
 
 @Injectable({
@@ -10,25 +10,15 @@ import { AlertService } from './alert.service';
 })
 export class SalesService {
 
-  private saleCollection = collection(this.firestore, 'Sales');
-  private productCollection = collection(this.firestore, 'Products');
-  static decQuantity: any;
+  private saleCollection = collection(this.firestore, 'Sales') as CollectionReference<Sale>;
+  private productCollection = collection(this.firestore, 'Products') as CollectionReference<product>;
+
 
   constructor(private firestore: Firestore, private alertService: AlertService) { }
 
 
   public getSaleData(): Observable<Sale[]> {
     return collectionData(this.saleCollection, { idField: 'id' }).pipe(
-      map((sales: any[]) => {
-        return sales.map(sale => {
-          return {
-            id: sale.id, // Esto es necesario para que el campo 'id' se mapee correctamente.
-            DateSale: sale.DateSale,
-            SaleDetails: sale.SaleDetails,
-            decSubtotal: sale.decSubtotal,
-          } as Sale;
-        });
-      }),
       catchError(error => {
         this.alertService.error('Error al obtener ventas');
         return throwError(() => new Error('Error al obtener ventas'));
@@ -37,11 +27,11 @@ export class SalesService {
   }
 
   private async updateProductStock(productId: number, quantityChange: number): Promise<void> {
-    const productDocRef = doc(this.firestore, `products/${productId}`);
+    const productDocRef = doc(this.firestore, `products/${productId}`) as DocumentReference<product>;
     const productSnapshot = await getDoc(productDocRef);
   
     if (productSnapshot.exists()) {
-      const product = productSnapshot.data() as product;
+      const product = productSnapshot.data();
       const newStock = product.decStock + quantityChange;
   
       await updateDoc(productDocRef, { decStock: newStock });
@@ -52,11 +42,12 @@ export class SalesService {
   
 
   public getSaleById(id: string): Observable<Sale> {
-    const saleDocRef = doc(this.firestore, `Sales/${id}`);
+    const saleDocRef = doc(this.firestore, `Sales/${id}`) as DocumentReference<Sale>;
     return from(getDoc(saleDocRef)).pipe(
       map(snapshot => {
-        if (snapshot.exists()) {
-          return { id: snapshot.id, ...snapshot.data() } as unknown as Sale;
+        const data = snapshot.data();
+        if (snapshot.exists() && data) {
+          return { ...data, id: snapshot.id };
         } else {
           throw new Error('Venta no encontrada');
         }
@@ -71,7 +62,7 @@ export class SalesService {
 
   public postSale(sale: Sale): Observable<Sale> {
     return from(addDoc(this.saleCollection, sale)).pipe(
-      map(async snapshot => {
+      switchMap(async snapshot => {
         if (!snapshot.id) {
           throw new Error('Error al agregar la venta');
         }
@@ -83,13 +74,6 @@ export class SalesService {
   
         return { id: snapshot.id, ...sale } as Sale;
       }),
-      map(promise => from(promise)),
-      catchError(error => {
-        this.alertService.error('Error al agregar venta a Firestore');
-        return throwError(() => new Error('Error al agregar venta'));
-      }),
-      map(obs => obs as unknown as Observable<Sale>),
-      mergeAll(),
       tap(() => this.alertService.success('Venta creada con éxito.'))
     );
   }
@@ -120,14 +104,14 @@ export class SalesService {
 
   public async updateSale(sale: Sale): Promise<void> {
     try {
-      const saleDocRef = doc(this.firestore, `Sales/${sale.id}`);
+      const saleDocRef = doc(this.firestore, `Sales/${sale.id}`) as DocumentReference<Sale>;
       const prevSaleSnap = await getDoc(saleDocRef);
   
       if (!prevSaleSnap.exists()) {
         throw new Error('Venta original no encontrada');
       }
   
-      const prevSale = prevSaleSnap.data() as Sale;
+      const prevSale = prevSaleSnap.data();
   
       // 1. Revertir stock anterior
       for (const detail of prevSale.SaleDetails) {
@@ -150,17 +134,9 @@ export class SalesService {
   }
   
 
-  public getSaleStates(): Observable<any[]> {
-    const statesCollection = collection(this.firestore, 'VenCatState');
+  public getSaleStates(): Observable<{ id: string; strName: string }[]> {
+    const statesCollection = collection(this.firestore, 'VenCatState') as CollectionReference<{ id: string; strName: string }>;
     return collectionData(statesCollection, { idField: 'id' }).pipe(
-      map((states: any[]) => {
-        return states.map(state => {
-          return {
-            id: state.id,
-            strName: state.strName
-          };
-        });
-      }),
       catchError(error => {
         this.alertService.error('Error al obtener estados de venta');
         return throwError(() => new Error('Error al obtener estados de venta'));

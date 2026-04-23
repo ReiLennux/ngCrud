@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 import { AlertService } from './alert.service';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,12 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
-  public login(user: any): Observable<UserCredential> {
-    return from(signInWithEmailAndPassword(this.auth, user.email, user.password)).pipe(
+  public login(user: Partial<User>): Observable<UserCredential> {
+    if (!user.email || !user.strPassword) {
+      this.alertService.error('Credenciales incompletas');
+      return throwError(() => new Error('Credenciales incompletas'));
+    }
+    return from(signInWithEmailAndPassword(this.auth, user.email, user.strPassword)).pipe(
       tap(userCredential => {
         if (isPlatformBrowser(this.platformId)) {
                   this.storageService.setToken(userCredential.user.uid);

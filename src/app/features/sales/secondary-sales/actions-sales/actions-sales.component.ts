@@ -24,7 +24,7 @@ export class ActionsSalesComponent implements OnInit {
 
   ngOnInit(): void {
     this.saleService.getSaleById(this.Sale.id!).subscribe({
-      next: (sale: any) => {
+      next: (sale: Sale) => {
         this.postSales = sale;
         this.productsService.obtenerProductos().subscribe({
           next: (productos: product[]) => {

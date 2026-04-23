@@ -45,8 +45,8 @@ export class PrincipalProductsComponent implements OnInit {
 
   obtenerCategorias() {
     this.categoriesService.obtenerCategorias().subscribe({
-      next: (data: any[]) => {
-        this.categorias = data;
+      next: (data: Categoria[]) => {
+        this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
       },
       error: err => {
         console.error(err);
@@ -56,8 +56,8 @@ export class PrincipalProductsComponent implements OnInit {
 
   obtenerSubcategorias() {
     this.categoriesService.obtenerTodasSubCategorias().subscribe({
-      next: (data: any[]) => {
-        this.subcategorias = data;
+      next: (data: Subcategoria[]) => {
+        this.subcategorias = data.map(s => ({ id: s.id!, strName: s.strName }));
       },
       error: err => {
         console.error(err);
@@ -93,8 +93,8 @@ export class PrincipalProductsComponent implements OnInit {
       )
   }
 
-  onsubcategoriaSeleccionada(subcategoria: any) {
-    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria : 0;
+  onsubcategoriaSeleccionada(subcategoria: string | number | null) {
+    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria.toString() : '0';
   }
 
 }

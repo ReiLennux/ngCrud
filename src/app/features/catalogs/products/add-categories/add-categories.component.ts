@@ -25,9 +25,9 @@ export class AddCategoriesComponent {
 
   constructor(private categoriesService: CategoriesService) {}
 
-  onCategoriaSeleccionada(categoria: any) {
-    const categoriaSeleccionadaId = categoria !== null ? categoria : 0;
-    this.newSubcategory.idCatCategoria = categoriaSeleccionadaId.toString();
+  onCategoriaSeleccionada(categoria: string | number | null) {
+    const categoriaSeleccionadaId = categoria !== null ? categoria.toString() : '0';
+    this.newSubcategory.idCatCategoria = categoriaSeleccionadaId;
   }
 
   submitForm() {
@@ -63,8 +63,8 @@ export class AddCategoriesComponent {
 
   obtenerCategorias() {
     this.categoriesService.obtenerCategorias().subscribe({
-      next: (data: any[]) => {
-        this.categorias = data;
+      next: (data: Categoria[]) => {
+        this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
       },
       error: err => {
         console.error(err);

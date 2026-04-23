@@ -59,12 +59,12 @@ export class ActionsUserComponent implements OnInit {
 
   loadFilters(){
     this.userService.estados().subscribe({
-      next: (data: []) => {
+      next: (data) => {
         this.estados = data;
       }
     })
     this.userService.tipos().subscribe({
-      next: (data: []) => {
+      next: (data) => {
         this.tipos = data;
       }
     })

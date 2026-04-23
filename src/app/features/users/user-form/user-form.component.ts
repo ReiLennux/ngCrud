@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-user-form',
@@ -42,14 +43,14 @@ export class UserFormComponent implements OnInit {
     this.comparePassword = this.user.strPassword === this.rPassword;
   }
 
-  submitForm(form: any): void {
+  submitForm(form: NgForm): void {
     this.checkPasswordMatch();
 
     if (form.valid && this.comparePassword) {
       const newUser: User = {
         ...form.value,
-        idUsuCatEstadoFK: 1,
-        idUsuCatTipoUsuario: Number(form.value.idUsuCatTipoUsuario)
+        idUsuCatEstadoFK: '1',
+        idUsuCatTipoUsuario: form.value.idUsuCatTipoUsuario.toString()
       };
 
       this.userService.crearUsuario(newUser).subscribe({

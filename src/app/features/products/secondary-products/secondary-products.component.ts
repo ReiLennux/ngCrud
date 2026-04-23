@@ -1,5 +1,5 @@
 import { FileService } from './../../../core/services/file.service';
-import { CategoriesService, Categoria } from './../../../core/services/products/catalog/categories.service';
+import { CategoriesService, Categoria, Subcategoria } from './../../../core/services/products/catalog/categories.service';
 import { Component, OnInit } from '@angular/core';
 import { product } from '../../../core/models/product';
 import { HttpClient } from '@angular/common/http';
@@ -56,8 +56,10 @@ export class SecondaryProductsComponent implements OnInit {
     formData.append('upload_preset', 'mypreset');
 
     try {
-      const res: any = await this.fileService.uploadFile(formData, 'mypreset');
-      this.newProducto.strImage = res.url;
+      const res = await this.fileService.uploadFile(formData, 'mypreset');
+      if (res) {
+        this.newProducto.strImage = res.url;
+      }
       
       const response = await of(this.productsService.agregarProducto(this.newProducto)).toPromise();
       this.resetForm();
@@ -66,8 +68,12 @@ export class SecondaryProductsComponent implements OnInit {
     }
   }
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+  onFileSelected(event: Event) {
+    const element = event.currentTarget as HTMLInputElement;
+    let fileList: FileList | null = element.files;
+    if (fileList) {
+      this.selectedFile = fileList[0];
+    }
   }
 
   resetForm() {
@@ -87,20 +93,20 @@ export class SecondaryProductsComponent implements OnInit {
     this.selectedFile = undefined;
   }
   
-  onCategoriaSeleccionada(categoria: any) {
-    this.categoriaSeleccionadoId = categoria !== null ? categoria : 0;
-    this.newProducto.idCatCategoria = this.categoriaSeleccionadoId.toString()
+  onCategoriaSeleccionada(categoria: string | number | null) {
+    this.categoriaSeleccionadoId = categoria !== null ? categoria.toString() : '0';
+    this.newProducto.idCatCategoria = this.categoriaSeleccionadoId;
   }
   
-  onsubcategoriaSeleccionada(subcategoria: any) {
-    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria : 0;
-    this.newProducto.idCatSubcategoria = this.subcategoriaSeleccionadoId.toString()
+  onsubcategoriaSeleccionada(subcategoria: string | number | null) {
+    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria.toString() : '0';
+    this.newProducto.idCatSubcategoria = this.subcategoriaSeleccionadoId;
   }
 
   obtenerCategorias() {
     this.categoriesService.obtenerCategorias().subscribe({
-      next: (data: any[]) => {
-        this.categorias = data;
+      next: (data: Categoria[]) => {
+        this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
       },
       error: err => {
         console.error(err);
@@ -110,8 +116,8 @@ export class SecondaryProductsComponent implements OnInit {
 
   obtenerSubcategorias() {
     this.categoriesService.obtenerTodasSubCategorias().subscribe({
-      next: (data: any[]) => {
-        this.subcategorias = data;
+      next: (data: Subcategoria[]) => {
+        this.subcategorias = data.map(s => ({ id: s.id!, strName: s.strName }));
       },
       error: err => {
         console.error(err);

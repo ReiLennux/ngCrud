@@ -10,7 +10,7 @@ export class FileService {
   constructor(private httpClient: HttpClient) { }
 
 
-  uploadFile(file: FormData, preset: string) {
-    return this.httpClient.post(`${this.url}?upload_preset=${preset}`, file).toPromise();
+  uploadFile(file: FormData, preset: string): Promise<{ url: string } | undefined> {
+    return this.httpClient.post<{ url: string }>(`${this.url}?upload_preset=${preset}`, file).toPromise();
   }
 }

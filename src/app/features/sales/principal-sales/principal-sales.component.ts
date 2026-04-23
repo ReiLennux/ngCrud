@@ -6,7 +6,7 @@ import { createDateSale } from '../../../helpers/generateDateSale';
 import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
 import { SalesService } from '../../../core/services/sales.service';
 import { ProductsService } from '../../../core/services/products/products.service';
-import { CategoriesService } from '../../../core/services/products/catalog/categories.service';
+import { CategoriesService, Categoria, Subcategoria } from '../../../core/services/products/catalog/categories.service';
 
 
 
@@ -59,8 +59,8 @@ export class PrincipalSalesComponent {
 
   obtenerCategorias() {
     this.categoriesService.obtenerCategorias().subscribe({
-      next: (data: any[]) => {
-        this.categorias = data;
+      next: (data: Categoria[]) => {
+        this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
       },
       error: err => {
         console.error(err);
@@ -70,8 +70,8 @@ export class PrincipalSalesComponent {
 
   obtenerSubcategorias() {
     this.categoriesService.obtenerTodasSubCategorias().subscribe({
-      next: (data: any[]) => {
-        this.subcategorias = data;
+      next: (data: Subcategoria[]) => {
+        this.subcategorias = data.map(s => ({ id: s.id!, strName: s.strName }));
       },
       error: err => {
         console.error(err);
@@ -106,12 +106,12 @@ export class PrincipalSalesComponent {
   }
 
 
-  onCategoriaSeleccionada(categoria: any) {
-    this.categoriaSeleccionadoId = categoria !== null ? categoria : 0;
+  onCategoriaSeleccionada(categoria: string | number | null) {
+    this.categoriaSeleccionadoId = categoria !== null ? categoria.toString() : '0';
   }
 
-  onsubcategoriaSeleccionada(subcategoria: any) {
-    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria : 0;
+  onsubcategoriaSeleccionada(subcategoria: string | number | null) {
+    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria.toString() : '0';
   }
 
   filtrarProductos(): product[] {

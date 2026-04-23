@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { Firestore, collection, collectionData, addDoc, deleteDoc, doc, updateDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, addDoc, deleteDoc, doc, updateDoc, getDoc, CollectionReference } from '@angular/fire/firestore';
 import { product } from '../../models/product';
 import { AlertService } from '../alert.service';
 
@@ -9,14 +9,13 @@ import { AlertService } from '../alert.service';
   providedIn: 'root'
 })
 export class ProductsService {
-  private productsCollection = collection(this.firestore, 'products');
+  private productsCollection = collection(this.firestore, 'products') as CollectionReference<product>;
 
   constructor(private firestore: Firestore, private alertService: AlertService) {}
 
   // Obtener todos los productos
   public obtenerProductos(): Observable<product[]> {
     return collectionData(this.productsCollection, { idField: 'id' }).pipe(
-      map(data => data as product[]),
       catchError(error => {
         this.alertService.error('Error al obtener productos');
         return throwError(() => new Error('Error al obtener productos'));
@@ -25,7 +24,7 @@ export class ProductsService {
   }
 
   // Agregar producto (con imagen en base64)
-  public agregarProducto(producto: product): Observable<any> {
+  public agregarProducto(producto: product): Observable<void> {
     const productoSinImagen = { ...producto };
 
     const file = producto.strImage as File;
@@ -33,6 +32,7 @@ export class ProductsService {
     if (!(file instanceof File)) {
       return from(addDoc(this.productsCollection, producto)).pipe(
         tap(() => this.alertService.success('Producto agregado con éxito.')),
+        map(() => void 0),
         catchError(error => {
           this.alertService.error('Error al agregar producto sin imagen');
           return throwError(() => new Error('Error al agregar producto'));
@@ -45,6 +45,7 @@ export class ProductsService {
         productoSinImagen.strImage = base64;
         return from(addDoc(this.productsCollection, productoSinImagen));
       }),
+      map(() => void 0),
       tap(() => this.alertService.success('Producto agregado con éxito.')),
       catchError(error => {
         this.alertService.error('Error al agregar producto con imagen base64');

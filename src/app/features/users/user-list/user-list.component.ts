@@ -36,12 +36,12 @@ export class UserListComponent implements OnInit {
   //#region filters
   loadFilters(){
     this.userService.estados().subscribe({
-      next: (data: any) => {
+      next: (data: { id: string; strName: string }[]) => {
         this.estados = data;
       }
     });
     this.userService.tipos().subscribe({
-      next: (data: any) => {
+      next: (data: { id: string; strName: string }[]) => {
         this.tipos = data;
       }
     });

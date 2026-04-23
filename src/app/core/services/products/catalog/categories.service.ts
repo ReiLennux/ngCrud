@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, CollectionReference } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, doc, deleteDoc, updateDoc, CollectionReference, collectionData } from '@angular/fire/firestore';
 import { Observable, from, map, tap, catchError, throwError } from 'rxjs';
 import { AlertService } from '../../alert.service';
 
@@ -21,17 +21,18 @@ export interface Subcategoria {
 })
 export class CategoriesService {
 
-  private categoriasCollection: CollectionReference;
-  private subcategoriasCollection: CollectionReference;
+  private categoriasCollection: CollectionReference<Categoria>;
+  private subcategoriasCollection: CollectionReference<Subcategoria>;
 
   constructor(private firestore: Firestore, private alertService: AlertService) {
-    this.categoriasCollection = collection(this.firestore, 'categorias');
-    this.subcategoriasCollection = collection(this.firestore, 'subcategorias');
+    this.categoriasCollection = collection(this.firestore, 'categorias') as CollectionReference<Categoria>;
+    this.subcategoriasCollection = collection(this.firestore, 'subcategorias') as CollectionReference<Subcategoria>;
   }
 
   // ▶ Crear categoría
-  crearCategoria(categoria: Categoria): Observable<any> {
+  crearCategoria(categoria: Categoria): Observable<void> {
     return from(addDoc(this.categoriasCollection, categoria)).pipe(
+      map(() => void 0),
       tap(() => this.alertService.success('Categoría creada con éxito.')),
       catchError((error) => {
         this.alertService.error('Error al crear categoría.');
@@ -41,8 +42,9 @@ export class CategoriesService {
   }
 
   // ▶ Crear subcategoría
-  crearSubcategoria(subcategoria: Subcategoria): Observable<any> {
+  crearSubcategoria(subcategoria: Subcategoria): Observable<void> {
     return from(addDoc(this.subcategoriasCollection, subcategoria)).pipe(
+      map(() => void 0),
       tap(() => this.alertService.success('Subcategoría creada con éxito.')),
       catchError((error) => {
         this.alertService.error('Error al crear subcategoría.');
@@ -51,10 +53,8 @@ export class CategoriesService {
     );
   }
 
-  // ▶ Obtener todas las categorías
   obtenerCategorias(): Observable<Categoria[]> {
-    return from(getDocs(this.categoriasCollection)).pipe(
-      map((snapshot: { docs: any[]; }) => snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Categoria))),
+    return collectionData(this.categoriasCollection, { idField: 'id' }).pipe(
       catchError((error) => {
         this.alertService.error('Error al obtener categorías.');
         return throwError(() => new Error('Error al obtener categorías'));
@@ -62,10 +62,8 @@ export class CategoriesService {
     );
   }
 
-  // ▶ Obtener todas las categorías
   obtenerTodasSubCategorias(): Observable<Subcategoria[]> {
-    return from(getDocs(this.subcategoriasCollection)).pipe(
-      map((snapshot: { docs: any[]; }) => snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Subcategoria))),
+    return collectionData(this.subcategoriasCollection, { idField: 'id' }).pipe(
       catchError((error) => {
         this.alertService.error('Error al obtener subcategorías.');
         return throwError(() => new Error('Error al obtener subcategorías'));
@@ -73,11 +71,9 @@ export class CategoriesService {
     );
   }
 
-  // ▶ Obtener todas las subcategorías de la categoria id 
   obtenerSubcategorias(categoriaId: string): Observable<Subcategoria[]> {
-    return from(getDocs(this.subcategoriasCollection)).pipe(
-      map((snapshot: { docs: any[]; }) => snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Subcategoria))),
-      map((subcategorias: Subcategoria[]) => subcategorias.filter(subcategoria => subcategoria.idCatCategoria === categoriaId))
+    return collectionData(this.subcategoriasCollection, { idField: 'id' }).pipe(
+      map((subcategorias) => subcategorias.filter(subcategoria => subcategoria.idCatCategoria === categoriaId))
     );
   }
 

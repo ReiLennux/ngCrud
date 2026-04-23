@@ -26,8 +26,8 @@ export class GDateInput implements ControlValueAccessor, OnInit {
 
   _value: string = '';
 
-  onChange = (_: any) => {};
-  onTouched = () => {};
+  onChange: (value: Date | string) => void = () => {};
+  onTouched: () => void = () => {};
 
   ngOnInit() {
     if (!this._value) {
@@ -41,7 +41,7 @@ export class GDateInput implements ControlValueAccessor, OnInit {
     this.onChange(today);
   }
 
-  writeValue(value: any): void {
+  writeValue(value: Date | string | null): void {
     if (value) {
       this._value = this._parseDate(value);
     } else {
@@ -49,11 +49,11 @@ export class GDateInput implements ControlValueAccessor, OnInit {
     }
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: Date | string) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -65,7 +65,7 @@ export class GDateInput implements ControlValueAccessor, OnInit {
     this.onTouched();
   }
 
-  private _parseDate(value: any): string {
+  private _parseDate(value: Date | string): string {
     try {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
