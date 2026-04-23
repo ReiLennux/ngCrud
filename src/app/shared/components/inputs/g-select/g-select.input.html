@@ -1,18 +1,23 @@
-<div class="w-full">
+<div class="flex flex-col gap-2">
   <label *ngIf="label" [for]="name"
-    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+    class="text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400">
     {{ label }}
   </label>
-  <select
-    [id]="name" [name]="name" [(ngModel)]="value" [disabled]="disabled"
-    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-    [class.border-red-500]="validation && errorMessage"
-  >
-    <option *ngIf="isFilter" value="0">Show all {{ placeholder }}</option>
-    <option *ngIf="!isFilter" disabled [selected]="!value" value="0">Seleccione {{ placeholder }}</option>
-    <option *ngFor="let option of options" [value]="option.id">{{ option.strName }}</option>
-  </select>
-  <p *ngIf="validation && errorMessage" class="mt-2 text-sm text-red-600 dark:text-red-500">
+
+  <div class="relative">
+    <select [id]="name" [name]="name" [(ngModel)]="value" [disabled]="disabled"
+      class="w-full px-4 py-3 pr-10 !bg-slate-50 dark:!bg-slate-900 border !border-slate-200 dark:!border-slate-700 !rounded-2xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed !appearance-none"
+      [class.border-rose-500]="validation && errorMessage">
+      <option *ngIf="isFilter" value="0">Show all {{ placeholder }}</option>
+      <option *ngIf="!isFilter" disabled [selected]="!value" value="0">Seleccione {{ placeholder }}</option>
+
+      <option *ngFor="let option of options" [value]="option.id">
+        {{ option.strName }}
+      </option>
+    </select>
+  </div>
+
+  <p *ngIf="validation && errorMessage" class="text-xs font-medium text-rose-500">
     {{ errorMessage }}
   </p>
 </div>
