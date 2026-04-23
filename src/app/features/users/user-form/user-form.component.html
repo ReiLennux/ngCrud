@@ -9,7 +9,7 @@
     </a>
   </div>
 
-  <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden">
+  <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden">
     <!-- Header -->
     <div class="p-8 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
       <h2 class="text-2xl font-black text-slate-900 dark:text-white">Registro de Usuario</h2>
@@ -72,7 +72,7 @@
               type="password" 
               [validation]="true">
             </app-g-text>
-            <p *ngIf="rPassword && !comparePassword" class="text-[11px] text-rose-500 font-bold flex items-center gap-1 ml-1">
+            <p *ngIf="rPassword && !comparePassword" class="text-xs text-rose-500 font-bold flex items-center gap-1 ml-1">
               <i class="fa-solid fa-triangle-exclamation"></i> Las contraseñas no coinciden
             </p>
           </div>

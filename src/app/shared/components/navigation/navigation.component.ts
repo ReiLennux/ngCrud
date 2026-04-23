@@ -5,7 +5,6 @@ import { AuthService } from '../../../core/services/auth.service';
 @Component({
     selector: 'app-navigation',
     templateUrl: './navigation.component.html',
-    styleUrl: './navigation.component.css',
     standalone: false
 })
 export class NavigationComponent implements OnInit {
@@ -23,3 +22,5 @@ constructor(
     this.authService.logout();
   }
 }
+
+

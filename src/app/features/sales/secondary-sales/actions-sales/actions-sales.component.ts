@@ -8,7 +8,6 @@ import { generateAndDownloadTicket } from '../../../../shared/utils/handleTicket
 @Component({
     selector: 'app-actions-sales',
     templateUrl: './actions-sales.component.html',
-    styleUrl: './actions-sales.component.css',
     standalone: false
 })
 export class ActionsSalesComponent implements OnInit {
@@ -116,3 +115,5 @@ async updateSale() {
 
 
 }
+
+

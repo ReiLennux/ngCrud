@@ -4,7 +4,6 @@ import { UserService } from '../../services/user.service';
 @Component({
     selector: 'app-actions-user',
     templateUrl: './actions-user.component.html',
-    styleUrl: './actions-user.component.css',
     standalone: false
 })
 export class ActionsUserComponent implements OnInit {
@@ -20,8 +19,7 @@ export class ActionsUserComponent implements OnInit {
     email: "",
     idUsuCatEstadoFK: '',
     idUsuCatTipoUsuario: '',
-    strPassword: "",
-  };
+    strPassword: "" };
   rPassword: string =""
   userOnSesion: string = localStorage.getItem('user')!
 
@@ -89,6 +87,8 @@ export class ActionsUserComponent implements OnInit {
 
 
 }
+
+
 
 
 

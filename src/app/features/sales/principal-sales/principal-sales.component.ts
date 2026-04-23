@@ -13,7 +13,6 @@ import { CategoriesService, Categoria, Subcategoria } from '../../products/servi
 @Component({
   selector: 'app-principal-sales',
   templateUrl: './principal-sales.component.html',
-  styleUrls: ['./principal-sales.component.css'],
   standalone: false
 })
 export class PrincipalSalesComponent {
@@ -157,3 +156,5 @@ export class PrincipalSalesComponent {
 
 
 }
+
+

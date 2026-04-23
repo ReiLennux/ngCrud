@@ -7,18 +7,17 @@ import { of } from 'rxjs';
 import { ProductsService } from '../../services/products.service';
 
 @Component({
-    selector: 'app-actions',
-    templateUrl: './actions.component.html',
-    styleUrls: ['./actions.component.css'],
-    standalone: false
+  selector: 'app-actions',
+  templateUrl: './actions.component.html',
+  standalone: false
 })
 export class ActionsComponent {
   @Input() producto!: product;
   @Output() productoActualizado = new EventEmitter<void>();
   showModal: boolean = false;
   selectedFile: File | undefined;
-  categorias: {id: string, strName: string}[] = [];
-  subcategorias: {id: string, strName: string}[] = [];
+  categorias: { id: string, strName: string }[] = [];
+  subcategorias: { id: string, strName: string }[] = [];
   categoriaSeleccionadoId: string = "";
   subcategoriaSeleccionadoId: string = "";
   putProducto: product = { ...this.producto };
@@ -26,10 +25,10 @@ export class ActionsComponent {
   showAlert: boolean = false;
 
   constructor(
-    private productsServices: ProductsService, 
+    private productsServices: ProductsService,
     private fileService: FileService,
     private categoriesService: CategoriesService
-  ) {}
+  ) { }
 
   delete() {
     this.productsServices.eliminarProducto(this.producto.id).subscribe({
@@ -61,7 +60,7 @@ export class ActionsComponent {
     this.categoriaSeleccionadoId = categoria !== null ? categoria.toString() : '0';
     this.putProducto.idCatCategoria = this.categoriaSeleccionadoId;
   }
-  
+
   onsubcategoriaSeleccionada(subcategoria: string | number | null) {
     this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria.toString() : '0';
     this.putProducto.idCatSubcategoria = this.subcategoriaSeleccionadoId;
@@ -77,7 +76,7 @@ export class ActionsComponent {
       }
     });
   }
-  
+
   obtenerSubcategorias() {
     this.categoriesService.obtenerTodasSubCategorias().subscribe({
       next: (data: Subcategoria[]) => {
@@ -116,3 +115,5 @@ export class ActionsComponent {
     }
   }
 }
+
+

@@ -8,7 +8,6 @@ import { ProductsService } from '../services/products.service';
 @Component({
     selector: 'app-secondary-products',
     templateUrl: './secondary-products.component.html',
-    styleUrls: ['./secondary-products.component.css'],
     standalone: false
 })
 export class SecondaryProductsComponent implements OnInit {
@@ -125,3 +124,5 @@ export class SecondaryProductsComponent implements OnInit {
     });
   }
 }
+
+

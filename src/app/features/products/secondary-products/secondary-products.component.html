@@ -9,7 +9,7 @@
     </a>
   </div>
 
-  <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden">
+  <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden">
     <!-- Header -->
     <div class="p-8 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
       <h2 class="text-2xl font-black text-slate-900 dark:text-white">Nuevo Producto</h2>
@@ -39,9 +39,9 @@
         </div>
 
         <div class="relative">
-          <label class="block px-1 text-[13px] font-bold text-slate-400 uppercase tracking-wider mb-2">Descripción</label>
+          <label class="block px-1 text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Descripción</label>
           <textarea [(ngModel)]="newProducto.strDescription" name="strDescription"
-            class="w-full p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm rounded-2xl focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all min-h-[120px]"
+            class="w-full p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm rounded-2xl focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all min-h-32"
             placeholder="Describe las características principales del producto..."></textarea>
         </div>
       </div>
@@ -92,7 +92,7 @@
         <div class="relative group">
           <input id="dropzone-file" type="file" class="hidden" (change)="onFileSelected($event)" accept="image/*" />
           <label for="dropzone-file" 
-                 class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-[2rem] cursor-pointer bg-slate-50/50 dark:bg-slate-900/50 hover:bg-emerald-50 dark:hover:bg-emerald-500/5 hover:border-emerald-300 dark:hover:border-emerald-500 transition-all group/label">
+                 class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-3xl cursor-pointer bg-slate-50/50 dark:bg-slate-900/50 hover:bg-emerald-50 dark:hover:bg-emerald-500/5 hover:border-emerald-300 dark:hover:border-emerald-500 transition-all group/label">
             
             <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4" *ngIf="!selectedFile">
               <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm mb-3 group-hover/label:scale-110 transition-transform">
@@ -107,8 +107,8 @@
                 <i class="fa-solid fa-circle-check text-2xl text-emerald-600 dark:text-emerald-400"></i>
               </div>
               <div class="flex flex-col">
-                <p class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]">{{ selectedFile.name }}</p>
-                <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Archivo seleccionado</p>
+                <p class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-48">{{ selectedFile.name }}</p>
+                <p class="text-xs text-emerald-600 font-bold uppercase tracking-wider">Archivo seleccionado</p>
               </div>
               <button type="button" (click)="$event.stopPropagation(); selectedFile = undefined" 
                       class="ml-4 p-2 text-slate-400 hover:text-rose-500 transition-colors">

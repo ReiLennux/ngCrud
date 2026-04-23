@@ -6,8 +6,7 @@ import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-user-form',
   standalone: false,
-  templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.css']
+  templateUrl: './user-form.component.html'
 })
 export class UserFormComponent implements OnInit {
   tipos: { id: string, strName: string }[] = [];
@@ -70,3 +69,5 @@ export class UserFormComponent implements OnInit {
     this.comparePassword = true;
   }
 }
+
+

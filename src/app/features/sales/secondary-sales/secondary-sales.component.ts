@@ -7,7 +7,6 @@ import { SalesService } from '../services/sales.service';
 @Component({
     selector: 'app-secondary-sales',
     templateUrl: './secondary-sales.component.html',
-    styleUrl: './secondary-sales.component.css',
     standalone: false
 })
 export class SecondarySalesComponent implements OnInit {
@@ -65,3 +64,5 @@ export class SecondarySalesComponent implements OnInit {
   }
 
 }
+
+
