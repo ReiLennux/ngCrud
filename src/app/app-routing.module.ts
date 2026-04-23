@@ -1,82 +1,50 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserListComponent } from './features/users/user-list/user-list.component';
-import { UserFormComponent } from './features/users/user-form/user-form.component';
-import { LoginComponent } from './shared/components/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
-import { HomeComponent } from './shared/components/home/home.component';
-import { PrincipalProductsComponent } from './features/products/principal-products/principal-products.component';
-import { SecondaryProductsComponent } from './features/products/secondary-products/secondary-products.component';
-import { PrincipalSalesComponent } from './features/sales/principal-sales/principal-sales.component';
-import { SecondarySalesComponent } from './features/sales/secondary-sales/secondary-sales.component';
-import { AddCategoriesComponent } from './features/catalogs/products/add-categories/add-categories.component';
-import { CatalogPrincipalComponent } from './features/catalogs/catalog-principal/catalog-principal.component';
-
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent,
+    loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
     data: { hideNavbar: false }
   },
   {
-      path: "users",
-      component: UserListComponent,
-      canActivate: [AuthGuard],
-      data: { hideNavbar: true }
-  },
-  {
-      path: "register-user",
-      component: UserFormComponent,
-      canActivate: [AuthGuard],
-      data: { hideNavbar: true }
-  },
-  {
-    path:"products",
-    component: PrincipalProductsComponent,
+    path: 'users',
+    loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule),
     canActivate: [AuthGuard],
     data: { hideNavbar: true }
   },
   {
-    path:'register-product',
-    component: SecondaryProductsComponent,
+    path: 'products',
+    loadChildren: () => import('./features/products/products.module').then(m => m.ProductsModule),
     canActivate: [AuthGuard],
     data: { hideNavbar: true }
   },
   {
-    path:'sales',
-    component: PrincipalSalesComponent,
+    path: 'sales',
+    loadChildren: () => import('./features/sales/sales.module').then(m => m.SalesModule),
     canActivate: [AuthGuard],
     data: { hideNavbar: true }
   },
   {
-    path:'register-sales',
-    component: SecondarySalesComponent,
+    path: 'catalogs',
+    loadChildren: () => import('./features/catalogs/catalogs.module').then(m => m.CatalogsModule),
     canActivate: [AuthGuard],
     data: { hideNavbar: true }
   },
   {
-    path:'catalogs',
-    component: CatalogPrincipalComponent,
-    canActivate: [AuthGuard],
-    data: { hideNavbar: true },
-    children: [
-      {
-        path: 'products',
-        component: AddCategoriesComponent,
-        canActivate: [AuthGuard],
-        data: { hideNavbar: true }
-      }
-    ]
-  },
-  {
-    path:'home',
-    component: HomeComponent,
+    path: 'home',
+    loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule),
     canActivate: [AuthGuard],
     data: { hideNavbar: true }
   },
   {
-    path:'**',
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
     redirectTo: '/home',
     pathMatch: 'full'
   }

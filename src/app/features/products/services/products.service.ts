@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Firestore, collection, collectionData, addDoc, deleteDoc, doc, updateDoc, getDoc, CollectionReference } from '@angular/fire/firestore';
-import { product } from '../../models/product';
-import { AlertService } from '../alert.service';
+import { product } from '../../../core/models/product';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Injectable({
   providedIn: 'root'

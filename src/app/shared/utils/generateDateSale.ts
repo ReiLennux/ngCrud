@@ -1,4 +1,4 @@
-import { DateSale } from "../core/models/sale";
+import { DateSale } from "../../core/models/sale";
 
 export function createDateSale(): DateSale {
     const fecha: Date = new Date(); // Supongamos que esta es tu fecha en TypeScript

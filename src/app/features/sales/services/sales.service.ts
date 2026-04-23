@@ -1,9 +1,9 @@
-import { product } from './../models/product';
+import { product } from '../../../core/models/product';
 import { Injectable } from '@angular/core';
-import { Sale } from '../models/sale';
+import { Sale } from '../../../core/models/sale';
 import { Observable, catchError, from, map, mergeAll, throwError, tap, switchMap } from 'rxjs';
 import { Firestore, collection, collectionData, doc, getDoc, addDoc, deleteDoc, updateDoc, DocumentReference, CollectionReference } from '@angular/fire/firestore';
-import { AlertService } from './alert.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Injectable({
   providedIn: 'root'

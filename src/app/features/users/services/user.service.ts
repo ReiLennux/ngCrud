@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, from, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { User } from '../models/user';
+import { User } from '../../../core/models/user';
 import { Firestore, collection, collectionData, doc, getDoc, addDoc, deleteDoc, updateDoc, query, where, CollectionReference } from '@angular/fire/firestore';
 import { getDocs, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Auth } from '@angular/fire/auth';
-import { AlertService } from './alert.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Injectable({
   providedIn: 'root'

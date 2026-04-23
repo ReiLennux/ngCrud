@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, doc, deleteDoc, updateDoc, CollectionReference, collectionData } from '@angular/fire/firestore';
 import { Observable, from, map, tap, catchError, throwError } from 'rxjs';
-import { AlertService } from '../../alert.service';
+import { AlertService } from '../../../../core/services/alert.service';
 
 export interface Categoria {
   id?: string;

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DateSale, Sale, SaleDetails } from '../../../../core/models/sale';
 import { SelectedProduct, product } from '../../../../core/models/product';
-import { SalesService } from '../../../../core/services/sales.service';
-import { ProductsService } from '../../../../core/services/products/products.service';
-import { generateAndDownloadTicket } from '../../../../helpers/handleTicket';
+import { SalesService } from '../../services/sales.service';
+import { ProductsService } from '../../../products/services/products.service';
+import { generateAndDownloadTicket } from '../../../../shared/utils/handleTicket';
 
 @Component({
     selector: 'app-actions-sales',

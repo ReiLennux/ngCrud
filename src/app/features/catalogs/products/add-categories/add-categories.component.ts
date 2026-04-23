@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Categoria, CategoriesService, Subcategoria } from '../../../../core/services/products/catalog/categories.service';
+import { Categoria, CategoriesService, Subcategoria } from '../../../../features/products/services/catalog/categories.service';
 
 @Component({
   selector: 'app-add-categories',
@@ -36,10 +36,10 @@ export class AddCategoriesComponent {
     }
 
     this.categoriesService.crearCategoria(this.newCategory).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.newCategory = { strName: '', strDescription: '' }; // reset form
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al crear categoría:', err);
       }
     });
@@ -51,11 +51,11 @@ export class AddCategoriesComponent {
     }
 
     this.categoriesService.crearSubcategoria(this.newSubcategory).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.newSubcategory = { strName: '', strDescription: '', idCatCategoria: "" }; // reset form
         this.onCategoriaSeleccionada(0);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al crear subcategoría:', err);
       }
     });
@@ -66,7 +66,7 @@ export class AddCategoriesComponent {
       next: (data: Categoria[]) => {
         this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });

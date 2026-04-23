@@ -2,11 +2,11 @@ import { StorageService } from './../../../core/services/storage.service';
 import { Component } from '@angular/core';
 import { SelectedProduct, product } from '../../../core/models/product';
 import { DateSale, Sale, SaleDetails } from '../../../core/models/sale';
-import { createDateSale } from '../../../helpers/generateDateSale';
-import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
-import { SalesService } from '../../../core/services/sales.service';
-import { ProductsService } from '../../../core/services/products/products.service';
-import { CategoriesService, Categoria, Subcategoria } from '../../../core/services/products/catalog/categories.service';
+import { createDateSale } from '../../../shared/utils/generateDateSale';
+import { generateAndDownloadTicket } from '../../../shared/utils/handleTicket';
+import { SalesService } from '../services/sales.service';
+import { ProductsService } from '../../products/services/products.service';
+import { CategoriesService, Categoria, Subcategoria } from '../../products/services/catalog/categories.service';
 
 
 

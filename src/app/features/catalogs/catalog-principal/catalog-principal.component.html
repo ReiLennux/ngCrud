@@ -1,27 +1,29 @@
-<div
-    class="m-4 max-w-7xl mx-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-6">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+<div class="m-10">
+    <div class="flex flex-wrap items-center justify-center gap-10">
 
-        <a  href="/catalogs/products"
-            class="flex flex-col items-center justify-center p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:scale-105 hover:shadow-md transition duration-300 ease-in-out cursor-pointer">
-            <i class="fa-solid fa-user-group fa-xl mb-4"></i>
-            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Usuarios</h5>
+      <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <a routerLink="/catalogs/categories"
+          class="flex flex-col items-center p-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <i class="fa-solid fa-layer-group text-5xl"></i>
+          <span class="ms-3 mt-4 text-xl font-bold">Categories</span>
         </a>
+      </div>
 
-        <a  href="/catalogs/clients"
-            class="flex flex-col items-center justify-center p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:scale-105 hover:shadow-md transition duration-300 ease-in-out cursor-pointer">
-            <i class="fa-solid fa-boxes-stacked fa-xl mb-4"></i>
-            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Productos</h5>
+      <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <a routerLink="/catalogs/clients"
+          class="flex flex-col items-center p-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <i class="fa-solid fa-users text-5xl"></i>
+          <span class="ms-3 mt-4 text-xl font-bold">Clients</span>
         </a>
+      </div>
 
-        <a  href="/catalogs/suppliers"
-            class="flex flex-col items-center justify-center p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:scale-105 hover:shadow-md transition duration-300 ease-in-out cursor-pointer">
-            <i class="fa-solid fa-cash-register fa-xl mb-4"></i>
-            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Ventas</h5>
+      <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <a routerLink="/catalogs/suppliers"
+          class="flex flex-col items-center p-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <i class="fa-solid fa-truck-field text-5xl"></i>
+          <span class="ms-3 mt-4 text-xl font-bold">Suppliers</span>
         </a>
+      </div>
 
     </div>
-
-
-    <router-outlet></router-outlet>
-</div>
+  </div>

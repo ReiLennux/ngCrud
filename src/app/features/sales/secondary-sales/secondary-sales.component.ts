@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Sale, DateSale } from '../../../core/models/sale';
 import { User } from '../../../core/models/user';
-import { formatoFecha } from '../../../helpers/generateDateSale';
-import { UserService } from '../../../core/services/user.service';
-import { SalesService } from '../../../core/services/sales.service';
+import { formatoFecha } from '../../../shared/utils/generateDateSale';
+import { UserService } from '../../users/services/user.service';
+import { SalesService } from '../services/sales.service';
 @Component({
     selector: 'app-secondary-sales',
     templateUrl: './secondary-sales.component.html',

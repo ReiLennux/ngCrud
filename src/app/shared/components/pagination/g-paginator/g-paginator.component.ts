@@ -4,7 +4,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-g-paginator',
   templateUrl: './g-paginator.component.html',
-  styleUrls: ['./g-paginator.component.scss']
+  styleUrls: ['./g-paginator.component.css'],
+  standalone: false
 })
 export class GPaginatorComponent {
   @Input() page: number = 1;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { product } from '../../../core/models/product';
-import { Categoria, CategoriesService, Subcategoria } from '../../../core/services/products/catalog/categories.service';
-import { ProductsService } from '../../../core/services/products/products.service';
+import { Categoria, CategoriesService, Subcategoria } from '../services/catalog/categories.service';
+import { ProductsService } from '../services/products.service';
 @Component({
     selector: 'app-principal-products',
     templateUrl: './principal-products.component.html',

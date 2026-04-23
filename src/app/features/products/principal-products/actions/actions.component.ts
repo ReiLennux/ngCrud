@@ -1,10 +1,10 @@
-import { CategoriesService, Categoria, Subcategoria } from './../../../../core/services/products/catalog/categories.service';
+import { CategoriesService, Categoria, Subcategoria } from './../../services/catalog/categories.service';
 import { FileService } from './../../../../core/services/file.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { product } from '../../../../core/models/product';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
-import { ProductsService } from '../../../../core/services/products/products.service';
+import { ProductsService } from '../../services/products.service';
 
 @Component({
     selector: 'app-actions',

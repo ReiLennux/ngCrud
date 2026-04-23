@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import { SelectedProduct } from '../core/models/product';
+import { SelectedProduct } from '../../core/models/product';
 
 export function generateAndDownloadTicket(selectedProducts: SelectedProduct[]): void {
   const doc = new jsPDF();
