@@ -1,151 +1,182 @@
-<div class="flex flex-col lg:flex-row mt-10 justify-center items-start mx-4 lg:mx-24 max-w-full">
-    <!-- Buscar producto -->
-    <div class="w-full lg:w-1/3 m-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-      <div class="mb-3">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Buscar producto</h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">
-          Para buscar un producto primero seleccione una categoria y una subcategoria o simplemente escriba el nombre.
-          <b class="cursor-pointer">de click</b> sobre el producto para añadirlo a la venta actual
-        </p>
-      </div>
-  
-      <div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-          <app-g-select [(ngModel)]="categoriaSeleccionadoId" placeholder="Category" name="category"
-          label="Categories" [isFilter]="true" [options]="categorias">
-      </app-g-select>
+<div class="m-6 max-w-full mx-auto animate-fade-in">
+  <div class="flex flex-col lg:flex-row gap-6">
+    
+    <!-- Left Column: Product Selection -->
+    <div class="lg:w-5/12 space-y-6">
+      <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+        <div class="mb-6">
+          <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+            <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl text-indigo-600 dark:text-indigo-400">
+              <i class="fa-solid fa-search"></i>
+            </div>
+            Buscar Productos
+          </h2>
+          <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Selecciona o busca artículos para añadir a la venta.</p>
+        </div>
 
-      <app-g-select [(ngModel)]="subcategoriaSeleccionadoId" placeholder="Subcategory" name="Subcategory"
-          label="Subcategory" [isFilter]="true" [options]="subcategorias">
-      </app-g-select>
-        </div>
-  
-        <label for="table-search" class="sr-only font-thin">Buscar</label>
-        <div class="relative">
-          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <app-g-select 
+              (ngModelChange)="filtrarProductos()" 
+              [(ngModel)]="categoriaSeleccionadoId" 
+              name="category"
+              label="Categoría" 
+              [isFilter]="true" 
+              [options]="categorias">
+            </app-g-select>
+
+            <app-g-select 
+              (ngModelChange)="filtrarProductos()" 
+              [(ngModel)]="subcategoriaSeleccionadoId" 
+              name="Subcategory"
+              label="Subcategoría" 
+              [isFilter]="true" 
+              [options]="subcategorias">
+            </app-g-select>
           </div>
-          <input type="text" id="table-search" [(ngModel)]="searchTerm"
-            class="block w-full pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-            placeholder="Buscar algún producto">
+
+          <app-g-text 
+            (ngModelChange)="filtrarProductos()" 
+            [(ngModel)]="searchTerm"
+            name="search"
+            label="Filtrar por nombre"
+            placeholder="Escribe el nombre del producto..."
+            type="text"
+            icon="fa-solid fa-magnifying-glass">
+          </app-g-text>
+        </div>
+
+        <!-- Product Results Table -->
+        <div class="mt-8 overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-700">
+          <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
+            <table class="w-full text-sm text-left">
+              <thead class="sticky top-0 bg-slate-50 dark:bg-slate-900 z-10 border-b border-slate-100 dark:border-slate-700">
+                <tr class="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <th class="px-6 py-4 text-center w-24">Acción</th>
+                  <th class="px-4 py-4">Producto</th>
+                  <th class="px-4 py-4 text-right">Precio</th>
+                  <th class="px-6 py-4 text-center">Stock</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
+                <tr *ngFor="let product of filteredProducts" 
+                    (click)="pushProduct(product)"
+                    class="group hover:bg-indigo-50/50 dark:hover:bg-indigo-500/5 transition-colors cursor-pointer">
+                  <td class="px-6 py-4 text-center">
+                    <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all flex items-center justify-center">
+                      <i class="fa-solid fa-plus text-[10px]"></i>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4">
+                    <span class="font-bold text-slate-700 dark:text-slate-200 block truncate max-w-[150px]">{{ product.strName }}</span>
+                  </td>
+                  <td class="px-4 py-4 text-right">
+                    <span class="font-black text-slate-900 dark:text-white">$ {{ product.decPrice }}</span>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <span [ngClass]="{
+                      'text-rose-600 bg-rose-100 dark:bg-rose-500/20': product.decStock <= 5,
+                      'text-emerald-600 bg-emerald-100 dark:bg-emerald-500/20': product.decStock > 5
+                    }" class="px-2 py-0.5 rounded text-[10px] font-bold">
+                      {{ product.decStock }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-  
-      <div class="mt-5 relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" class="px-6 py-3">Nombre del producto</th>
-              <th scope="col" class="px-6 py-3">Precio</th>
-              <th scope="col" class="px-6 py-3">Stock</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let product of filtrarProductos()" (click)="pushProduct(product)"
-              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                {{product.strName}}
-              </th>
-              <td class="px-6 py-4">
-                $ {{product.decPrice}}
-              </td>
-              <td class="px-6 py-4">
-                <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{product.decStock}}</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
-  
-    <!-- Ventas -->
-    <div class="w-full lg:w-2/3 m-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:pt-8 md:px-8 md:pb-0 dark:bg-gray-800 dark:border-gray-700">
-      <div class="mb-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-        <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Ventas</h5>
-        <h6 class="text-gray-700 dark:text-gray-400 font-semibold">Folio de venta: {{newDateSale.strFolio}}</h6>
-      </div>
-  
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mx-3">
-        <p class="font-normal text-gray-700 dark:text-gray-400">
-          para realizar una venta primero busque y seleccione un producto
-        </p>
-        <a routerLink="/sales/register" class="flex justify-center items-center">
-          <button
-            class="px-3 py-2 text-xs font-medium text-center rounded-lg text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
-            <i class="fa-brands fa-shopify"></i> Gestionar ventas realizadas
+
+    <!-- Right Column: Current Sale / Cart -->
+    <div class="lg:w-7/12">
+      <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col h-full overflow-hidden">
+        
+        <!-- Cart Header -->
+        <div class="p-8 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50 flex justify-between items-center">
+          <div class="space-y-1">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+              <div class="p-2 bg-rose-100 dark:bg-rose-900/30 rounded-xl text-rose-600 dark:text-rose-400">
+                <i class="fa-solid fa-cash-register"></i>
+              </div>
+              Venta Actual
+            </h2>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">Folio: <span class="font-bold text-slate-900 dark:text-white ml-1">{{ newDateSale.strFolio }}</span></p>
+          </div>
+          <a routerLink="/sales/register" class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-bold hover:bg-slate-50 transition-colors shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-history"></i>
+            Historial
+          </a>
+        </div>
+
+        <!-- Cart Items -->
+        <div class="flex-1 overflow-y-auto p-4 custom-scrollbar min-h-[400px]">
+          <div *ngIf="selectedProducts.length === 0" class="h-full flex flex-col items-center justify-center text-slate-400 space-y-4 py-20">
+            <div class="p-6 bg-slate-50 dark:bg-slate-900/50 rounded-full border border-dashed border-slate-200 dark:border-slate-700">
+              <i class="fa-solid fa-shopping-basket text-5xl opacity-20"></i>
+            </div>
+            <p class="font-medium">El carrito está vacío</p>
+          </div>
+
+          <div class="space-y-3">
+            <div *ngFor="let item of selectedProducts; let i = index" 
+                 class="group flex items-center gap-4 p-3 bg-slate-50/50 dark:bg-slate-900/30 border border-slate-100 dark:border-slate-800 rounded-2xl hover:border-indigo-200 transition-all">
+              <div class="w-16 h-16 rounded-xl overflow-hidden border border-white dark:border-slate-700 shadow-sm flex-shrink-0">
+                <img [src]="item.product.strImage" class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="font-bold text-slate-900 dark:text-white truncate">{{ item.product.strName }}</h4>
+                <p class="text-xs text-slate-400">$ {{ item.product.decPrice }} c/u</p>
+              </div>
+              
+              <!-- Quantity Controls -->
+              <div class="flex items-center bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-1">
+                <button (click)="decrementQuantity(item)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-rose-500 transition-colors">
+                  <i class="fa-solid fa-minus text-xs"></i>
+                </button>
+                <span class="w-10 text-center font-black text-slate-900 dark:text-white text-sm">{{ item.quantity }}</span>
+                <button (click)="incrementQuantity(item)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-emerald-500 transition-colors">
+                  <i class="fa-solid fa-plus text-xs"></i>
+                </button>
+              </div>
+
+              <div class="w-24 text-right">
+                <p class="text-sm font-black text-slate-900 dark:text-white">$ {{ item.product.decPrice * item.quantity }}</p>
+              </div>
+
+              <button (click)="removeProduct(i)" class="p-2 text-slate-300 hover:text-rose-500 transition-colors">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart Footer / Total -->
+        <div class="p-8 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-700 space-y-6">
+          <div class="flex justify-between items-end">
+            <div class="space-y-1 text-xs">
+              <p class="text-slate-400 uppercase font-black tracking-widest">Cajero</p>
+              <p class="text-slate-900 dark:text-white font-bold flex items-center gap-2">
+                <i class="fa-solid fa-user-circle text-indigo-500"></i>
+                {{ userOnSession }}
+              </p>
+            </div>
+            <div class="text-right space-y-1">
+              <p class="text-slate-400 uppercase font-black tracking-widest text-xs">Total a Pagar</p>
+              <p class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">$ {{ calTotal() }}</p>
+            </div>
+          </div>
+
+          <button (click)="crearSale()" 
+                  [disabled]="selectedProducts.length === 0"
+                  class="w-full py-5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 dark:disabled:bg-slate-800 text-white font-black text-xl rounded-3xl shadow-xl shadow-indigo-500/20 transition-all active:scale-95 flex items-center justify-center gap-4 group">
+            <i class="fa-solid fa-receipt transition-transform group-hover:rotate-12"></i>
+            Cobrar Venta
           </button>
-        </a>
-      </div>
-  
-      <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th class="px-16 py-3"><span class="sr-only">Imagen</span></th>
-              <th class="px-6 py-3">Nombre del producto</th>
-              <th class="px-6 py-3">Precio</th>
-              <th class="px-6 py-3">Cantidad</th>
-              <th class="px-6 py-3">Total</th>
-              <th class="px-6 py-3">Stock</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let selectedProduct of selectedProducts"
-              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <td class="p-4">
-                <img src="{{selectedProduct.product.strImage}}" class="w-16 md:w-32 max-w-full max-h-32 object-cover"
-                  alt="imagen de {{selectedProduct.product.strName}}">
-              </td>
-              <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                {{selectedProduct.product.strName}}
-              </td>
-              <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                {{selectedProduct.product.decPrice}}
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center">
-                  <button (click)="decrementQuantity(selectedProduct)"
-                    class="inline-flex items-center justify-center p-1 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
-                    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M1 1h16" />
-                    </svg>
-                  </button>
-                  <input [(ngModel)]="selectedProduct.quantity"
-                    class="mx-2 w-10 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg py-1 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    required />
-                  <button (click)="incrementQuantity(selectedProduct)"
-                    class="inline-flex items-center justify-center h-6 w-6 p-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
-                    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                    </svg>
-                  </button>
-                </div>
-              </td>
-              <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                $ {{ selectedProduct.product.decPrice * selectedProduct.quantity }}
-              </td>
-              <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                {{ selectedProduct.product.decStock - selectedProduct.quantity }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-  
-      <div class="flex flex-col sm:flex-row justify-between items-center m-4 gap-4">
-        <div class="text-center sm:text-left">
-          <h5 class="text-sm text-gray-600">Le atiende:</h5>
-          <h1 class="text-l font-bold text-gray-700 dark:text-gray-400">{{userOnSession}}</h1>
         </div>
-        <div class="text-center sm:text-left">
-          <h5 class="text-sm text-gray-600">Total de la venta:</h5>
-          <h1 class="text-l font-bold text-gray-700 dark:text-gray-400">$ {{calTotal()}}</h1>
-        </div>
-        <button (click)="crearSale()"
-          class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-xl font-medium rounded-md text-white bg-green-700 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-          <i class="fa-solid fa-cart-shopping mr-2"></i> Cobrar
-        </button>
       </div>
     </div>
+
   </div>
-  
+</div>

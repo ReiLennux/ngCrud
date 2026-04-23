@@ -20,8 +20,10 @@ export class SecondarySalesComponent implements OnInit {
   estadoSeleccionado: string = "";
   constructor(private saleService: SalesService, private userService: UserService) { }
 
-  filtrarSales(): Sale[] {
-    return this.sales.filter(sale =>
+  filteredSales: Sale[] = [];
+
+  filtrarSales() {
+    this.filteredSales = this.sales.filter(sale =>
       (this.usuarioSeleccionado == '' || sale.DateSale.idUsuUsuario == this.usuarioSeleccionado) &&
       (this.dateSearch == "" || sale.DateSale.dtDate === this.dateSearch) &&
       (this.estadoSeleccionado == "" || sale.DateSale.idVenCatState.toString() == this.estadoSeleccionado) &&
@@ -29,18 +31,7 @@ export class SecondarySalesComponent implements OnInit {
     );
   }
   
-  onStateChange(event: Event) {
-    const element = event.target as HTMLSelectElement;
-    this.estadoSeleccionado = element.value;
-  }
-  onUserChange(event: Event) {
-    const element = event.target as HTMLSelectElement;
-    this.usuarioSeleccionado = element.value;
-  }
-  onDateChange(event: Event) {
-    const element = event.target as HTMLInputElement;
-    this.dateSearch = element.value;
-  }
+  mappedUsuarios: { id: string; strName: string }[] = [];
 
   ngOnInit(): void {
     this.getSales();
@@ -52,6 +43,7 @@ export class SecondarySalesComponent implements OnInit {
     this.userService.obtenerDatosUsuario().subscribe({
       next: (data: User[]) => {
         this.usuarios = data;
+        this.mappedUsuarios = data.map(u => ({ id: u.email, strName: u.email }));
       }
     })
   }
@@ -60,7 +52,8 @@ export class SecondarySalesComponent implements OnInit {
     this.sales = [];
     this.saleService.getSaleData().subscribe({
       next: (data: Sale[]) => {
-        this.sales = data
+        this.sales = data;
+        this.filtrarSales();
       }
     });
   }

@@ -36,6 +36,7 @@ export class PrincipalProductsComponent implements OnInit {
     this.productsService.obtenerProductos().subscribe({
       next: (data: product[]) => {
         this.products = data;
+        this.filtrarProductos();
       },
       error: err => {
         console.error(err);
@@ -75,22 +76,23 @@ export class PrincipalProductsComponent implements OnInit {
   }
 
   obtenerCategoria(categoriaId: string): String {
-    const categoria = this.categorias.find(cat => cat.id === categoriaId);
+    const categoria = this.categorias.find(cat => cat.id == categoriaId);
     return categoria ? categoria.strName : '';
   }
 
   obtenerSubcategoria(subcategoriaId: string | undefined): String {
-    const subcategoria = this.subcategorias.find(subcat => subcat.id === subcategoriaId);
+    const subcategoria = this.subcategorias.find(subcat => subcat.id == subcategoriaId);
     return subcategoria ? subcategoria.strName : '';
   }
 
-  filtrarProductos(): product[] {
-    return this.products
-      .filter(producto =>
-        ((this.categoriaSeleccionadoId == "" || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
-          (this.subcategoriaSeleccionadoId == "" || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
-        (this.searchTerm === '' || producto.strName.toLowerCase().includes(this.searchTerm.toLowerCase()))
-      )
+  filteredProducts: product[] = [];
+
+  filtrarProductos() {
+    this.filteredProducts = this.products.filter(producto =>
+      ((this.categoriaSeleccionadoId == "" || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
+        (this.subcategoriaSeleccionadoId == "" || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
+      (this.searchTerm === '' || producto.strName.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    );
   }
 
   onsubcategoriaSeleccionada(subcategoria: string | number | null) {

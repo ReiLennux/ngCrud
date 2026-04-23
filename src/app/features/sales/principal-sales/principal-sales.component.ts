@@ -80,42 +80,37 @@ export class PrincipalSalesComponent {
   }
 
 
+  filteredProducts: product[] = [];
+
   ngOnInit(): void {
+    this.obtenerCategorias();
+    this.obtenerSubcategorias();
     this.productsService.obtenerProductos().subscribe({
       next: (data: product[]) => {
         this.products = data;
+        this.filtrarProductos();
       }
     });
     this.userOnSession = this.storageService.getUserInSession()
   }
 
   pushProduct(product: product) {
-    if (product.decStock !== 0) {
-      const isProductExists = this.selectedProducts.some(
-        (p) => p.product.id === product.id
-      );
-      if (isProductExists) {
-
+    if (product.decStock > 0) {
+      const existing = this.selectedProducts.find(p => p.product.id === product.id);
+      if (existing) {
+        this.incrementQuantity(existing);
       } else {
         this.selectedProducts.push({ product: product, quantity: 1 });
       }
-    } else {
-
     }
-
   }
 
-
-  onCategoriaSeleccionada(categoria: string | number | null) {
-    this.categoriaSeleccionadoId = categoria !== null ? categoria.toString() : '0';
+  removeProduct(index: number) {
+    this.selectedProducts.splice(index, 1);
   }
 
-  onsubcategoriaSeleccionada(subcategoria: string | number | null) {
-    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria.toString() : '0';
-  }
-
-  filtrarProductos(): product[] {
-    return this.products.filter(producto =>
+  filtrarProductos() {
+    this.filteredProducts = this.products.filter(producto =>
       ((this.categoriaSeleccionadoId == "" || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
         (this.subcategoriaSeleccionadoId == "" || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
       (this.searchTerm === '' || producto.strName.toLowerCase().includes(this.searchTerm.toLowerCase()))

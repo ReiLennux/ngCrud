@@ -1,84 +1,132 @@
-<div
-    class="m-8 max-w-4xl mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-    <form (ngSubmit)="submitForm()">
-        <a routerLink="/products"
-            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-26 h-8 ms-auto inline-flex justify-center items-center mb-4 p-3">
-            <i class="fa-solid fa-arrow-left mr-1"></i>
-            Back
-        </a>
-        <div class="mb-1">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Register a new product</h5>
-<p class="font-normal text-gray-700 dark:text-gray-400">Save a product in the system.</p>
-        <div class="p-1 md:p-5 space-y-4">
-            <app-g-text [(ngModel)]="newProducto.strName" name="strName" label="Product Name:" placeholder="eggs"
-                type="text" [validation]="true">
+<div class="m-6 max-w-4xl mx-auto space-y-6">
+  <!-- Back Button -->
+  <div class="flex items-center">
+    <a routerLink="/products" class="inline-flex items-center gap-2 text-slate-500 hover:text-emerald-600 font-semibold transition-colors group">
+      <div class="p-2 rounded-xl bg-slate-100 group-hover:bg-emerald-50 transition-colors">
+        <i class="fa-solid fa-arrow-left"></i>
+      </div>
+      Volver al Inventario
+    </a>
+  </div>
+
+  <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <!-- Header -->
+    <div class="p-8 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
+      <h2 class="text-2xl font-black text-slate-900 dark:text-white">Nuevo Producto</h2>
+      <p class="text-slate-500 dark:text-slate-400 mt-1">Completa la información para registrar un nuevo artículo en el catálogo.</p>
+    </div>
+
+    <form (ngSubmit)="submitForm()" class="p-8 space-y-8">
+      <!-- General Information -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 mb-2">
+          <i class="fa-solid fa-circle-info text-emerald-500"></i>
+          <h3 class="text-sm font-bold uppercase tracking-widest text-slate-400">Información General</h3>
+        </div>
+        
+        <app-g-text [(ngModel)]="newProducto.strName" name="strName" label="Nombre del Producto" placeholder="Ej. Huevos Orgánicos"
+            type="text" [validation]="true">
+        </app-g-text>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <app-g-select [(ngModel)]="categoriaSeleccionadoId" name="category"
+              label="Categoría Principal" [options]="categorias">
+          </app-g-select>
+
+          <app-g-select [(ngModel)]="subcategoriaSeleccionadoId" name="Subcategory"
+              label="Subcategoría" [options]="subcategorias">
+          </app-g-select>
+        </div>
+
+        <div class="relative">
+          <label class="block px-1 text-[13px] font-bold text-slate-400 uppercase tracking-wider mb-2">Descripción</label>
+          <textarea [(ngModel)]="newProducto.strDescription" name="strDescription"
+            class="w-full p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm rounded-2xl focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all min-h-[120px]"
+            placeholder="Describe las características principales del producto..."></textarea>
+        </div>
+      </div>
+
+      <!-- Inventory & Pricing -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 pt-6 border-t border-slate-100 dark:border-slate-700">
+        <!-- Stock -->
+        <div class="space-y-6">
+          <div class="flex items-center gap-3 mb-2">
+            <i class="fa-solid fa-boxes-stacked text-blue-500"></i>
+            <h3 class="text-sm font-bold uppercase tracking-widest text-slate-400">Control de Inventario</h3>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <app-g-text [(ngModel)]="newProducto.decMinimum" name="decMinimum" label="Stock Mínimo"
+                placeholder="0" type="number">
             </app-g-text>
-
-            <app-g-text-area class="col-span-2" [(ngModel)]="newProducto.strDescription" name="strDescription"
-                label="Description:" placeholder="Product Description" [validation]="true" [errorMessage]="''">
-            </app-g-text-area>
-
-            <div class="grid grid-cols-2 gap-4">
-                <app-g-select [(ngModel)]="categoriaSeleccionadoId" placeholder="Category" name="category"
-                    label="Categories" [options]="categorias">
-                </app-g-select>
-
-                <app-g-select [(ngModel)]="subcategoriaSeleccionadoId" placeholder="Subcategory" name="Subcategory"
-                    label="Subcategory" [options]="subcategorias">
-                </app-g-select>
-            </div>
-
-            <div class="grid grid-cols-3">
-                <app-g-text [(ngModel)]="newProducto.decMinimum" name="decMinimum" label="Minimum Stock:"
-                    placeholder="0" type="number" [validation]="true">
-                </app-g-text>
-                <app-g-text [(ngModel)]="newProducto.decMaximum" name="decMaximum" label="Maximum Stock:"
-                    placeholder="100" type="number" [validation]="true">
-                </app-g-text>
-                <app-g-text [(ngModel)]="newProducto.decStock" name="decStock" label="Current Stock:" placeholder="0"
-                    type="number" [validation]="true">
-                </app-g-text>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <app-g-text [(ngModel)]="newProducto.decCost" name="decCost" label="Cost:" placeholder="0" type="money"
-                    [validation]="true">
-                </app-g-text>
-                <app-g-text [(ngModel)]="newProducto.decPrice" name="decPrice" label="Price:" placeholder="100"
-                    type="money" [validation]="true">
-                </app-g-text>
-            </div>
+            <app-g-text [(ngModel)]="newProducto.decMaximum" name="decMaximum" label="Stock Máximo"
+                placeholder="100" type="number">
+            </app-g-text>
+          </div>
+          <app-g-text [(ngModel)]="newProducto.decStock" name="decStock" label="Stock Actual" placeholder="0"
+              type="number">
+          </app-g-text>
         </div>
-        <!--Image Input-->
-        <div class="flex items-center justify-center w-full mb-5">
-            <label for="dropzone-file"
-                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                <ng-container *ngIf="!selectedFile; else elseTemplate">
-                    <div ngif>
-                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                            </svg>
-                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Da
-                                    click aquí para subir una imagen</span> o suelta la imagen aquí</p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG, JPEG, solo formato de
-                                imagen</p>
-                        </div>
-                        <input id="dropzone-file" type="file" class="hidden" (change)="onFileSelected($event)"
-                            accept="image/*" />
-                    </div>
-                </ng-container>
-                <ng-template #elseTemplate>
-                    <div class="flex flex-col items-center justify-center pt-5 pb-6 text-gray-500">
-                        <i class="fa-regular fa-circle-check fa-2x "></i>
 
-                        <p class="mt-2">{{ selectedFile ? selectedFile.name : 'Archivo no seleccionado' }}</p>
-                    </div>
-                </ng-template>
-            </label>
+        <!-- Prices -->
+        <div class="space-y-6">
+          <div class="flex items-center gap-3 mb-2">
+            <i class="fa-solid fa-tags text-amber-500"></i>
+            <h3 class="text-sm font-bold uppercase tracking-widest text-slate-400">Precios y Costos</h3>
+          </div>
+          
+          <app-g-text [(ngModel)]="newProducto.decCost" name="decCost" label="Costo de Compra" placeholder="0.00" type="number">
+          </app-g-text>
+          <app-g-text [(ngModel)]="newProducto.decPrice" name="decPrice" label="Precio de Venta" placeholder="0.00" type="number">
+          </app-g-text>
         </div>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-2">
+          <i class="fa-solid fa-image text-purple-500"></i>
+          <h3 class="text-sm font-bold uppercase tracking-widest text-slate-400">Imagen del Producto</h3>
+        </div>
+
+        <div class="relative group">
+          <input id="dropzone-file" type="file" class="hidden" (change)="onFileSelected($event)" accept="image/*" />
+          <label for="dropzone-file" 
+                 class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-[2rem] cursor-pointer bg-slate-50/50 dark:bg-slate-900/50 hover:bg-emerald-50 dark:hover:bg-emerald-500/5 hover:border-emerald-300 dark:hover:border-emerald-500 transition-all group/label">
+            
+            <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4" *ngIf="!selectedFile">
+              <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm mb-3 group-hover/label:scale-110 transition-transform">
+                <i class="fa-solid fa-cloud-arrow-up text-3xl text-emerald-500"></i>
+              </div>
+              <p class="text-sm text-slate-600 dark:text-slate-300 font-semibold">Subir imagen</p>
+              <p class="text-xs text-slate-400 mt-1">Arrastra un archivo o haz clic aquí</p>
+            </div>
+
+            <div class="flex items-center gap-4 p-4" *ngIf="selectedFile">
+              <div class="p-3 bg-emerald-100 dark:bg-emerald-500/20 rounded-xl">
+                <i class="fa-solid fa-circle-check text-2xl text-emerald-600 dark:text-emerald-400"></i>
+              </div>
+              <div class="flex flex-col">
+                <p class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]">{{ selectedFile.name }}</p>
+                <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Archivo seleccionado</p>
+              </div>
+              <button type="button" (click)="$event.stopPropagation(); selectedFile = undefined" 
+                      class="ml-4 p-2 text-slate-400 hover:text-rose-500 transition-colors">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 pt-4">
         <button type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 focus:outline-none flex w-full justify-center leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
-            Crear Nuevo Producto
+            class="flex-1 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-lg shadow-emerald-500/20 transition-all active:scale-95 flex items-center justify-center gap-3">
+          <i class="fa-solid fa-save"></i>
+          Guardar Producto
         </button>
+      </div>
+    </form>
+  </div>
+</div>

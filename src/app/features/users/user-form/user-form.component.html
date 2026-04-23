@@ -1,21 +1,30 @@
-<div class="min-h-[80vh] flex items-center justify-center p-6">
-  <div class="w-full max-w-2xl bg-white dark:bg-slate-800 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-fade-in">
-    
-    <!-- Form Header -->
-    <div class="bg-slate-50 dark:bg-slate-900/50 p-8 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
-      <div class="space-y-1">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Registro de Usuario</h2>
-        <p class="text-slate-500 dark:text-slate-400 text-sm">Crea una nueva cuenta para acceder al panel.</p>
+<div class="m-6 max-w-4xl mx-auto space-y-6">
+  <!-- Back Button -->
+  <div class="flex items-center">
+    <a routerLink="/users" class="inline-flex items-center gap-2 text-slate-500 hover:text-blue-600 font-semibold transition-colors group">
+      <div class="p-2 rounded-xl bg-slate-100 group-hover:bg-blue-50 transition-colors">
+        <i class="fa-solid fa-arrow-left"></i>
       </div>
-      <a routerLink="/users" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors text-slate-500 dark:text-slate-400">
-        <i class="fa-solid fa-xmark text-xl"></i>
-      </a>
+      Volver a la Lista de Usuarios
+    </a>
+  </div>
+
+  <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <!-- Header -->
+    <div class="p-8 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
+      <h2 class="text-2xl font-black text-slate-900 dark:text-white">Registro de Usuario</h2>
+      <p class="text-slate-500 dark:text-slate-400 mt-1">Crea una nueva cuenta para gestionar accesos al sistema.</p>
     </div>
 
     <form class="p-8 space-y-8" #userForm="ngForm" (ngSubmit)="submitForm(userForm)">
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="space-y-2">
+      <!-- Account Information -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 mb-2">
+          <i class="fa-solid fa-id-card text-blue-500"></i>
+          <h3 class="text-sm font-bold uppercase tracking-widest text-slate-400">Información de Cuenta</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-g-text 
             [(ngModel)]="user.email" 
             name="email" 
@@ -24,8 +33,7 @@
             type="email" 
             [validation]="true">
           </app-g-text>
-        </div>
-        <div class="space-y-2">
+
           <app-g-select 
             [(ngModel)]="user.idUsuCatTipoUsuario" 
             name="idUsuCatTipoUsuario" 
@@ -37,8 +45,14 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="space-y-2">
+      <!-- Security -->
+      <div class="space-y-6 pt-6 border-t border-slate-100 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-2">
+          <i class="fa-solid fa-shield-halved text-amber-500"></i>
+          <h3 class="text-sm font-bold uppercase tracking-widest text-slate-400">Seguridad</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <app-g-text 
             [(ngModel)]="user.strPassword" 
             name="strPassword" 
@@ -47,40 +61,37 @@
             type="password" 
             [validation]="true">
           </app-g-text>
-        </div>
-        <div class="space-y-2">
-          <app-g-text 
-            (keyup)="checkPasswordMatch()" 
-            [(ngModel)]="rPassword" 
-            name="confirm_password"
-            label="Confirmar Contraseña" 
-            placeholder="•••••••••" 
-            type="password" 
-            [validation]="true">
-          </app-g-text>
-          <p *ngIf="rPassword && !comparePassword" class="text-xs text-rose-500 font-medium animate-pulse">
-            <i class="fa-solid fa-circle-exclamation mr-1"></i> Las contraseñas no coinciden
-          </p>
+
+          <div class="space-y-2">
+            <app-g-text 
+              (keyup)="checkPasswordMatch()" 
+              [(ngModel)]="rPassword" 
+              name="confirm_password"
+              label="Confirmar Contraseña" 
+              placeholder="•••••••••" 
+              type="password" 
+              [validation]="true">
+            </app-g-text>
+            <p *ngIf="rPassword && !comparePassword" class="text-[11px] text-rose-500 font-bold flex items-center gap-1 ml-1">
+              <i class="fa-solid fa-triangle-exclamation"></i> Las contraseñas no coinciden
+            </p>
+          </div>
         </div>
       </div>
 
+      <!-- Action Buttons -->
       <div class="pt-6 border-t border-slate-100 dark:border-slate-700">
         <button type="submit" 
           [disabled]="!userForm.valid || !comparePassword"
-          class="w-full py-4 px-6 text-white font-bold rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg"
+          class="w-full py-4 px-8 text-white font-black rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg disabled:opacity-50 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:shadow-none"
           [ngClass]="{
-            'bg-blue-600 hover:bg-blue-700 shadow-blue-500/25': userForm.valid && comparePassword,
-            'bg-slate-300 dark:bg-slate-700 cursor-not-allowed opacity-50': !userForm.valid || !comparePassword
+            'bg-blue-600 hover:bg-blue-700 shadow-blue-500/25': userForm.valid && comparePassword
           }">
           <i class="fa-solid fa-user-check" *ngIf="userForm.valid && comparePassword"></i>
           {{ !userForm.valid || !comparePassword ? "Completa todos los campos" : "Registrar Usuario" }}
         </button>
-        
-        <button type="button" routerLink="/users"
-          class="w-full mt-4 py-3 text-slate-500 dark:text-slate-400 font-medium hover:text-slate-700 dark:hover:text-white transition-colors">
-          Cancelar y volver
-        </button>
       </div>
     </form>
   </div>
-</div>
+</div>
+
