@@ -5,7 +5,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   selector: 'app-g-date',
   templateUrl: './g-date.input.html',
   standalone: false,
-  styleUrls: ['./g-date.input.css'],
+  host: { 'class': 'block w-full' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

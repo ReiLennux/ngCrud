@@ -5,6 +5,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   selector: 'app-g-select',
   templateUrl: './g-select.input.html',
   standalone: false,
+  host: { 'class': 'block w-full' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

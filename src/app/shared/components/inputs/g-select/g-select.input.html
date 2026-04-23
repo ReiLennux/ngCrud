@@ -1,25 +1,18 @@
-<div class="">
-  <!-- Etiqueta del campo -->
-  <label [for]="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+<div class="w-full">
+  <label *ngIf="label" [for]="name"
+    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
     {{ label }}
   </label>
-  
-  <!-- Select de opciones -->
-  <select 
-    [id]="name"
-    [name]="name"
-    [(ngModel)]="value"
-    [disabled]="disabled"
-    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white placeholder-gray-400"
+  <select
+    [id]="name" [name]="name" [(ngModel)]="value" [disabled]="disabled"
+    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    [class.border-red-500]="validation && errorMessage"
   >
-    <!-- Opción por defecto según el contexto -->
     <option *ngIf="isFilter" value="0">Show all {{ placeholder }}</option>
-    <option *ngIf="!isFilter" disabled [selected]="!value" value="0">Seleccione a {{ placeholder }}</option>
-
-    <!-- Opciones dinámicas -->
-    <option *ngFor="let option of options" [value]="option.id">
-      {{ option.strName }}
-    </option>
+    <option *ngIf="!isFilter" disabled [selected]="!value" value="0">Seleccione {{ placeholder }}</option>
+    <option *ngFor="let option of options" [value]="option.id">{{ option.strName }}</option>
   </select>
+  <p *ngIf="validation && errorMessage" class="mt-2 text-sm text-red-600 dark:text-red-500">
+    {{ errorMessage }}
+  </p>
 </div>
-

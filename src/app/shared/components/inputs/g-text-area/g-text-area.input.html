@@ -1,28 +1,17 @@
-
-<div>
-    <label 
-        [for]="name" 
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-        {{label}}
-    </label>
-    <textarea 
-        [id]="name" 
-        [rows]="rows" 
-        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white placeholder-gray-400" 
-        [placeholder]="placeholder"
-        [disabled]="disabled"
-        [attr.minlength]="minLength"
-        [attr.maxlength]="maxLength"
-        [value]="value"
-        (input)="onInputChange($event)"
-        (blur)="onTouched()"
-        [readOnly]="readOnly"
-        >
-    </textarea>
-    <div *ngIf="validation">
-        <p class="error-message">
-          {{ errorMessage }}
-        </p>
-      </div> 
+<div class="w-full">
+  <label *ngIf="label" [for]="name"
+    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+    {{ label }}
+  </label>
+  <textarea
+    [id]="name" [rows]="rows" [placeholder]="placeholder"
+    [disabled]="disabled" [attr.minlength]="minLength" [attr.maxlength]="maxLength"
+    [value]="value" [readOnly]="readOnly"
+    (input)="onInputChange($event)" (blur)="onTouched()"
+    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    [class.border-red-500]="validation && errorMessage"
+  ></textarea>
+  <p *ngIf="validation && errorMessage" class="mt-2 text-sm text-red-600 dark:text-red-500">
+    {{ errorMessage }}
+  </p>
 </div>
-
