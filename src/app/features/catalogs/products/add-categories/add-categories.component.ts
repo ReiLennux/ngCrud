@@ -62,13 +62,13 @@ export class AddCategoriesComponent {
   }
 
   obtenerCategorias() {
-    this.categoriesService.obtenerCategorias().subscribe(
-      (data: any[]) => {
+    this.categoriesService.obtenerCategorias().subscribe({
+      next: (data: any[]) => {
         this.categorias = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 }

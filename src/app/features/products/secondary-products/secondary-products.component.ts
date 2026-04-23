@@ -98,24 +98,24 @@ export class SecondaryProductsComponent implements OnInit {
   }
 
   obtenerCategorias() {
-    this.categoriesService.obtenerCategorias().subscribe(
-      (data: any[]) => {
+    this.categoriesService.obtenerCategorias().subscribe({
+      next: (data: any[]) => {
         this.categorias = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 
   obtenerSubcategorias() {
-    this.categoriesService.obtenerTodasSubCategorias().subscribe(
-      (data: any[]) => {
+    this.categoriesService.obtenerTodasSubCategorias().subscribe({
+      next: (data: any[]) => {
         this.subcategorias = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 }

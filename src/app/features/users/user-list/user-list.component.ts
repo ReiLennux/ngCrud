@@ -35,16 +35,16 @@ export class UserListComponent implements OnInit {
 
   //#region filters
   loadFilters(){
-    this.userService.estados().subscribe(
-      (data: any) => {
+    this.userService.estados().subscribe({
+      next: (data: any) => {
         this.estados = data;
       }
-    );
-    this.userService.tipos().subscribe(
-      (data: any) => {
+    });
+    this.userService.tipos().subscribe({
+      next: (data: any) => {
         this.tipos = data;
       }
-    );
+    });
   }
 
   filterUsers() {
@@ -69,14 +69,14 @@ export class UserListComponent implements OnInit {
 
   
   loadUserData() {
-    this.userService.obtenerDatosUsuario().subscribe(
-      (data: User[]) => {
+    this.userService.obtenerDatosUsuario().subscribe({
+      next: (data: User[]) => {
         this.users = data;
         this.filterUsers(); // Llama a filterUsers después de obtener los datos del usuario
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 }

@@ -58,34 +58,34 @@ export class PrincipalSalesComponent {
   }
 
   obtenerCategorias() {
-    this.categoriesService.obtenerCategorias().subscribe(
-      (data: any[]) => {
+    this.categoriesService.obtenerCategorias().subscribe({
+      next: (data: any[]) => {
         this.categorias = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 
   obtenerSubcategorias() {
-    this.categoriesService.obtenerTodasSubCategorias().subscribe(
-      (data: any[]) => {
+    this.categoriesService.obtenerTodasSubCategorias().subscribe({
+      next: (data: any[]) => {
         this.subcategorias = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 
 
   ngOnInit(): void {
-    this.productsService.obtenerProductos().subscribe(
-      (data: product[]) => {
+    this.productsService.obtenerProductos().subscribe({
+      next: (data: product[]) => {
         this.products = data;
       }
-    );
+    });
     this.userOnSession = this.storageService.getUserInSession()
   }
 
@@ -138,14 +138,14 @@ export class PrincipalSalesComponent {
         decSubtotal: subtotal
       };
 
-      this.saleService.postSale(newSale).subscribe(
-        response => {
+      this.saleService.postSale(newSale).subscribe({
+        next: response => {
           generateAndDownloadTicket(this.selectedProducts);
           this.selectedProducts = [];
         },
-        error => {
+        error: error => {
         }
-      );
+      });
 
     } else {
 

@@ -40,15 +40,15 @@ export class ActionsUserComponent implements OnInit {
   }
 
   deleteButton(id: String) {
-    this.userService.eliminarUsuario(id.toString()).subscribe(
-      res => {
+    this.userService.eliminarUsuario(id.toString()).subscribe({
+      next: res => {
         this.usuarioCambio.emit();
         setTimeout(() => this.showModal = false, 1500);
       },
-      err => {
+      error: err => {
         this.showAlert = true;
       }
-    );
+    });
   }
 
   updateButton(id: Number) {}
@@ -58,26 +58,26 @@ export class ActionsUserComponent implements OnInit {
   }
 
   loadFilters(){
-    this.userService.estados().subscribe(
-      (data: []) => {
+    this.userService.estados().subscribe({
+      next: (data: []) => {
         this.estados = data;
       }
-    )
-    this.userService.tipos().subscribe(
-      (data: []) => {
+    })
+    this.userService.tipos().subscribe({
+      next: (data: []) => {
         this.tipos = data;
       }
-    )
+    })
   }
 
   update(){
-    this.userService.updateUsuario(this.putUser).subscribe(
-      res => {
+    this.userService.updateUsuario(this.putUser).subscribe({
+      next: res => {
         this.usuarioCambio.emit();
       },
-      err => {
+      error: err => {
       }
-    );
+    });
   }
 
   setEstado(estado: string) {

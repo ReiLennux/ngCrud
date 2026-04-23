@@ -23,35 +23,37 @@ export class ActionsSalesComponent implements OnInit {
   constructor(private saleService: SalesService, private productsService: ProductsService) { }
 
   ngOnInit(): void {
-    this.saleService.getSaleById(this.Sale.id!).subscribe(
-      (sale: any) => {
+    this.saleService.getSaleById(this.Sale.id!).subscribe({
+      next: (sale: any) => {
         this.postSales = sale;
-        this.productsService.obtenerProductos().subscribe((productos: product[]) => {
-          sale.SaleDetails.forEach((detail: SaleDetails) => {
-            const matchedProduct = productos.find(p => p.id == detail.idProProducto);
-            if (matchedProduct) {
-              this.selectedProducts.push({
-                id: sale.id,
-                product: matchedProduct,
-                quantity: detail.decQuantity
-              });
-            }
-          });
+        this.productsService.obtenerProductos().subscribe({
+          next: (productos: product[]) => {
+            sale.SaleDetails.forEach((detail: SaleDetails) => {
+              const matchedProduct = productos.find(p => p.id == detail.idProProducto);
+              if (matchedProduct) {
+                this.selectedProducts.push({
+                  id: sale.id,
+                  product: matchedProduct,
+                  quantity: detail.decQuantity
+                });
+              }
+            });
+          }
         });
       }
-    );
+    });
   }
   
 
 
    delete() {
-     this.saleService.deleteSale(this.Sale).subscribe(
-      res => {
-         this.saleActualizada.emit();
-         setTimeout(() => this.showModal = false, 1500);
-       },
-       err => {}
-     );
+    this.saleService.deleteSale(this.Sale).subscribe({
+      next: res => {
+        this.saleActualizada.emit();
+        setTimeout(() => this.showModal = false, 1500);
+      },
+      error: err => {}
+    });
    }
 
   toggleModal(){

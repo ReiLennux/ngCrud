@@ -21,15 +21,15 @@ export class LoginComponent {
   onSubmit(): void {
     this.loading = true;
 
-    this.auth.login(this.userData).subscribe(
-      res => {
+    this.auth.login(this.userData).subscribe({
+      next: res => {
         this.userData = {email: '', password: ''};
         this.loading = false;
         this.router.navigate(['/home']);
       },
-      err => {
+      error: err => {
         this.loading = false;
       }
-    );
+    });
   }
 }

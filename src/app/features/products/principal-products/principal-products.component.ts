@@ -33,36 +33,36 @@ export class PrincipalProductsComponent implements OnInit {
   //#endregion
 
   obtenerProductos() {
-    this.productsService.obtenerProductos().subscribe(
-      (data: product[]) => {
+    this.productsService.obtenerProductos().subscribe({
+      next: (data: product[]) => {
         this.products = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 
   obtenerCategorias() {
-    this.categoriesService.obtenerCategorias().subscribe(
-      (data: any[]) => {
+    this.categoriesService.obtenerCategorias().subscribe({
+      next: (data: any[]) => {
         this.categorias = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 
   obtenerSubcategorias() {
-    this.categoriesService.obtenerTodasSubCategorias().subscribe(
-      (data: any[]) => {
+    this.categoriesService.obtenerTodasSubCategorias().subscribe({
+      next: (data: any[]) => {
         this.subcategorias = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 
   seleccionarProducto(id: string) {

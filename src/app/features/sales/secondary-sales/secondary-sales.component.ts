@@ -41,24 +41,25 @@ export class SecondarySalesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSales();
-    this.saleService.getSaleStates().subscribe(
-      (data: any) => {
+    this.saleService.getSaleStates().subscribe({
+      next: (data: any) => {
         this.estados = data;
       }
-    )
-    this.userService.obtenerDatosUsuario().subscribe(
-      (data: any) => {
+    })
+    this.userService.obtenerDatosUsuario().subscribe({
+      next: (data: any) => {
         this.usuarios = data;
-      })
+      }
+    })
   }
 
   getSales() {
     this.sales = [];
-    this.saleService.getSaleData().subscribe(
-      (data: any) => {
+    this.saleService.getSaleData().subscribe({
+      next: (data: any) => {
         this.sales = data
       }
-    );
+    });
   }
   
 

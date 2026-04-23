@@ -32,15 +32,15 @@ export class ActionsComponent {
   ) {}
 
   delete() {
-    this.productsServices.eliminarProducto(this.producto.id).subscribe(
-      res => {
+    this.productsServices.eliminarProducto(this.producto.id).subscribe({
+      next: res => {
         this.productoActualizado.emit();
         setTimeout(() => this.showModal = false, 1500);
       },
-      err => {
+      error: err => {
         this.showAlert = true;
       }
-    );
+    });
   }
 
   toggleModal() {
@@ -64,25 +64,25 @@ export class ActionsComponent {
   }
 
   obtenerCategorias() {
-    this.categoriesService.obtenerCategorias().subscribe(
-      (data: any[]) => {
+    this.categoriesService.obtenerCategorias().subscribe({
+      next: (data: any[]) => {
         this.categorias = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
   
   obtenerSubcategorias() {
-    this.categoriesService.obtenerTodasSubCategorias().subscribe(
-      (data: any[]) => {
+    this.categoriesService.obtenerTodasSubCategorias().subscribe({
+      next: (data: any[]) => {
         this.subcategorias = data;
       },
-      err => {
+      error: err => {
         console.error(err);
       }
-    );
+    });
   }
 
   async update() {

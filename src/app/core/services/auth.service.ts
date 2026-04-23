@@ -40,7 +40,7 @@ export class AuthService {
   public logout(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.storageService.clearSession();
-      window.location.reload();
+      this.router.navigate(['/login']);
     }
   }
 }

@@ -14,12 +14,14 @@ export class AppComponent {
   constructor(private router: Router, private route: ActivatedRoute) {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        let currentRoute = this.route.root;
-        while (currentRoute.firstChild) {
-          currentRoute = currentRoute.firstChild;
+      .subscribe({
+        next: () => {
+          let currentRoute = this.route.root;
+          while (currentRoute.firstChild) {
+            currentRoute = currentRoute.firstChild;
+          }
+          this.showNavbar = currentRoute.snapshot.data['hideNavbar'];
         }
-        this.showNavbar = currentRoute.snapshot.data['hideNavbar'];
       });
   }
 
