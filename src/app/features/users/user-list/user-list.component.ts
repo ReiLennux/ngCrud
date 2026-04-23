@@ -3,10 +3,10 @@ import { User } from '../../../core/models/user';
 import { UserService } from '../services/user.service';
 
 @Component({
-    selector: 'app-user-list',
-    templateUrl: './user-list.component.html',
-    styleUrls: ['./user-list.component.css'],
-    standalone: false
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.css'],
+  standalone: false
 })
 export class UserListComponent implements OnInit {
 
@@ -18,12 +18,12 @@ export class UserListComponent implements OnInit {
   filteredType: string = '';
   filteredEmail: string = '';
 
-  estados: {id: string, strName: string }[] = [];
-  tipos: {id: string, strName: string }[] = [];
+  estados: { id: string, strName: string }[] = [];
+  tipos: { id: string, strName: string }[] = [];
   //#endregion
 
   //#region constructor
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
   //#endregion
 
   //#region lifecycle hooks
@@ -34,7 +34,7 @@ export class UserListComponent implements OnInit {
   //#endregion
 
   //#region filters
-  loadFilters(){
+  loadFilters() {
     this.userService.estados().subscribe({
       next: (data: { id: string; strName: string }[]) => {
         this.estados = data;
@@ -57,22 +57,22 @@ export class UserListComponent implements OnInit {
   }
 
   getStatusName(estadoId: string): String {
-    const estado = this.estados.find((estado: { id: string; }) => estado.id === estadoId);
+    const estado = this.estados.find((estado: { id: string; }) => estado.id == estadoId);
     return estado ? estado.strName : '';
   }
 
   getTypeName(tipoId: string): String {
-    const tipo = this.tipos.find((tipo: { id: string; }) => tipo.id === tipoId);
+    const tipo = this.tipos.find((tipo: { id: string; }) => tipo.id == tipoId);
     return tipo ? tipo.strName : '';
   }
   //#endregion
 
-  
+
   loadUserData() {
     this.userService.obtenerDatosUsuario().subscribe({
       next: (data: User[]) => {
         this.users = data;
-        this.filterUsers(); // Llama a filterUsers después de obtener los datos del usuario
+        this.filterUsers();
       },
       error: err => {
         console.error(err);
