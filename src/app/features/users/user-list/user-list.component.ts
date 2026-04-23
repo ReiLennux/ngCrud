@@ -74,7 +74,9 @@ export class UserListComponent implements OnInit {
         this.users = data;
         this.filterUsers(); // Llama a filterUsers después de obtener los datos del usuario
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 }

@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { product } from '../../../core/models/product';
 import { Categoria, CategoriesService, Subcategoria } from '../../../core/services/products/catalog/categories.service';
 import { ProductsService } from '../../../core/services/products/products.service';
-import { AlertService } from '../../../core/services/alert.service';
-
 @Component({
     selector: 'app-principal-products',
     templateUrl: './principal-products.component.html',
@@ -21,8 +19,7 @@ export class PrincipalProductsComponent implements OnInit {
 
   constructor(
     private productsService: ProductsService,
-    private categoriesService: CategoriesService,
-    private alertService: AlertService
+    private categoriesService: CategoriesService
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +37,9 @@ export class PrincipalProductsComponent implements OnInit {
       (data: product[]) => {
         this.products = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 
@@ -49,7 +48,9 @@ export class PrincipalProductsComponent implements OnInit {
       (data: any[]) => {
         this.categorias = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 
@@ -58,7 +59,9 @@ export class PrincipalProductsComponent implements OnInit {
       (data: any[]) => {
         this.subcategorias = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 
@@ -67,7 +70,6 @@ export class PrincipalProductsComponent implements OnInit {
   }
 
   actualizarProductos() {
-    this.alertService.success('Producto actualizado correctamente.');
     this.products = [];
     this.ngOnInit();
   }

@@ -5,6 +5,7 @@ import {Auth, signInWithEmailAndPassword, UserCredential} from '@angular/fire/au
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class AuthService {
     private auth: Auth,
     private router: Router,
     private storageService: StorageService,
+    private alertService: AlertService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -29,7 +31,7 @@ export class AuthService {
         this.router.navigateByUrl('/home');
       }),
       catchError(error => {
-        console.error('Error during Firebase login:', error);
+        this.alertService.error('Error al iniciar sesión');
         return throwError('Error al iniciar sesión');
       })
     );

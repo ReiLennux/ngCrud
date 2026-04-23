@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../../../core/models/user';
 import { UserService } from '../../../../core/services/user.service';
-import { AlertService } from '../../../../core/services/alert.service';
 @Component({
     selector: 'app-actions-user',
     templateUrl: './actions-user.component.html',
@@ -28,7 +27,7 @@ export class ActionsUserComponent implements OnInit {
 
   showAlert: boolean = false;
 
-  constructor(private userService: UserService, private alertService: AlertService) {}
+  constructor(private userService: UserService) {}
 
 
   ngOnInit(): void {
@@ -43,12 +42,10 @@ export class ActionsUserComponent implements OnInit {
   deleteButton(id: String) {
     this.userService.eliminarUsuario(id.toString()).subscribe(
       res => {
-        this.alertService.success('El usuario ha sido eliminado.');
         this.usuarioCambio.emit();
         setTimeout(() => this.showModal = false, 1500);
       },
       err => {
-        this.alertService.error('El usuario no ha sido eliminado debido a un error en el sistema.');
         this.showAlert = true;
       }
     );
@@ -76,11 +73,9 @@ export class ActionsUserComponent implements OnInit {
   update(){
     this.userService.updateUsuario(this.putUser).subscribe(
       res => {
-        this.alertService.success('El usuario ha sido actualizado.');
         this.usuarioCambio.emit();
       },
       err => {
-        this.alertService.error('El usuario no ha sido actualizado debido a un error en el sistema.');
       }
     );
   }

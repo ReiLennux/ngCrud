@@ -5,7 +5,6 @@ import { product } from '../../../../core/models/product';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { ProductsService } from '../../../../core/services/products/products.service';
-import { AlertService } from '../../../../core/services/alert.service';
 
 @Component({
     selector: 'app-actions',
@@ -29,19 +28,16 @@ export class ActionsComponent {
   constructor(
     private productsServices: ProductsService, 
     private fileService: FileService,
-    private categoriesService: CategoriesService,
-    private alertService: AlertService,
+    private categoriesService: CategoriesService
   ) {}
 
   delete() {
     this.productsServices.eliminarProducto(this.producto.id).subscribe(
       res => {
-        this.alertService.success('El producto ha sido eliminado.');
         this.productoActualizado.emit();
         setTimeout(() => this.showModal = false, 1500);
       },
       err => {
-        this.alertService.error('Error al eliminar el producto.');
         this.showAlert = true;
       }
     );
@@ -72,7 +68,9 @@ export class ActionsComponent {
       (data: any[]) => {
         this.categorias = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
   
@@ -81,7 +79,9 @@ export class ActionsComponent {
       (data: any[]) => {
         this.subcategorias = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 
@@ -91,9 +91,7 @@ export class ActionsComponent {
         await this.productsServices.editarProducto(this.putProducto);
         this.toggleModal();
         this.productoActualizado.emit();
-        this.alertService.success('Producto actualizado correctamente.');
       } catch (err) {
-        this.alertService.error('Error al editar el producto.');
       }
       return;
     }
@@ -108,9 +106,7 @@ export class ActionsComponent {
       await of(this.productsServices.editarProducto(this.putProducto)).toPromise();
       this.productoActualizado.emit();
       this.toggleModal();
-      this.alertService.success('Producto actualizado correctamente.');
     } catch (err) {
-      this.alertService.error('Error al cargar la imagen a Cloudinary.');
     }
   }
 }

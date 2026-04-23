@@ -1,8 +1,9 @@
 import { product } from './../models/product';
 import { Injectable } from '@angular/core';
 import { Sale } from '../models/sale';
-import { Observable, catchError, from, map, mergeAll, throwError } from 'rxjs';
+import { Observable, catchError, from, map, mergeAll, throwError, tap } from 'rxjs';
 import { Firestore, collection, collectionData, doc, getDoc, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class SalesService {
   private productCollection = collection(this.firestore, 'Products');
   static decQuantity: any;
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore, private alertService: AlertService) { }
 
 
   public getSaleData(): Observable<Sale[]> {
@@ -29,7 +30,7 @@ export class SalesService {
         });
       }),
       catchError(error => {
-        console.error('Error al obtener ventas: ', error);
+        this.alertService.error('Error al obtener ventas');
         return throwError(() => new Error('Error al obtener ventas'));
       })
     );
@@ -45,7 +46,7 @@ export class SalesService {
   
       await updateDoc(productDocRef, { decStock: newStock });
     } else {
-      console.error(`Producto con ID ${productId} no encontrado para ajustar stock.`);
+      this.alertService.error(`Producto con ID ${productId} no encontrado para ajustar stock.`);
     }
   }
   
@@ -61,7 +62,7 @@ export class SalesService {
         }
       }),
       catchError(error => {
-        console.error('Error al obtener datos de venta desde Firestore: ', error);
+        this.alertService.error('Error al obtener datos de venta desde Firestore');
         return throwError(() => new Error('Error al obtener datos de venta'));
       })
     );
@@ -84,11 +85,12 @@ export class SalesService {
       }),
       map(promise => from(promise)),
       catchError(error => {
-        console.error('Error al agregar venta a Firestore: ', error);
+        this.alertService.error('Error al agregar venta a Firestore');
         return throwError(() => new Error('Error al agregar venta'));
       }),
       map(obs => obs as unknown as Observable<Sale>),
-      mergeAll()
+      mergeAll(),
+      tap(() => this.alertService.success('Venta creada con éxito.'))
     );
   }
   
@@ -107,8 +109,9 @@ export class SalesService {
       await deleteDoc(saleDocRef);
     })()).pipe(
       map(() => void 0),
+      tap(() => this.alertService.success('La venta fue eliminada.')),
       catchError(error => {
-        console.error('Error al eliminar venta de Firestore: ', error);
+        this.alertService.error('Error al eliminar venta de Firestore');
         return throwError(() => new Error('Error al eliminar venta'));
       })
     );
@@ -138,9 +141,10 @@ export class SalesService {
   
       // 3. Actualizar la venta
       await updateDoc(saleDocRef, { ...sale });
+      this.alertService.success('Venta actualizada con éxito.');
   
     } catch (error) {
-      console.error('Error al actualizar venta y ajustar stock:', error);
+      this.alertService.error('Error al actualizar venta y ajustar stock');
       throw new Error('Error al actualizar venta y ajustar stock');
     }
   }
@@ -158,7 +162,7 @@ export class SalesService {
         });
       }),
       catchError(error => {
-        console.error('Error al obtener estados de venta: ', error);
+        this.alertService.error('Error al obtener estados de venta');
         return throwError(() => new Error('Error al obtener estados de venta'));
       })
     );

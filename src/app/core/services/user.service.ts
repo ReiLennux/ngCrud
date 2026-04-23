@@ -1,11 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, from, of, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Firestore, collection, collectionData, doc, getDoc, addDoc, deleteDoc, updateDoc, query, where } from '@angular/fire/firestore';
 import { getDocs, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Auth } from '@angular/fire/auth';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class UserService {
   private auth: Auth = inject(Auth); // o usa el constructor si prefieres
 
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, private alertService: AlertService) {}
 
   // Función para obtener todos los usuarios
   public obtenerDatosUsuario(): Observable<User[]> {
@@ -33,7 +34,7 @@ export class UserService {
         });
       }),
       catchError(error => {
-        console.error('Error al obtener usuarios: ', error);
+        this.alertService.error('Error al obtener usuarios');
         return throwError(() => new Error('Error al obtener usuarios'));
       })
     );
@@ -43,9 +44,10 @@ export class UserService {
   public eliminarUsuario(id: string): Observable<void> {
     const userDocRef = doc(this.firestore, `users/${id}`);
     return from(deleteDoc(userDocRef)).pipe(
+      tap(() => this.alertService.success('El usuario ha sido eliminado.')),
       map(() => void 0),
       catchError(error => {
-        console.error('Error al eliminar usuario de Firestore: ', error);
+        this.alertService.error('Error al eliminar usuario de Firestore');
         return throwError(() => new Error('Error al eliminar usuario'));
       })
     );
@@ -55,9 +57,10 @@ export class UserService {
   public updateUsuario(usuario: User): Observable<void> {
     const userDocRef = doc(this.firestore, `users/${usuario.id}`);
     return from(updateDoc(userDocRef, { ...usuario })).pipe(
+      tap(() => this.alertService.success('El usuario ha sido actualizado.')),
       map(() => void 0),
       catchError(error => {
-        console.error('Error al actualizar usuario en Firestore: ', error);
+        this.alertService.error('Error al actualizar usuario en Firestore');
         return throwError(() => new Error('Error al actualizar usuario'));
       })
     );
@@ -80,6 +83,7 @@ export class UserService {
           return setDoc(userDocRef, newUser);
         })
     ).pipe(
+      tap(() => this.alertService.success('Usuario creado exitosamente.')),
       catchError(error => {
         return throwError(() => new Error('Error al crear usuario: ' + error));
       })

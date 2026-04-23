@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
     selector: 'app-login',
@@ -17,7 +16,7 @@ export class LoginComponent {
 
   loading: boolean = false;
 
-  constructor(private router: Router, private auth: AuthService, private alertService: AlertService) {}
+  constructor(private router: Router, private auth: AuthService) {}
 
   onSubmit(): void {
     this.loading = true;
@@ -29,7 +28,6 @@ export class LoginComponent {
         this.router.navigate(['/home']);
       },
       err => {
-        this.alertService.error('Credenciales incorrectas. Por favor, intente de nuevo.');
         this.loading = false;
       }
     );

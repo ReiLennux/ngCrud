@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Firestore, collection, collectionData, addDoc, deleteDoc, doc, updateDoc, getDoc } from '@angular/fire/firestore';
 import { product } from '../../models/product';
+import { AlertService } from '../alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,14 @@ import { product } from '../../models/product';
 export class ProductsService {
   private productsCollection = collection(this.firestore, 'products');
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, private alertService: AlertService) {}
 
   // Obtener todos los productos
   public obtenerProductos(): Observable<product[]> {
     return collectionData(this.productsCollection, { idField: 'id' }).pipe(
       map(data => data as product[]),
       catchError(error => {
-        console.error('Error al obtener productos: ', error);
+        this.alertService.error('Error al obtener productos');
         return throwError(() => new Error('Error al obtener productos'));
       })
     );
@@ -31,8 +32,9 @@ export class ProductsService {
 
     if (!(file instanceof File)) {
       return from(addDoc(this.productsCollection, producto)).pipe(
+        tap(() => this.alertService.success('Producto agregado con éxito.')),
         catchError(error => {
-          console.error('Error al agregar producto sin imagen: ', error);
+          this.alertService.error('Error al agregar producto sin imagen');
           return throwError(() => new Error('Error al agregar producto'));
         })
       );
@@ -43,8 +45,9 @@ export class ProductsService {
         productoSinImagen.strImage = base64;
         return from(addDoc(this.productsCollection, productoSinImagen));
       }),
+      tap(() => this.alertService.success('Producto agregado con éxito.')),
       catchError(error => {
-        console.error('Error al agregar producto con imagen base64: ', error);
+        this.alertService.error('Error al agregar producto con imagen base64');
         return throwError(() => new Error('Error al agregar producto'));
       })
     );
@@ -59,8 +62,9 @@ export class ProductsService {
     if (!(file instanceof File)) {
       return from(updateDoc(productoDoc, productoActualizado)).pipe(
         map(() => void 0),
+        tap(() => this.alertService.success('Producto actualizado con éxito.')),
         catchError(error => {
-          console.error('Error al editar producto sin imagen: ', error);
+          this.alertService.error('Error al editar producto sin imagen');
           return throwError(() => new Error('Error al editar producto'));
         })
       );
@@ -72,8 +76,9 @@ export class ProductsService {
         return from(updateDoc(productoDoc, productoActualizado));
       }),
       map(() => void 0),
+      tap(() => this.alertService.success('Producto actualizado con éxito.')),
       catchError(error => {
-        console.error('Error al editar producto con imagen: ', error);
+        this.alertService.error('Error al editar producto con imagen');
         return throwError(() => new Error('Error al editar producto'));
       })
     );
@@ -84,8 +89,9 @@ export class ProductsService {
     const productoDoc = doc(this.firestore, `products/${id}`);
     return from(deleteDoc(productoDoc)).pipe(
       map(() => void 0),
+      tap(() => this.alertService.success('Producto eliminado con éxito.')),
       catchError(error => {
-        console.error('Error al eliminar producto: ', error);
+        this.alertService.error('Error al eliminar producto');
         return throwError(() => new Error('Error al eliminar producto'));
       })
     );

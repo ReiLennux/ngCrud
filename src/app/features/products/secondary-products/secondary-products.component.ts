@@ -5,8 +5,6 @@ import { product } from '../../../core/models/product';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { ProductsService } from '../../../core/services/products/products.service';
-import { AlertService } from '../../../core/services/alert.service';
-
 @Component({
     selector: 'app-secondary-products',
     templateUrl: './secondary-products.component.html',
@@ -38,8 +36,7 @@ export class SecondaryProductsComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private categoriesService: CategoriesService,
-    private fileService: FileService,
-    private alertService: AlertService,
+    private fileService: FileService
   ){}
 
   ngOnInit(): void {
@@ -49,8 +46,7 @@ export class SecondaryProductsComponent implements OnInit {
 
   async submitForm() {
     if (!this.selectedFile) {
-      this.productsService.agregarProducto(this.newProducto);
-      this.alertService.success('Producto creado correctamente.');
+      this.productsService.agregarProducto(this.newProducto).subscribe();
       this.resetForm();
       return;
     }
@@ -64,12 +60,9 @@ export class SecondaryProductsComponent implements OnInit {
       this.newProducto.strImage = res.url;
       
       const response = await of(this.productsService.agregarProducto(this.newProducto)).toPromise();
-      
-      this.alertService.success('Producto creado correctamente.');
       this.resetForm();
       
     } catch (err) {
-      this.alertService.error('Error al crear el producto.');
     }
   }
 
@@ -109,7 +102,9 @@ export class SecondaryProductsComponent implements OnInit {
       (data: any[]) => {
         this.categorias = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 
@@ -118,7 +113,9 @@ export class SecondaryProductsComponent implements OnInit {
       (data: any[]) => {
         this.subcategorias = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 }

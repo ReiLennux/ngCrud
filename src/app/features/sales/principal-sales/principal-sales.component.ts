@@ -7,14 +7,14 @@ import { generateAndDownloadTicket } from '../../../helpers/handleTicket';
 import { SalesService } from '../../../core/services/sales.service';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { CategoriesService } from '../../../core/services/products/catalog/categories.service';
-import { AlertService } from '../../../core/services/alert.service';
+
 
 
 @Component({
-    selector: 'app-principal-sales',
-    templateUrl: './principal-sales.component.html',
-    styleUrls: ['./principal-sales.component.css'],
-    standalone: false
+  selector: 'app-principal-sales',
+  templateUrl: './principal-sales.component.html',
+  styleUrls: ['./principal-sales.component.css'],
+  standalone: false
 })
 export class PrincipalSalesComponent {
   searchTerm: string = '';
@@ -25,8 +25,8 @@ export class PrincipalSalesComponent {
   products: product[] = [];
   selectedProducts: SelectedProduct[] = [];
 
-  categorias: {id: string, strName: string}[] = [];
-  subcategorias: {id: string, strName: string}[] = [];
+  categorias: { id: string, strName: string }[] = [];
+  subcategorias: { id: string, strName: string }[] = [];
 
   categoriaSeleccionadoId: string = "";
   subcategoriaSeleccionadoId: string = "";
@@ -34,11 +34,11 @@ export class PrincipalSalesComponent {
   userOnSession: String = ''
 
   constructor(
-    private saleService: SalesService, 
+    private saleService: SalesService,
     private productsService: ProductsService,
     private storageService: StorageService,
     private categoriesService: CategoriesService,
-    private alertService: AlertService,
+
   ) { }
 
   incrementQuantity(selectedProduct: SelectedProduct) {
@@ -47,13 +47,13 @@ export class PrincipalSalesComponent {
 
   decrementQuantity(selectedProduct: SelectedProduct) {
     if (selectedProduct.quantity > 1) {
-        selectedProduct.quantity--;
+      selectedProduct.quantity--;
     } else {
-        const index = this.selectedProducts.indexOf(selectedProduct);
-        if (index !== -1) {
-            this.selectedProducts.splice(index, 1);
-            this.alertService.success('El producto ha sido eliminado de la lista.');
-        }
+      const index = this.selectedProducts.indexOf(selectedProduct);
+      if (index !== -1) {
+        this.selectedProducts.splice(index, 1);
+
+      }
     }
   }
 
@@ -62,7 +62,9 @@ export class PrincipalSalesComponent {
       (data: any[]) => {
         this.categorias = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 
@@ -71,7 +73,9 @@ export class PrincipalSalesComponent {
       (data: any[]) => {
         this.subcategorias = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 
@@ -86,19 +90,19 @@ export class PrincipalSalesComponent {
   }
 
   pushProduct(product: product) {
-    if(product.decStock !== 0){
+    if (product.decStock !== 0) {
       const isProductExists = this.selectedProducts.some(
         (p) => p.product.id === product.id
       );
       if (isProductExists) {
-        this.alertService.info('El producto ya está en la venta.');
+
       } else {
         this.selectedProducts.push({ product: product, quantity: 1 });
       }
-    }else {
-      this.alertService.error('Stock insuficiente.');
+    } else {
+
     }
-    
+
   }
 
 
@@ -124,39 +128,37 @@ export class PrincipalSalesComponent {
         idProProducto: selectedProduct.product.id,
         decQuantity: Number(selectedProduct.quantity)
       }));
-  
+
       const subtotal = this.selectedProducts.reduce((total, p) =>
         total + (p.product.decPrice * p.quantity), 0);
-  
+
       const newSale: Sale = {
         DateSale: this.newDateSale,
         SaleDetails: saleDetails,
         decSubtotal: subtotal
       };
-  
-this.saleService.postSale(newSale).subscribe(
+
+      this.saleService.postSale(newSale).subscribe(
         response => {
           generateAndDownloadTicket(this.selectedProducts);
           this.selectedProducts = [];
-          this.alertService.success('Venta creada con éxito.');
         },
         error => {
-          this.alertService.error('Error al crear la venta.');
         }
       );
-   
+
     } else {
-      this.alertService.error('Venta con 0 productos, imposible cobrar.');
+
     }
   }
-  
+
   calTotal(): number {
     let total = 0;
     this.selectedProducts.forEach(selectedProduct => {
-        total += selectedProduct.product.decPrice * selectedProduct.quantity;
+      total += selectedProduct.product.decPrice * selectedProduct.quantity;
     });
     return total;
   }
 
-  
+
 }

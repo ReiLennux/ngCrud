@@ -32,7 +32,6 @@ export class AddCategoriesComponent {
 
   submitForm() {
     if (!this.newCategory.strName.trim()) {
-      console.error('Nombre de categoría es requerido');
       return;
     }
 
@@ -40,13 +39,14 @@ export class AddCategoriesComponent {
       next: (res) => {
         this.newCategory = { strName: '', strDescription: '' }; // reset form
       },
-      error: (err) => console.error('Error al crear categoría:', err)
+      error: (err) => {
+        console.error('Error al crear categoría:', err);
+      }
     });
   }
 
   submitSubForm() {
     if (!this.newSubcategory.strName.trim() || !this.newSubcategory.idCatCategoria) {
-      console.error('Subcategoría o categoría asociada inválida');
       return;
     }
 
@@ -55,7 +55,9 @@ export class AddCategoriesComponent {
         this.newSubcategory = { strName: '', strDescription: '', idCatCategoria: "" }; // reset form
         this.onCategoriaSeleccionada(0);
       },
-      error: (err) => console.error('Error al crear subcategoría:', err)
+      error: (err) => {
+        console.error('Error al crear subcategoría:', err);
+      }
     });
   }
 
@@ -64,7 +66,9 @@ export class AddCategoriesComponent {
       (data: any[]) => {
         this.categorias = data;
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+      }
     );
   }
 }

@@ -4,7 +4,6 @@ import { SelectedProduct, product } from '../../../../core/models/product';
 import { SalesService } from '../../../../core/services/sales.service';
 import { ProductsService } from '../../../../core/services/products/products.service';
 import { generateAndDownloadTicket } from '../../../../helpers/handleTicket';
-import { AlertService } from '../../../../core/services/alert.service';
 
 @Component({
     selector: 'app-actions-sales',
@@ -21,7 +20,7 @@ export class ActionsSalesComponent implements OnInit {
 
   showAlert: boolean = false;
 
-  constructor(private saleService: SalesService, private productsService: ProductsService, private alertService: AlertService) { }
+  constructor(private saleService: SalesService, private productsService: ProductsService) { }
 
   ngOnInit(): void {
     this.saleService.getSaleById(this.Sale.id!).subscribe(
@@ -47,14 +46,11 @@ export class ActionsSalesComponent implements OnInit {
 
    delete() {
      this.saleService.deleteSale(this.Sale).subscribe(
-       res => {
-         this.alertService.success('La venta fue eliminada.');
+      res => {
          this.saleActualizada.emit();
          setTimeout(() => this.showModal = false, 1500);
        },
-       err => {
-         this.alertService.error('Error al eliminar la venta.');
-       }
+       err => {}
      );
    }
 
@@ -74,7 +70,6 @@ export class ActionsSalesComponent implements OnInit {
         const index = this.selectedProducts.indexOf(selectedProduct);
         if (index !== -1) {
             this.selectedProducts.splice(index, 1);
-            this.alertService.success('El producto ha sido eliminado de la lista.');
         }
     }
 }
@@ -107,16 +102,13 @@ async updateSale() {
     this.saleService.updateSale(newSale).then(
       () => {
         this.selectedProducts = [];
-        this.alertService.success('Venta actualizada con éxito.');
       }
     ).catch(
-      error => {
-        this.alertService.error('Error al actualizar la venta.');
-      }
+      error => {}
     );
 
   } else {
-    this.alertService.error('Venta con 0 productos, imposible cobrar.');
+    // Venta con 0 productos, imposible cobrar
   }
 }
 
