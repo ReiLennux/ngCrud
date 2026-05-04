@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
-import { Categoria, CategoriesService, Subcategoria } from '../../../../features/products/services/catalog/categories.service';
+import { Component, OnInit } from '@angular/core';
+import { Categoria, CategoriesService, Subcategoria } from '../services/categories.service';
 
 @Component({
   selector: 'app-add-categories',
   templateUrl: './add-categories.component.html',
   standalone: false,
 })
-export class AddCategoriesComponent {
+export class AddCategoriesComponent implements OnInit {
+
+  ngOnInit() {
+    this.obtenerCategorias();
+  }
 
   newCategory: Categoria = {
     strName: '',
@@ -37,6 +41,7 @@ export class AddCategoriesComponent {
     this.categoriesService.crearCategoria(this.newCategory).subscribe({
       next: (res: any) => {
         this.newCategory = { strName: '', strDescription: '' }; // reset form
+        this.obtenerCategorias(); // refresh dropdown
       },
       error: (err: any) => {
         console.error('Error al crear categoría:', err);

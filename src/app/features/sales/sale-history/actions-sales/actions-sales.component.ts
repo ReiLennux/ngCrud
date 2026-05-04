@@ -51,7 +51,7 @@ export class ActionsSalesComponent implements OnInit {
         this.saleActualizada.emit();
         setTimeout(() => this.showModal = false, 1500);
       },
-      error: err => {}
+      error: (err: any) => {}
     });
    }
 

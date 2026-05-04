@@ -1,0 +1,132 @@
+<div class="m-6 max-w-6xl mx-auto space-y-8 animate-fade-in">
+  
+  <!-- Header Section -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
+    <div class="space-y-1">
+      <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-3">
+        <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl">
+          <i class="fa-solid fa-layer-group text-indigo-600 dark:text-indigo-400 text-xl"></i>
+        </div>
+        Gestión de Categorías
+      </h1>
+      <p class="text-slate-500 dark:text-slate-400">Registra y organiza las categorías y subcategorías para tus productos.</p>
+    </div>
+    
+    <a routerLink="/catalogs" 
+       class="inline-flex items-center justify-center px-6 py-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 font-semibold rounded-2xl transition-all active:scale-95 gap-2">
+      <i class="fa-solid fa-arrow-left"></i>
+      Volver
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Crear nueva categoría -->
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <form (ngSubmit)="submitForm()" #categoryForm="ngForm" class="space-y-6">
+          <div class="flex items-center gap-3 mb-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+            <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center rounded-2xl text-indigo-600 dark:text-indigo-400">
+              <i class="fa-solid fa-folder-plus text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white">Nueva Categoría</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Crea un agrupador principal.</p>
+            </div>
+          </div>
+
+          <div class="space-y-5">
+            <div>
+              <app-g-text
+                [(ngModel)]="newCategory.strName"
+                name="categoryName"
+                label="Nombre de la categoría"
+                placeholder="Ej. Electrónica"
+                type="text"
+                icon="fa-solid fa-tag">
+              </app-g-text>
+            </div>
+
+            <div>
+              <app-g-text
+                [(ngModel)]="newCategory.strDescription"
+                name="categoryDescription"
+                label="Descripción"
+                placeholder="Breve descripción de la categoría..."
+                type="text"
+                icon="fa-solid fa-align-left">
+              </app-g-text>
+            </div>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-slate-100 dark:border-slate-700 text-right">
+            <button type="submit"
+              class="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-2xl shadow-lg shadow-indigo-500/20 transition-all active:scale-95 gap-2 w-full sm:w-auto">
+              <i class="fa-solid fa-save"></i>
+              Guardar Categoría
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Crear nueva subcategoría -->
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <form (ngSubmit)="submitSubForm()" #subForm="ngForm" class="space-y-6">
+          <div class="flex items-center gap-3 mb-6 border-b border-slate-100 dark:border-slate-700 pb-4">
+            <div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center rounded-2xl text-emerald-600 dark:text-emerald-400">
+              <i class="fa-solid fa-code-branch text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white">Nueva Subcategoría</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Crea una subdivisión dependiente.</p>
+            </div>
+          </div>
+
+          <div class="space-y-5">
+            <div>
+              <app-g-select 
+                [(ngModel)]="newSubcategory.idCatCategoria" 
+                name="category"
+                label="Categoría Padre" 
+                placeholder="Selecciona una categoría..."
+                [options]="categorias">
+              </app-g-select>
+            </div>
+
+            <div>
+              <app-g-text
+                [(ngModel)]="newSubcategory.strName"
+                name="subName"
+                label="Nombre de la subcategoría"
+                placeholder="Ej. Smartphones"
+                type="text"
+                icon="fa-solid fa-tag">
+              </app-g-text>
+            </div>
+
+            <div>
+              <app-g-text
+                [(ngModel)]="newSubcategory.strDescription"
+                name="subDescription"
+                label="Descripción"
+                placeholder="Breve descripción de la subcategoría..."
+                type="text"
+                icon="fa-solid fa-align-left">
+              </app-g-text>
+            </div>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-slate-100 dark:border-slate-700 text-right">
+            <button type="submit"
+              class="inline-flex items-center justify-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-2xl shadow-lg shadow-emerald-500/20 transition-all active:scale-95 gap-2 w-full sm:w-auto">
+              <i class="fa-solid fa-save"></i>
+              Guardar Subcategoría
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

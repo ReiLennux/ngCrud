@@ -1,4 +1,4 @@
-import { CategoriesService, Categoria, Subcategoria } from './../../services/catalog/categories.service';
+import { CategoriesService, Categoria, Subcategoria } from '../../../catalogs/services/categories.service';
 import { FileService } from './../../../../core/services/file.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { product } from '../../../../core/models/product';
@@ -36,7 +36,7 @@ export class ActionsComponent {
         this.productoActualizado.emit();
         setTimeout(() => this.showModal = false, 1500);
       },
-      error: err => {
+      error: (err: any) => {
         this.showAlert = true;
       }
     });
@@ -71,7 +71,7 @@ export class ActionsComponent {
       next: (data: Categoria[]) => {
         this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });
@@ -82,7 +82,7 @@ export class ActionsComponent {
       next: (data: Subcategoria[]) => {
         this.subcategorias = data.map(s => ({ id: s.id!, strName: s.strName }));
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });
