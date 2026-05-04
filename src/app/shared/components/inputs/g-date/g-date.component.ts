@@ -3,7 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-g-date',
-  templateUrl: './g-date.input.html',
+  templateUrl: './g-date.component.html',
   standalone: false,
   host: { 'class': 'block w-full' },
   providers: [
@@ -30,22 +30,21 @@ export class GDateInput implements ControlValueAccessor, OnInit {
   onTouched: () => void = () => {};
 
   ngOnInit() {
-    if (!this._value) {
-      this._setInitialValue();
-    }
+    // We remove _setInitialValue() so it doesn't force a date by default
+    // and desync with the parent component's model (e.g. sale-history).
   }
 
   private _setInitialValue() {
     const today = new Date();
     this._value = this._getLocalDateString(today);
-    this.onChange(today);
+    this.onChange(this._value);
   }
 
   writeValue(value: Date | string | null): void {
     if (value) {
       this._value = this._parseDate(value);
     } else {
-      this._value = this._getLocalDateString(new Date());
+      this._value = '';
     }
   }
 
@@ -60,8 +59,7 @@ export class GDateInput implements ControlValueAccessor, OnInit {
   onInputChange(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
     this._value = inputValue;
-    const date = new Date(inputValue);
-    this.onChange(date);
+    this.onChange(inputValue);
     this.onTouched();
   }
 

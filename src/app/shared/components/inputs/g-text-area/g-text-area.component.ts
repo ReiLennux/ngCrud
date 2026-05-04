@@ -1,34 +1,33 @@
-/* eslint-disable @angular-eslint/component-class-suffix */
 import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
-  selector: 'app-g-text',
-  templateUrl: './g-text.input.html',
+  selector: 'app-g-text-area',
+  templateUrl: './g-text-area.component.html',
   standalone: false,
   host: { 'class': 'block w-full' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => GTextInput),
+      useExisting: forwardRef(() => GTextAreaInput),
       multi: true
     }
   ]
 })
-export class GTextInput implements ControlValueAccessor {
+export class GTextAreaInput implements ControlValueAccessor{
   @Input() value = '';
   @Input() name = '';
   @Input() placeholder = '';
   @Input() validation = false;
-  @Input() type = 'text';
   @Input() disabled = false;
   @Input() minLength = 0;
   @Input() maxLength = 255;
   @Input() label = '';
   @Input() readOnly = false;
   @Input() errorMessage = '';
-  
+  @Input() rows = 5;
   @Output() valueChange = new EventEmitter<string>();
+  
 
   onChange = (value: string) => {
     this.value = value;

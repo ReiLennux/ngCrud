@@ -3,7 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-g-select',
-  templateUrl: './g-select.input.html',
+  templateUrl: './g-select.component.html',
   standalone: false,
   host: { 'class': 'block w-full' },
   providers: [

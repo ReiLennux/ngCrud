@@ -4,10 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 // Components
-import { GTextAreaInput } from './components/inputs/g-text-area/g-text-area.input';
-import { GTextInput } from './components/inputs/g-text/g-text.input';
-import { GDateInput } from './components/inputs/g-date/g-date.input';
-import { GSelectInputComponent } from './components/inputs/g-select/g-select.input';
+import { GTextAreaInput } from './components/inputs/g-text-area/g-text-area.component';
+import { GTextInput } from './components/inputs/g-text/g-text.component';
+import { GDateInput } from './components/inputs/g-date/g-date.component';
+import { GSelectInputComponent } from './components/inputs/g-select/g-select.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { GPaginatorComponent } from './components/pagination/g-paginator/g-paginator.component';
 
