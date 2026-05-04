@@ -6,16 +6,15 @@ import { createDateSale } from '../../../shared/utils/generateDateSale';
 import { generateAndDownloadTicket } from '../../../shared/utils/handleTicket';
 import { SalesService } from '../services/sales.service';
 import { ProductsService } from '../../products/services/products.service';
-import { CategoriesService, Categoria, Subcategoria } from '../../products/services/catalog/categories.service';
-
-
+import { CategoriesService, Categoria, Subcategoria } from '../../catalogs/services/categories.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
-  selector: 'app-principal-sales',
-  templateUrl: './principal-sales.component.html',
+  selector: 'app-sale-pos',
+  templateUrl: './sale-pos.component.html',
   standalone: false
 })
-export class PrincipalSalesComponent {
+export class SalePosComponent {
   searchTerm: string = '';
 
   newDateSale: DateSale = createDateSale()
@@ -31,13 +30,14 @@ export class PrincipalSalesComponent {
   subcategoriaSeleccionadoId: string = "";
 
   userOnSession: String = ''
+  isLoading: boolean = false;
 
   constructor(
     private saleService: SalesService,
     private productsService: ProductsService,
     private storageService: StorageService,
     private categoriesService: CategoriesService,
-
+    private alertService: AlertService
   ) { }
 
   incrementQuantity(selectedProduct: SelectedProduct) {
@@ -61,7 +61,7 @@ export class PrincipalSalesComponent {
       next: (data: Categoria[]) => {
         this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });
@@ -72,7 +72,7 @@ export class PrincipalSalesComponent {
       next: (data: Subcategoria[]) => {
         this.subcategorias = data.map(s => ({ id: s.id!, strName: s.strName }));
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });
@@ -118,31 +118,42 @@ export class PrincipalSalesComponent {
 
   async crearSale() {
     if (this.selectedProducts.length > 0) {
-      const saleDetails: SaleDetails[] = this.selectedProducts.map(selectedProduct => ({
-        idProProducto: selectedProduct.product.id,
-        decQuantity: Number(selectedProduct.quantity)
-      }));
+      this.isLoading = true;
+      try {
+        const saleDetails: SaleDetails[] = this.selectedProducts.map(selectedProduct => ({
+          idProProducto: selectedProduct.product.id,
+          decQuantity: Number(selectedProduct.quantity)
+        }));
 
-      const subtotal = this.selectedProducts.reduce((total, p) =>
-        total + (p.product.decPrice * p.quantity), 0);
+        const subtotal = this.selectedProducts.reduce((total, p) =>
+          total + (p.product.decPrice * p.quantity), 0);
 
-      const newSale: Sale = {
-        DateSale: this.newDateSale,
-        SaleDetails: saleDetails,
-        decSubtotal: subtotal
-      };
+        const newSale: Sale = {
+          DateSale: this.newDateSale,
+          SaleDetails: saleDetails,
+          decSubtotal: subtotal
+        };
 
-      this.saleService.postSale(newSale).subscribe({
-        next: response => {
-          generateAndDownloadTicket(this.selectedProducts);
-          this.selectedProducts = [];
-        },
-        error: error => {
-        }
-      });
-
+        this.saleService.postSale(newSale).subscribe({
+          next: response => {
+            generateAndDownloadTicket(this.selectedProducts);
+            this.selectedProducts = [];
+            this.newDateSale = createDateSale(); // Reset the folio for the next sale
+            this.isLoading = false;
+          },
+          error: error => {
+            console.error("Error creating sale:", error);
+            this.alertService.error('Error al registrar la venta. Por favor, verifica la consola.');
+            this.isLoading = false;
+          }
+        });
+      } catch (err) {
+        console.error("Sync error preparing sale:", err);
+        this.alertService.error('Error interno al preparar la venta.');
+        this.isLoading = false;
+      }
     } else {
-
+      console.warn("No products selected");
     }
   }
 

@@ -23,24 +23,24 @@
   <div
     class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end bg-slate-50 dark:bg-slate-900/50 p-6 rounded-3xl border border-slate-200 dark:border-slate-800">
     <div class="lg:col-span-3">
-      <app-g-select (ngModelChange)="filtrarSales()" [(ngModel)]="usuarioSeleccionado" name="user" label="Cajero"
+      <app-g-select [(ngModel)]="usuarioSeleccionado" name="user" label="Cajero"
         [isFilter]="true" [options]="mappedUsuarios">
       </app-g-select>
     </div>
 
     <div class="lg:col-span-3">
-      <app-g-select (ngModelChange)="filtrarSales()" [(ngModel)]="estadoSeleccionado" name="state"
+      <app-g-select [(ngModel)]="estadoSeleccionado" name="state"
         label="Estado de Venta" [isFilter]="true" [options]="estados">
       </app-g-select>
     </div>
 
     <div class="lg:col-span-3">
-      <app-g-date (ngModelChange)="filtrarSales()" [(ngModel)]="dateSearch" name="date" label="Fecha">
+      <app-g-date [(ngModel)]="dateSearch" name="date" label="Fecha">
       </app-g-date>
     </div>
 
     <div class="lg:col-span-3">
-      <app-g-text (ngModelChange)="filtrarSales()" [(ngModel)]="searchTerm" name="folio" label="Buscar Folio"
+      <app-g-text [(ngModel)]="searchTerm" name="folio" label="Buscar Folio"
         placeholder="Ej. V-2024..." type="text" icon="fa-solid fa-hashtag">
       </app-g-text>
     </div>

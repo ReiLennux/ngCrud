@@ -1,29 +1,76 @@
-<div class="m-10">
-    <div class="flex flex-wrap items-center justify-center gap-10">
-
-      <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a routerLink="/catalogs/categories"
-          class="flex flex-col items-center p-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-          <i class="fa-solid fa-layer-group text-5xl"></i>
-          <span class="ms-3 mt-4 text-xl font-bold">Categories</span>
-        </a>
-      </div>
-
-      <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a routerLink="/catalogs/clients"
-          class="flex flex-col items-center p-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-          <i class="fa-solid fa-users text-5xl"></i>
-          <span class="ms-3 mt-4 text-xl font-bold">Clients</span>
-        </a>
-      </div>
-
-      <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a routerLink="/catalogs/suppliers"
-          class="flex flex-col items-center p-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-          <i class="fa-solid fa-truck-field text-5xl"></i>
-          <span class="ms-3 mt-4 text-xl font-bold">Suppliers</span>
-        </a>
-      </div>
-
+<div class="m-6 max-w-7xl mx-auto space-y-6 animate-fade-in">
+  <!-- Header Section -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
+    <div class="space-y-1">
+      <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-3">
+        <div class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl">
+          <i class="fa-solid fa-layer-group text-indigo-600 dark:text-indigo-400 text-xl"></i>
+        </div>
+        Catálogos
+      </h1>
+      <p class="text-slate-500 dark:text-slate-400">Gestiona las diferentes entidades y clasificaciones del sistema.</p>
     </div>
   </div>
+
+  <!-- Cards Section -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    
+    <!-- Categories Card -->
+    <a routerLink="/catalogs/categories" 
+       class="group relative flex flex-col p-8 bg-white dark:bg-slate-800 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 dark:hover:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-300 hover:-translate-y-1">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-500/10 to-transparent dark:from-indigo-400/5 rounded-bl-[100px] -z-10 transition-transform group-hover:scale-110"></div>
+      
+      <div class="w-14 h-14 bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center rounded-2xl mb-6 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+        <i class="fa-solid fa-layer-group text-2xl"></i>
+      </div>
+      
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Categorías</h2>
+      <p class="text-slate-500 dark:text-slate-400 text-sm flex-grow">
+        Administra las categorías y subcategorías para organizar tus productos.
+      </p>
+      
+      <div class="mt-6 flex items-center text-indigo-600 dark:text-indigo-400 font-semibold text-sm group-hover:gap-2 transition-all">
+        Gestionar <i class="fa-solid fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+      </div>
+    </a>
+
+    <!-- Clients Card -->
+    <a routerLink="/catalogs/clients" 
+       class="group relative flex flex-col p-8 bg-white dark:bg-slate-800 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-300 hover:-translate-y-1">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent dark:from-blue-400/5 rounded-bl-[100px] -z-10 transition-transform group-hover:scale-110"></div>
+      
+      <div class="w-14 h-14 bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center rounded-2xl mb-6 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+        <i class="fa-solid fa-users text-2xl"></i>
+      </div>
+      
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Clientes</h2>
+      <p class="text-slate-500 dark:text-slate-400 text-sm flex-grow">
+        Mantén un registro detallado de tus clientes para ventas y seguimiento.
+      </p>
+      
+      <div class="mt-6 flex items-center text-blue-600 dark:text-blue-400 font-semibold text-sm group-hover:gap-2 transition-all">
+        Gestionar <i class="fa-solid fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+      </div>
+    </a>
+
+    <!-- Suppliers Card -->
+    <a routerLink="/catalogs/suppliers" 
+       class="group relative flex flex-col p-8 bg-white dark:bg-slate-800 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-amber-500/10 dark:hover:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-300 hover:-translate-y-1">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-500/10 to-transparent dark:from-amber-400/5 rounded-bl-[100px] -z-10 transition-transform group-hover:scale-110"></div>
+      
+      <div class="w-14 h-14 bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center rounded-2xl mb-6 text-amber-600 dark:text-amber-400 group-hover:bg-amber-600 group-hover:text-white transition-colors duration-300">
+        <i class="fa-solid fa-truck-field text-2xl"></i>
+      </div>
+      
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Proveedores</h2>
+      <p class="text-slate-500 dark:text-slate-400 text-sm flex-grow">
+        Administra la información de los proveedores que abastecen tu inventario.
+      </p>
+      
+      <div class="mt-6 flex items-center text-amber-600 dark:text-amber-400 font-semibold text-sm group-hover:gap-2 transition-all">
+        Gestionar <i class="fa-solid fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+      </div>
+    </a>
+
+  </div>
+</div>

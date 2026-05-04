@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { product } from '../../../core/models/product';
-import { Categoria, CategoriesService, Subcategoria } from '../services/catalog/categories.service';
+import { Categoria, CategoriesService, Subcategoria } from '../../catalogs/services/categories.service';
 import { ProductsService } from '../services/products.service';
 @Component({
-    selector: 'app-principal-products',
-    templateUrl: './principal-products.component.html',
+    selector: 'app-product-list',
+    templateUrl: './product-list.component.html',
     standalone: false
 })
-export class PrincipalProductsComponent implements OnInit {
+export class ProductListComponent implements OnInit {
   products: product[] = [];
   categorias: {id: string; strName: string}[] = [];
   subcategorias: {id: string; strName: string}[] = [];
@@ -37,7 +37,7 @@ export class PrincipalProductsComponent implements OnInit {
         this.products = data;
         this.filtrarProductos();
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });
@@ -48,7 +48,7 @@ export class PrincipalProductsComponent implements OnInit {
       next: (data: Categoria[]) => {
         this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });
@@ -59,7 +59,7 @@ export class PrincipalProductsComponent implements OnInit {
       next: (data: Subcategoria[]) => {
         this.subcategorias = data.map(s => ({ id: s.id!, strName: s.strName }));
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });

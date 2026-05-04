@@ -9,6 +9,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class NavigationComponent implements OnInit {
   isLoggedIn: boolean = false;
+  mobileMenuOpen: boolean = false;
 
 constructor(
   private storageService: StorageService,
@@ -20,6 +21,10 @@ constructor(
 
   logout(): void {
     this.authService.logout();
+  }
+
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 }
 

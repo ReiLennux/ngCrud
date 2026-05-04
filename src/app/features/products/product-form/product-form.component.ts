@@ -1,16 +1,16 @@
 import { FileService } from './../../../core/services/file.service';
-import { CategoriesService, Categoria, Subcategoria } from './../services/catalog/categories.service';
+import { CategoriesService, Categoria, Subcategoria } from '../../catalogs/services/categories.service';
 import { Component, OnInit } from '@angular/core';
 import { product } from '../../../core/models/product';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { ProductsService } from '../services/products.service';
 @Component({
-    selector: 'app-secondary-products',
-    templateUrl: './secondary-products.component.html',
+    selector: 'app-product-form',
+    templateUrl: './product-form.component.html',
     standalone: false
 })
-export class SecondaryProductsComponent implements OnInit {
+export class ProductFormComponent implements OnInit {
   newProducto: product = {
     id: 0,
     strName: '',
@@ -107,7 +107,7 @@ export class SecondaryProductsComponent implements OnInit {
       next: (data: Categoria[]) => {
         this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });
@@ -118,7 +118,7 @@ export class SecondaryProductsComponent implements OnInit {
       next: (data: Subcategoria[]) => {
         this.subcategorias = data.map(s => ({ id: s.id!, strName: s.strName }));
       },
-      error: err => {
+      error: (err: any) => {
         console.error(err);
       }
     });

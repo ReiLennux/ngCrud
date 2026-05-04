@@ -3,20 +3,20 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 
-import { PrincipalProductsComponent } from './principal-products/principal-products.component';
-import { SecondaryProductsComponent } from './secondary-products/secondary-products.component';
-import { ActionsComponent } from './principal-products/actions/actions.component';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductFormComponent } from './product-form/product-form.component';
+import { ActionsComponent } from './product-list/actions/actions.component';
 
 const routes: Routes = [
-  { path: '', component: PrincipalProductsComponent },
-  { path: 'register', component: SecondaryProductsComponent },
-  { path: 'edit/:id', component: SecondaryProductsComponent }
+  { path: '', component: ProductListComponent },
+  { path: 'register', component: ProductFormComponent },
+  { path: 'edit/:id', component: ProductFormComponent }
 ];
 
 @NgModule({
   declarations: [
-    PrincipalProductsComponent,
-    SecondaryProductsComponent,
+    ProductListComponent,
+    ProductFormComponent,
     ActionsComponent
   ],
   imports: [

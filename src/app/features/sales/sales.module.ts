@@ -3,19 +3,19 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 
-import { PrincipalSalesComponent } from './principal-sales/principal-sales.component';
-import { SecondarySalesComponent } from './secondary-sales/secondary-sales.component';
-import { ActionsSalesComponent } from './secondary-sales/actions-sales/actions-sales.component';
+import { SalePosComponent } from './sale-pos/sale-pos.component';
+import { SaleHistoryComponent } from './sale-history/sale-history.component';
+import { ActionsSalesComponent } from './sale-history/actions-sales/actions-sales.component';
 
 const routes: Routes = [
-  { path: '', component: PrincipalSalesComponent },
-  { path: 'register', component: SecondarySalesComponent }
+  { path: '', component: SalePosComponent },
+  { path: 'register', component: SaleHistoryComponent }
 ];
 
 @NgModule({
   declarations: [
-    PrincipalSalesComponent,
-    SecondarySalesComponent,
+    SalePosComponent,
+    SaleHistoryComponent,
     ActionsSalesComponent
   ],
   imports: [

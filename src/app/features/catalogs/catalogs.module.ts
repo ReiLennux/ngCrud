@@ -4,17 +4,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 
 import { CatalogPrincipalComponent } from './catalog-principal/catalog-principal.component';
-import { AddCategoriesComponent } from './products/add-categories/add-categories.component';
+import { AddCategoriesComponent } from './categories/add-categories.component';
+import { UnderConstructionComponent } from './under-construction/under-construction.component';
 
 const routes: Routes = [
   { path: '', component: CatalogPrincipalComponent },
-  { path: 'categories', component: AddCategoriesComponent }
+  { path: 'categories', component: AddCategoriesComponent },
+  { path: 'clients', component: UnderConstructionComponent },
+  { path: 'suppliers', component: UnderConstructionComponent }
 ];
 
 @NgModule({
   declarations: [
     CatalogPrincipalComponent,
-    AddCategoriesComponent
+    AddCategoriesComponent,
+    UnderConstructionComponent
   ],
   imports: [
     CommonModule,
