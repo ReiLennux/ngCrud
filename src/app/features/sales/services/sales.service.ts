@@ -11,7 +11,7 @@ import { AlertService } from '../../../core/services/alert.service';
 export class SalesService {
 
   private saleCollection = collection(this.firestore, 'Sales') as CollectionReference<Sale>;
-  private productCollection = collection(this.firestore, 'Products') as CollectionReference<product>;
+  private productCollection = collection(this.firestore, 'products') as CollectionReference<product>;
 
 
   constructor(private firestore: Firestore, private alertService: AlertService) { }
@@ -26,7 +26,7 @@ export class SalesService {
     );
   }
 
-  private async updateProductStock(productId: number, quantityChange: number): Promise<void> {
+  private async updateProductStock(productId: string, quantityChange: number): Promise<void> {
     const productDocRef = doc(this.firestore, `products/${productId}`) as DocumentReference<product>;
     const productSnapshot = await getDoc(productDocRef);
   

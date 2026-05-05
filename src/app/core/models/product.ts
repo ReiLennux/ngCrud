@@ -1,5 +1,5 @@
 export interface product {
-    id: number;
+    id: string;
     strName: string;
     strDescription: string; //--
     idCatSubcategoria: string;
@@ -13,7 +13,7 @@ export interface product {
 }
 
 export interface productView {
-    id: number;
+    id: string;
     strName: string;
     strDescription: string; //--
     CatSubcategoria: string;

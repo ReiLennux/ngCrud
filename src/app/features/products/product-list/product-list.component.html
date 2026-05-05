@@ -39,7 +39,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-          <tr *ngFor="let product of filteredProducts" class="group hover:bg-emerald-50/30 dark:hover:bg-emerald-500/5 transition-all duration-300">
+          <tr *ngFor="let product of paginatedProducts" class="group hover:bg-emerald-50/30 dark:hover:bg-emerald-500/5 transition-all duration-300">
             <td class="px-8 py-6">
               <div class="flex items-center gap-4">
                 <div class="relative w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-sm group-hover:scale-105 transition-transform">
@@ -106,6 +106,15 @@
       </table>
     </div>
   </div>
+
+  <!-- Pagination -->
+  <app-g-paginator 
+    *ngIf="filteredProducts.length > 0"
+    [page]="currentPage" 
+    [pageSize]="pageSize" 
+    [totalSize]="filteredProducts.length" 
+    (pageChange)="onPageChange($event)">
+  </app-g-paginator>
 </div>
 
 

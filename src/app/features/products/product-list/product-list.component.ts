@@ -13,7 +13,15 @@ export class ProductListComponent implements OnInit {
   filterFields: FilterField[] = [];
   private _currentFilters: any = { categoria: '', subcategoria: '', searchTerm: '' };
   get currentFilters(): any { return this._currentFilters; }
-  set currentFilters(val: any) { this._currentFilters = val; this.filtrarProductos(); }
+  set currentFilters(val: any) { 
+    this._currentFilters = val; 
+    this.currentPage = 1;
+    this.filtrarProductos(); 
+  }
+
+  currentPage: number = 1;
+  pageSize: number = 5;
+  paginatedProducts: product[] = [];
 
   constructor(
     private productsService: ProductsService,
@@ -107,7 +115,7 @@ export class ProductListComponent implements OnInit {
   filteredProducts: product[] = [];
 
   filtrarProductos() {
-    this.filteredProducts = this.products.filter(producto => {
+    const filtered = this.products.filter(producto => {
       const matchCat = !this.currentFilters.categoria || 
                        this.currentFilters.categoria === '' || 
                        producto.idCatCategoria?.toString() === this.currentFilters.categoria.toString();
@@ -122,6 +130,19 @@ export class ProductListComponent implements OnInit {
       
       return matchCat && matchSub && matchSearch;
     });
+
+    this.filteredProducts = filtered;
+    this.updatePaginatedProducts();
+  }
+
+  updatePaginatedProducts() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.paginatedProducts = this.filteredProducts.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.updatePaginatedProducts();
   }
 
 }

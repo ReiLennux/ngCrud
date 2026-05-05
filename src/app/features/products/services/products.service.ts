@@ -23,6 +23,24 @@ export class ProductsService {
     );
   }
 
+  // Obtener un producto por ID
+  public obtenerProductoPorId(id: string): Observable<product> {
+    const productoDoc = doc(this.firestore, `products/${id}`);
+    return from(getDoc(productoDoc)).pipe(
+      map(snap => {
+        if (snap.exists()) {
+          const data = snap.data() as unknown as product;
+          return { ...data, id: snap.id } as product;
+        }
+        throw new Error('Producto no encontrado');
+      }),
+      catchError(error => {
+        this.alertService.error('Error al obtener el producto');
+        return throwError(() => error);
+      })
+    );
+  }
+
   // Agregar producto (con imagen en base64)
   public agregarProducto(producto: product): Observable<void> {
     const productoSinImagen = { ...producto };
@@ -86,7 +104,7 @@ export class ProductsService {
   }
 
   // Eliminar producto
-  public eliminarProducto(id: number): Observable<void> {
+  public eliminarProducto(id: string): Observable<void> {
     const productoDoc = doc(this.firestore, `products/${id}`);
     return from(deleteDoc(productoDoc)).pipe(
       map(() => void 0),

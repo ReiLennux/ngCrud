@@ -29,12 +29,20 @@
         </app-g-text>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <app-g-select [(ngModel)]="categoriaSeleccionadoId" name="category"
-              label="Categoría Principal" [options]="categorias">
+          <app-g-select 
+            [(ngModel)]="categoriaSeleccionadoId" 
+            (ngModelChange)="onCategoriaChange($event)"
+            name="category"
+            label="Categoría Principal" 
+            [options]="categorias">
           </app-g-select>
 
-          <app-g-select [(ngModel)]="subcategoriaSeleccionadoId" name="Subcategory"
-              label="Subcategoría" [options]="subcategorias">
+          <app-g-select 
+            [(ngModel)]="subcategoriaSeleccionadoId" 
+            (ngModelChange)="onSubcategoriaChange($event)"
+            name="Subcategory"
+            label="Subcategoría" 
+            [options]="subcategorias">
           </app-g-select>
         </div>
 
@@ -121,10 +129,12 @@
 
       <!-- Action Buttons -->
       <div class="flex gap-4 pt-4">
-        <button type="submit"
-            class="flex-1 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-lg shadow-emerald-500/20 transition-all active:scale-95 flex items-center justify-center gap-3">
-          <i class="fa-solid fa-save"></i>
-          Guardar Producto
+        <button type="submit" 
+          [disabled]="isLoading"
+          class="flex-1 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-black rounded-2xl shadow-lg shadow-emerald-500/20 transition-all active:scale-95 flex items-center justify-center gap-3">
+          <i *ngIf="!isLoading" class="fa-solid fa-save"></i>
+          <i *ngIf="isLoading" class="fa-solid fa-circle-notch fa-spin"></i>
+          {{ isLoading ? 'Guardando...' : (isEditMode ? 'Actualizar Producto' : 'Guardar Producto') }}
         </button>
       </div>
     </form>
