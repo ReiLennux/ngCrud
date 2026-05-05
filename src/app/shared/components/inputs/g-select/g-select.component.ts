@@ -57,4 +57,11 @@ export class GSelectInput implements ControlValueAccessor {
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
+
+  handleValueChange(event: Event): void {
+    const val = (event.target as HTMLSelectElement).value;
+    this._value = val;
+    this.onChange(val);
+    this.onTouched();
+  }
 }

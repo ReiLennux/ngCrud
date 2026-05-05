@@ -12,6 +12,7 @@ export class GPaginatorComponent {
   @Input() pageSize: number = 10;
   @Input() totalSize: number = 100;
   
+  protected Math = Math;
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
   get totalPages(): number {
