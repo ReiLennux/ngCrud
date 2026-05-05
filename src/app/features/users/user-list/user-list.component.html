@@ -19,43 +19,10 @@
   </div>
 
   <!-- Filters & Search Bar -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end bg-slate-50 dark:bg-slate-900/50 p-6 rounded-3xl border border-slate-200 dark:border-slate-800">
-    <div class="lg:col-span-3">
-      <app-g-select
-        (ngModelChange)="filterUsers()"
-        [(ngModel)]="filteredStatus"
-        placeholder="Todos los estados"
-        name="estatus"
-        label="Estado"
-        [isFilter]="true"
-        [options]="estados">
-      </app-g-select>
-    </div>
-
-    <div class="lg:col-span-3">
-      <app-g-select
-        (ngModelChange)="filterUsers()"
-        [(ngModel)]="filteredType"
-        placeholder="Todos los tipos"
-        name="tipo"
-        label="Tipo de Usuario"
-        [isFilter]="true"
-        [options]="tipos">
-      </app-g-select>
-    </div>
-
-    <div class="lg:col-span-6">
-      <app-g-text
-        (ngModelChange)="filterUsers()"
-        [(ngModel)]="filteredEmail"
-        name="text"
-        label="Buscar por correo"
-        placeholder="ejemplo@correo.com"
-        type="email"
-        icon="fa-solid fa-magnifying-glass">
-      </app-g-text>
-    </div>
-  </div>
+  <app-filters 
+    [fields]="filterFields" 
+    (filterChange)="currentFilters = $event">
+  </app-filters>
 
   <!-- Table Section -->
   <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden animate-fade-in">

@@ -9,12 +9,12 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => GSelectInputComponent),
+      useExisting: forwardRef(() => GSelectInput),
       multi: true
     }
   ]
 })
-export class GSelectInputComponent implements ControlValueAccessor {
+export class GSelectInput implements ControlValueAccessor {
   @Input() name = '';
   @Input() placeholder = '';
   @Input() validation = false;
@@ -23,11 +23,11 @@ export class GSelectInputComponent implements ControlValueAccessor {
   @Input() readOnly = false;
   @Input() isFilter = false;
   @Input() errorMessage = '';
-  @Input() options: { id: string; strName: string }[] = [{ id: "", strName: '' }];
+  @Input() options: { id: string | number; strName: string }[] = [];
 
-  private _value = 0;
+  _value: string | number = "";
 
-  set value(val: number) {
+  set value(val: string | number) {
     if (val !== this._value) {
       this._value = val;
       this.onChange(val);
@@ -35,22 +35,22 @@ export class GSelectInputComponent implements ControlValueAccessor {
     }
   }
 
-  get value(): number {
+  get value(): string | number {
     return this._value;
   }
 
-  onChange: (value: number) => void = () => {};
+  onChange: (value: string | number) => void = () => {};
   onTouched: () => void = () => {};
 
-  writeValue(value: number): void {
-    this._value = value;
+  writeValue(value: any): void {
+    this._value = value !== null && value !== undefined ? value : "";
   }
 
-  registerOnChange(fn: () => void): void {
+  registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 

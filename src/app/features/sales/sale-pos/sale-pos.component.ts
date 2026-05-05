@@ -8,6 +8,7 @@ import { SalesService } from '../services/sales.service';
 import { ProductsService } from '../../products/services/products.service';
 import { CategoriesService, Categoria, Subcategoria } from '../../catalogs/services/categories.service';
 import { AlertService } from '../../../core/services/alert.service';
+import { FilterField } from '../../../shared/components/filters/filters.component';
 
 @Component({
   selector: 'app-sale-pos',
@@ -23,11 +24,10 @@ export class SalePosComponent {
   products: product[] = [];
   selectedProducts: SelectedProduct[] = [];
 
-  categorias: { id: string, strName: string }[] = [];
-  subcategorias: { id: string, strName: string }[] = [];
-
-  categoriaSeleccionadoId: string = "";
-  subcategoriaSeleccionadoId: string = "";
+  filterFields: FilterField[] = [];
+  private _currentFilters: any = { categoria: '', subcategoria: '', searchTerm: '' };
+  get currentFilters(): any { return this._currentFilters; }
+  set currentFilters(val: any) { this._currentFilters = val; this.filtrarProductos(); }
 
   userOnSession: String = ''
   isLoading: boolean = false;
@@ -56,34 +56,55 @@ export class SalePosComponent {
     }
   }
 
-  obtenerCategorias() {
+  categorias: { id: string, strName: string }[] = [];
+  subcategorias: { id: string, strName: string }[] = [];
+
+  loadFilters() {
     this.categoriesService.obtenerCategorias().subscribe({
-      next: (data: Categoria[]) => {
-        this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
-      },
-      error: (err: any) => {
-        console.error(err);
+      next: (cats) => {
+        this.categorias = cats.map(c => ({ id: c.id!, strName: c.strName }));
+        this.categoriesService.obtenerTodasSubCategorias().subscribe({
+          next: (subs) => {
+            this.subcategorias = subs.map(s => ({ id: s.id!, strName: s.strName }));
+            this.setupFilterFields();
+          }
+        });
       }
     });
   }
 
-  obtenerSubcategorias() {
-    this.categoriesService.obtenerTodasSubCategorias().subscribe({
-      next: (data: Subcategoria[]) => {
-        this.subcategorias = data.map(s => ({ id: s.id!, strName: s.strName }));
+  setupFilterFields() {
+    this.filterFields = [
+      {
+        key: 'categoria',
+        label: 'Categoría',
+        type: 'select',
+        options: this.categorias,
+        gridColSpan: 'lg:col-span-3'
       },
-      error: (err: any) => {
-        console.error(err);
+      {
+        key: 'subcategoria',
+        label: 'Subcategoría',
+        type: 'select',
+        options: this.subcategorias,
+        gridColSpan: 'lg:col-span-3'
+      },
+      {
+        key: 'searchTerm',
+        label: 'Buscar Producto',
+        type: 'text',
+        placeholder: 'Ej. Coca Cola',
+        icon: 'fa-solid fa-magnifying-glass',
+        gridColSpan: 'lg:col-span-6'
       }
-    });
+    ];
   }
 
 
   filteredProducts: product[] = [];
 
   ngOnInit(): void {
-    this.obtenerCategorias();
-    this.obtenerSubcategorias();
+    this.loadFilters();
     this.productsService.obtenerProductos().subscribe({
       next: (data: product[]) => {
         this.products = data;
@@ -109,11 +130,21 @@ export class SalePosComponent {
   }
 
   filtrarProductos() {
-    this.filteredProducts = this.products.filter(producto =>
-      ((this.categoriaSeleccionadoId == "" || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
-        (this.subcategoriaSeleccionadoId == "" || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
-      (this.searchTerm === '' || producto.strName.toLowerCase().includes(this.searchTerm.toLowerCase()))
-    );
+    this.filteredProducts = this.products.filter(producto => {
+      const matchCat = !this.currentFilters.categoria || 
+                       this.currentFilters.categoria === '' || 
+                       producto.idCatCategoria?.toString() === this.currentFilters.categoria.toString();
+      
+      const matchSub = !this.currentFilters.subcategoria || 
+                       this.currentFilters.subcategoria === '' || 
+                       producto.idCatSubcategoria?.toString() === this.currentFilters.subcategoria.toString();
+      
+      const matchSearch = !this.currentFilters.searchTerm || 
+                         this.currentFilters.searchTerm === '' || 
+                         producto.strName.toLowerCase().includes(this.currentFilters.searchTerm.toLowerCase());
+      
+      return matchCat && matchSub && matchSearch;
+    });
   }
 
   async crearSale() {

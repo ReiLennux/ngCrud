@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { product } from '../../../core/models/product';
 import { Categoria, CategoriesService, Subcategoria } from '../../catalogs/services/categories.service';
 import { ProductsService } from '../services/products.service';
+import { FilterField } from '../../../shared/components/filters/filters.component';
 @Component({
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
@@ -9,12 +10,10 @@ import { ProductsService } from '../services/products.service';
 })
 export class ProductListComponent implements OnInit {
   products: product[] = [];
-  categorias: {id: string; strName: string}[] = [];
-  subcategorias: {id: string; strName: string}[] = [];
-  productoSeleccionadoId!: string;
-  categoriaSeleccionadoId: string = "";
-  subcategoriaSeleccionadoId: string = "";
-  searchTerm: string = '';
+  filterFields: FilterField[] = [];
+  private _currentFilters: any = { categoria: '', subcategoria: '', searchTerm: '' };
+  get currentFilters(): any { return this._currentFilters; }
+  set currentFilters(val: any) { this._currentFilters = val; this.filtrarProductos(); }
 
   constructor(
     private productsService: ProductsService,
@@ -23,13 +22,52 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerProductos();
-    this.obtenerCategorias();
-    this.obtenerSubcategorias();
+    this.loadFilters();
   }
 
-  //#region Filters
+  loadFilters() {
+    this.categoriesService.obtenerCategorias().subscribe({
+      next: (cats) => {
+        this.categorias = cats.map(c => ({ id: c.id!, strName: c.strName }));
+        this.categoriesService.obtenerTodasSubCategorias().subscribe({
+          next: (subs) => {
+            this.subcategorias = subs.map(s => ({ id: s.id!, strName: s.strName }));
+            this.setupFilterFields();
+          }
+        });
+      }
+    });
+  }
 
-  //#endregion
+  setupFilterFields() {
+    this.filterFields = [
+      {
+        key: 'categoria',
+        label: 'Categoría',
+        type: 'select',
+        options: this.categorias,
+        gridColSpan: 'lg:col-span-3'
+      },
+      {
+        key: 'subcategoria',
+        label: 'Subcategoría',
+        type: 'select',
+        options: this.subcategorias,
+        gridColSpan: 'lg:col-span-3'
+      },
+      {
+        key: 'searchTerm',
+        label: 'Buscar Producto',
+        type: 'text',
+        placeholder: 'Ej. Coca Cola',
+        icon: 'fa-solid fa-magnifying-glass',
+        gridColSpan: 'lg:col-span-6'
+      }
+    ];
+  }
+
+  // handleFilterChange is now replaced by the setter
+
 
   obtenerProductos() {
     this.productsService.obtenerProductos().subscribe({
@@ -43,27 +81,9 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  obtenerCategorias() {
-    this.categoriesService.obtenerCategorias().subscribe({
-      next: (data: Categoria[]) => {
-        this.categorias = data.map(c => ({ id: c.id!, strName: c.strName }));
-      },
-      error: (err: any) => {
-        console.error(err);
-      }
-    });
-  }
-
-  obtenerSubcategorias() {
-    this.categoriesService.obtenerTodasSubCategorias().subscribe({
-      next: (data: Subcategoria[]) => {
-        this.subcategorias = data.map(s => ({ id: s.id!, strName: s.strName }));
-      },
-      error: (err: any) => {
-        console.error(err);
-      }
-    });
-  }
+  categorias: {id: string; strName: string}[] = [];
+  subcategorias: {id: string; strName: string}[] = [];
+  productoSeleccionadoId!: string;
 
   seleccionarProducto(id: string) {
     this.productoSeleccionadoId = id;
@@ -87,15 +107,21 @@ export class ProductListComponent implements OnInit {
   filteredProducts: product[] = [];
 
   filtrarProductos() {
-    this.filteredProducts = this.products.filter(producto =>
-      ((this.categoriaSeleccionadoId == "" || producto.idCatCategoria == this.categoriaSeleccionadoId) &&
-        (this.subcategoriaSeleccionadoId == "" || producto.idCatSubcategoria == this.subcategoriaSeleccionadoId)) &&
-      (this.searchTerm === '' || producto.strName.toLowerCase().includes(this.searchTerm.toLowerCase()))
-    );
-  }
-
-  onsubcategoriaSeleccionada(subcategoria: string | number | null) {
-    this.subcategoriaSeleccionadoId = subcategoria !== null ? subcategoria.toString() : '0';
+    this.filteredProducts = this.products.filter(producto => {
+      const matchCat = !this.currentFilters.categoria || 
+                       this.currentFilters.categoria === '' || 
+                       producto.idCatCategoria?.toString() === this.currentFilters.categoria.toString();
+      
+      const matchSub = !this.currentFilters.subcategoria || 
+                       this.currentFilters.subcategoria === '' || 
+                       producto.idCatSubcategoria?.toString() === this.currentFilters.subcategoria.toString();
+      
+      const matchSearch = !this.currentFilters.searchTerm || 
+                         this.currentFilters.searchTerm === '' || 
+                         producto.strName.toLowerCase().includes(this.currentFilters.searchTerm.toLowerCase());
+      
+      return matchCat && matchSub && matchSearch;
+    });
   }
 
 }

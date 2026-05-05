@@ -1,0 +1,37 @@
+<div [formGroup]="filterForm" class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end bg-slate-50 dark:bg-slate-900/50 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 animate-fade-in">
+  <ng-container *ngFor="let field of fields">
+    <div [class]="field.gridColSpan || 'lg:col-span-3'">
+      
+      <!-- Select Input -->
+      <app-g-select 
+        *ngIf="field.type === 'select'"
+        [formControlName]="field.key"
+        [name]="field.key"
+        [label]="field.label"
+        [isFilter]="true"
+        [options]="field.options || []"
+        [placeholder]="field.placeholder || ''">
+      </app-g-select>
+
+      <!-- Text Input -->
+      <app-g-text
+        *ngIf="field.type === 'text'"
+        [formControlName]="field.key"
+        [name]="field.key"
+        [label]="field.label"
+        [placeholder]="field.placeholder || ''"
+        [type]="'text'"
+        [icon]="field.icon || 'fa-solid fa-magnifying-glass'">
+      </app-g-text>
+
+      <!-- Date Input -->
+      <app-g-date
+        *ngIf="field.type === 'date'"
+        [formControlName]="field.key"
+        [name]="field.key"
+        [label]="field.label">
+      </app-g-date>
+
+    </div>
+  </ng-container>
+</div>

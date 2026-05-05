@@ -27,6 +27,7 @@ export class GTextInput implements ControlValueAccessor {
   @Input() label = '';
   @Input() readOnly = false;
   @Input() errorMessage = '';
+  @Input() icon = '';
   
   @Output() valueChange = new EventEmitter<string>();
 
@@ -41,7 +42,7 @@ export class GTextInput implements ControlValueAccessor {
     this.value = value ?? '';
   }
 
-  registerOnChange(fn: () => void): void {
+  registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 

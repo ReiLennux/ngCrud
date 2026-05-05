@@ -19,44 +19,14 @@
   </div>
 
   <!-- Filters & Search Bar -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end bg-slate-50 dark:bg-slate-900/50 p-6 rounded-3xl border border-slate-200 dark:border-slate-800">
-    <div class="lg:col-span-3">
-      <app-g-select
-        (ngModelChange)="filtrarProductos()"
-        [(ngModel)]="categoriaSeleccionadoId"
-        name="category"
-        label="Categoría"
-        [isFilter]="true"
-        [options]="categorias">
-      </app-g-select>
-    </div>
-
-    <div class="lg:col-span-3">
-      <app-g-select
-        (ngModelChange)="filtrarProductos()"
-        [(ngModel)]="subcategoriaSeleccionadoId"
-        name="Subcategory"
-        label="Subcategoría"
-        [isFilter]="true"
-        [options]="subcategorias">
-      </app-g-select>
-    </div>
-
-    <div class="lg:col-span-6">
-      <app-g-text
-        (ngModelChange)="filtrarProductos()"
-        [(ngModel)]="searchTerm"
-        name="text"
-        label="Buscar producto"
-        placeholder="Nombre del producto..."
-        type="text"
-        icon="fa-solid fa-magnifying-glass">
-      </app-g-text>
-    </div>
-  </div>
+  <app-filters 
+    [fields]="filterFields" 
+    (filterChange)="currentFilters = $event">
+  </app-filters>
 
   <!-- Table Section -->
-  <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden animate-fade-in">
+  <div
+    class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-200 dark:border-slate-700 overflow-hidden animate-fade-in">
     <div class="overflow-x-auto">
       <table class="w-full text-sm text-left">
         <thead>
@@ -125,7 +95,7 @@
               <div class="flex flex-col items-center gap-3">
                 <i class="fa-solid fa-box-open text-5xl opacity-20"></i>
                 <p class="font-medium">No se encontraron productos.</p>
-                <button (click)="searchTerm = ''; categoriaSeleccionadoId = ''; subcategoriaSeleccionadoId = ''; filtrarProductos()" 
+                <button (click)="currentFilters = {}" 
                         class="text-emerald-600 font-bold hover:underline">
                   Limpiar todos los filtros
                 </button>

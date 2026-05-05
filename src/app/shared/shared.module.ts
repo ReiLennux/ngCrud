@@ -7,18 +7,20 @@ import { RouterModule } from '@angular/router';
 import { GTextAreaInput } from './components/inputs/g-text-area/g-text-area.component';
 import { GTextInput } from './components/inputs/g-text/g-text.component';
 import { GDateInput } from './components/inputs/g-date/g-date.component';
-import { GSelectInputComponent } from './components/inputs/g-select/g-select.component';
+import { GSelectInput } from './components/inputs/g-select/g-select.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { GPaginatorComponent } from './components/pagination/g-paginator/g-paginator.component';
+import { FiltersComponent } from './components/filters/filters.component';
 
 @NgModule({
   declarations: [
     GTextAreaInput,
     GTextInput,
     GDateInput,
-    GSelectInputComponent,
+    GSelectInput,
     NavigationComponent,
-    GPaginatorComponent
+    GPaginatorComponent,
+    FiltersComponent
   ],
   imports: [
     CommonModule,
@@ -30,12 +32,14 @@ import { GPaginatorComponent } from './components/pagination/g-paginator/g-pagin
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     GTextAreaInput,
     GTextInput,
     GDateInput,
-    GSelectInputComponent,
+    GSelectInput,
     NavigationComponent,
-    GPaginatorComponent
+    GPaginatorComponent,
+    FiltersComponent
   ]
 })
 export class SharedModule { }

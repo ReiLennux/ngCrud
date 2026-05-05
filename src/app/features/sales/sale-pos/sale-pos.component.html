@@ -14,38 +14,10 @@
         </div>
 
         <div class="space-y-4">
-          <div class="grid grid-cols-2 gap-4">
-            <app-g-select 
-              (ngModelChange)="filtrarProductos()" 
-              [(ngModel)]="categoriaSeleccionadoId" 
-              name="category"
-              label="Categoría" 
-              [isFilter]="true" 
-              [options]="categorias">
-            </app-g-select>
-
-            <app-g-select 
-              (ngModelChange)="filtrarProductos()" 
-              [(ngModel)]="subcategoriaSeleccionadoId" 
-              name="Subcategory"
-              label="Subcategoría" 
-              [isFilter]="true" 
-              [options]="subcategorias">
-            </app-g-select>
-          </div>
-
-          <app-g-text 
-            (ngModelChange)="filtrarProductos()" 
-            [(ngModel)]="searchTerm"
-            name="search"
-            label="Filtrar por nombre"
-            placeholder="Escribe el nombre del producto..."
-            type="text"
-            icon="fa-solid fa-magnifying-glass">
-          </app-g-text>
-        </div>
-
-        <!-- Product Results Table -->
+          <app-filters 
+        [fields]="filterFields" 
+        (filterChange)="currentFilters = $event">
+      </app-filters>    <!-- Product Results Table -->
         <div class="mt-8 overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-700">
           <div class="max-h-96 overflow-y-auto custom-scrollbar">
             <table class="w-full text-sm text-left">
@@ -85,6 +57,7 @@
             </table>
           </div>
         </div>
+      </div>
       </div>
     </div>
 
