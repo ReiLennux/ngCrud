@@ -6,7 +6,7 @@ export interface DateSale {
 }
 
 export interface SaleDetails {
-    idProProducto: number;
+    idProProducto: string;
     decQuantity: number;
 }
   

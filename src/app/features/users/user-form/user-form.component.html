@@ -1,8 +1,8 @@
 <div class="m-6 max-w-4xl mx-auto space-y-6">
   <!-- Back Button -->
   <div class="flex items-center">
-    <a routerLink="/users" class="inline-flex items-center gap-2 text-slate-500 hover:text-blue-600 font-semibold transition-colors group">
-      <div class="p-2 rounded-xl bg-slate-100 group-hover:bg-blue-50 transition-colors">
+    <a routerLink="/users" class="inline-flex items-center gap-2 text-slate-500 hover:text-emerald-600 font-semibold transition-colors group">
+      <div class="p-2 rounded-xl bg-slate-100 group-hover:bg-emerald-50 transition-colors">
         <i class="fa-solid fa-arrow-left"></i>
       </div>
       Volver a la Lista de Usuarios
@@ -83,10 +83,7 @@
       <div class="pt-6 border-t border-slate-100 dark:border-slate-700">
         <button type="submit" 
           [disabled]="!userForm.valid || !comparePassword"
-          class="w-full py-4 px-8 text-white font-black rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg disabled:opacity-50 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:shadow-none"
-          [ngClass]="{
-            'bg-blue-600 hover:bg-blue-700 shadow-blue-500/25': userForm.valid && comparePassword
-          }">
+          class="w-full py-4 px-8 text-white font-black rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg disabled:opacity-50 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:shadow-none bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/25 active:scale-95">
           <i class="fa-solid fa-user-check" *ngIf="userForm.valid && comparePassword"></i>
           {{ !userForm.valid || !comparePassword ? "Completa todos los campos" : "Registrar Usuario" }}
         </button>

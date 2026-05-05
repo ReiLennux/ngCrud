@@ -15,7 +15,15 @@ export class SaleHistoryComponent implements OnInit {
   filterFields: FilterField[] = [];
   private _currentFilters: any = { usuario: '', fecha: '', searchTerm: '', estado: '' };
   get currentFilters(): any { return this._currentFilters; }
-  set currentFilters(val: any) { this._currentFilters = val; this.filtrarSales(); }
+  set currentFilters(val: any) { 
+    this._currentFilters = val; 
+    this.currentPage = 1;
+    this.filtrarSales(); 
+  }
+
+  currentPage: number = 1;
+  pageSize: number = 5;
+  paginatedSales: Sale[] = [];
 
   constructor(private saleService: SalesService, private userService: UserService) { }
 
@@ -25,7 +33,7 @@ export class SaleHistoryComponent implements OnInit {
 
 
   filtrarSales() {
-    this.filteredSales = this.sales.filter(sale => {
+    const filtered = this.sales.filter(sale => {
       const matchUsuario = !this.currentFilters.usuario || sale.DateSale.idUsuUsuario == this.currentFilters.usuario;
       const matchFecha = !this.currentFilters.fecha || formatoFecha(sale.DateSale.dtDate) === this.currentFilters.fecha;
       const matchEstado = !this.currentFilters.estado || sale.DateSale.idVenCatState.toString() == this.currentFilters.estado;
@@ -33,6 +41,19 @@ export class SaleHistoryComponent implements OnInit {
       
       return matchUsuario && matchFecha && matchEstado && matchFolio;
     });
+
+    this.filteredSales = filtered;
+    this.updatePaginatedSales();
+  }
+
+  updatePaginatedSales() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.paginatedSales = this.filteredSales.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.updatePaginatedSales();
   }
   
   estados: { id: string; strName: string; }[] = [];

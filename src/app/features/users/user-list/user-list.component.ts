@@ -19,7 +19,15 @@ export class UserListComponent implements OnInit {
   
   private _currentFilters: any = { status: '', type: '', email: '' };
   get currentFilters(): any { return this._currentFilters; }
-  set currentFilters(val: any) { this._currentFilters = val; this.filterUsers(); }
+  set currentFilters(val: any) { 
+    this._currentFilters = val; 
+    this.currentPage = 1; // Reset to page 1 on filter change
+    this.filterUsers(); 
+  }
+
+  currentPage: number = 1;
+  pageSize: number = 5;
+  paginatedUsers: User[] = [];
   //#endregion
 
   //#region constructor
@@ -79,13 +87,26 @@ export class UserListComponent implements OnInit {
 
 
   filterUsers() {
-    this.filteredUsers = this.users.filter(user => {
+    const filtered = this.users.filter(user => {
       const matchStatus = !this.currentFilters.status || user.idUsuCatEstadoFK == this.currentFilters.status;
       const matchType = !this.currentFilters.type || user.idUsuCatTipoUsuario == this.currentFilters.type;
       const matchEmail = !this.currentFilters.email || user.email.toLowerCase().includes(this.currentFilters.email.toLowerCase());
       
       return matchStatus && matchType && matchEmail;
     });
+
+    this.filteredUsers = filtered;
+    this.updatePaginatedUsers();
+  }
+
+  updatePaginatedUsers() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.paginatedUsers = this.filteredUsers.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.updatePaginatedUsers();
   }
 
   getStatusName(estadoId: string): String {
